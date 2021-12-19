@@ -1,0 +1,8 @@
+2021-12-19 14:23:27 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax Fehler in SQL Befehl "SETTING_ENTRIES[*] SELECT * FROM SESSION"; erwartet "SET, SAVEPOINT, SCRIPT, SHUTDOWN, SHOW"
+Syntax error in SQL statement "SETTING_ENTRIES[*] SELECT * FROM SESSION"; expected "SET, SAVEPOINT, SCRIPT, SHUTDOWN, SHOW"; SQL statement:
+SETTING_ENTRIES SELECT * FROM SESSION [42001-200]
+2021-12-19 16:13:07 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Wert zu gross / lang für Feld "TEXT VARCHAR(255)": "STRINGDECODE('Hallo Opera, \nDie Adresse wurde nicht gefunden\nIhre Nachricht wurde nicht an opera@opera.op zugestellt, da die D... (266)"
+Value too long for column "TEXT VARCHAR(255)": "STRINGDECODE('Hallo Opera, \nDie Adresse wurde nicht gefunden\nIhre Nachricht wurde nicht an opera@opera.op zugestellt, da die D... (266)"; SQL statement:
+insert into messages (datum, meintoken, messagetoken, name, pseudonym, role, text, vorname, id) values (?, ?, ?, ?, ?, ?, ?, ?, ?) [22001-200]

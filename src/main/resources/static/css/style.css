@@ -1,0 +1,297 @@
+/*
+*   Den 24.07.2021
+*   CSS-Layout Paul Richter
+*/
+@charset "UTF-8";
+@import url(https://fonts.googleapis.com/css?family=Rye|Nunito);
+
+*                   { margin: 0px; padding: 0px; }
+html, body          { width: 100%; height: 100%; }
+a:link              { text-decoration: none; cursor: pointer; }
+.itemCenter         { display: block; margin-left: auto; margin-right: auto; }
+.boxSizing          { box-sizing: border-box; }
+.finger             { cursor: pointer; }
+.clear              { clear: both;}
+
+/* Allgemeine angaben */
+/*   <style type="text/css"><!-- @import"/css/style.css"; --></style> */
+/* background-image: url("../img/giter.png"); box-shadow: 0px 0px 5px 0px rgba: 0,0,0,0.9; */
+/* Box auf 100% kommen box-sizing: border-box; */
+
+.leer1              { height: 1.0em; }
+.leer2              { height: 2.0em; }
+.leer3              { height: 3.0em; }
+.leer4              { height: 4.0em; }
+.leer5              { height: 5.0em; }
+
+    /* richtung grau*/
+.Platinum           { color: #E8E9E9; } /* hell grau */
+.LightGray          { color: #D1D3D4; }
+.Gray               { color: #BABDBF; }
+.OldSilver          { color: #808488; }
+.DimGray            { color: #666A6D; }
+
+    /* richtung blau */
+.ice                { color: #E1EFF8; }
+.royal              { color: #4169E1; }
+.blau               { color: #1608D3; }
+.twilight           { color: #203763; } /* dunkel Blau */
+.bluetack           { color: #82BFE0; }
+.powderblue         { color: #B5D0E0; }
+.microsoft          { color: #00A2ED; }
+
+.fehler                 { background: #FFB3B3; border: 1px solid red; box-shadow: 0px 0px 10px 0px rgba(7,1,5,0.9);
+                           margin: 1.0em; padding: 0.6em; border-radius: 3px; font-size: inherit; color: #CC0000; text-align: center; }
+.fehler small           { color: #333; }
+
+.buttonBlau				{ background: linear-gradient(to bottom, #3D94F6 5%, #1E62D0 100%); background-color: #3D94F6; border: 1px solid #337FED; }
+.buttonGrun				{ background: linear-gradient(to bottom, #77D42A 5%, #5CB811 100%); background-color: #77D42A; border: 1px solid #268A16; }
+.buttonRot              { background:linear-gradient(to bottom, #D0451B 5%, #BC3315 100%);  background-color:#D0451B;  border:1px solid #942911; }
+
+.buttonAll				{ width: 100%; padding: 0.375rem 0.75rem; box-sizing: border-box; line-height: 1.6; cursor: pointer;
+						  box-shadow: 0px 10px 14px -7px #276873; display: inline-block; border-radius: 6px; color: #FFF;
+						  font-size: inherit; font-weight: bold; text-decoration: none; text-shadow: 0px 1px 0px #1570CD;/*#3D768A*/
+						}
+.buttonBlau:hover		{ background: linear-gradient(to bottom, #1E62D0 5%, #3D94F6 100%); background-color: #1E62D0; }
+.buttonGrun:hover		{ background: linear-gradient(to bottom, #5CB811 5%, #77D42A 100%); background-color: #5CB811; }
+.buttonRot:hover        { background:linear-gradient(to bottom, #bc3315 5%, #d0451b 100%); background-color:#bc3315; }
+.buttonRot:active .buttonGrun:active .buttonBlau:active		{ position: relative;	top: 1px; }
+
+.inputAll		        { width: 100%; padding: 0.75em; box-sizing: border-box; font-size: inherit; line-height: 1.6; text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+					      color: #495057; background-color: inherit; background-clip: padding-box; border: none; outline: none; border: #CED4DA solid 1px;
+					      border-radius: 0.25em; box-shadow: inset 0 -5px 45px rgba(0,0,0,0.125), 0px 10px 14px -7px #276873; -webkit-transition: box-shadow .5s ease;
+					      -moz-transition: box-shadow .5s ease; -o-transition: box-shadow .5s ease; -ms-transition: box-shadow .5s ease; transition: box-shadow .5s ease;
+					      letter-spacing: 0.1em;
+					    }
+.inputAll:focus	        { box-shadow: inset 0 -5px 45px rgb(255,253,230); }
+.inputNoShadow		    { width: 100%; padding: 0.375em 0.75em; box-sizing: border-box; font-size: inherit; line-height: 1.6; text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+					      color: #495057; background-color: inherit; background-clip: padding-box; border: none; outline: none; border: #CED4DA solid 1px;
+					      border-radius: 0.25em; box-shadow: inset 0 -5px 45px rgba(0,0,0,0.125), 0px 0px 0px 0px #276873;
+					    }
+.noScript           { max-width: 45.0em; margin-left: auto; margin-right: auto; border: 1px solid #FF0000; box-sizing: border-box;
+                      padding: 0.8em; color: #FF0000; margin-top: 1.8em; background: #ffe6e6; }
+
+
+
+/* maillogin.html + mailregister.html + telefonlogin.html + telefonregister.html + registersuccess.html(in fragments)
+-------------*/
+.lenderVorwahl      { /* -> in telefonlogin, rest fragments */position: relative; max-width: 45.0em; margin-right: auto; margin-left: auto; padding: 0.25em; }
+.cookieEnabled      { /* -> in telefonlogin, rest fragments */ }
+.login              { max-width: 45.0em; margin-right: auto; margin-left: auto; padding: 0.25em; /* border: 1px solid red; */ }
+.codeBox            {  }
+.loginBox           { width: 100%; border: 1px solid rgb(0, 0, 0, 0.125); border-radius: 0.25em; box-sizing: border-box; }
+.loginKop           { background-color: rgb(0, 0, 0, 0.03); border-bottom: 1px solid rgb(0, 0, 0, 0.125); padding: 0.75em 1.25em; }
+.loginBody          { flex: 1 1 auto; padding: 1.25em; position: relative;}
+.loginInfo          { background: #E6FFCC; border: 1px solid #009900; padding: 0.8em; font-size: inherit; text-align: center; border-radius: 0.25em; }
+.loginFehler        { background: #FFBCBC; border: 1px solid #FF4828; padding: 0.8em; font-size: inherit; text-align: center; border-radius: 0.25em; }
+.loginEmail         { /* Leer */ }
+.loginTelefon       { /* Leer */ }
+.loginGroup         { margin-bottom: 1.4em;  /* border: 1px solid black; */ }
+.loginInput         { width: 25.0em; margin-left: auto; margin-right: auto; /* border: black solid 1px; */ }
+.loginLender        { border: 1px solid red; }
+.loginCode          { display: flex; justify-content: space-between; /* border: 1px solid black; */ }
+.codeDiv            { /* border: 1px solid red; */ }
+.inputCode          { text-align: center; font-size:1.7em; }
+.inputLand          { display: flex; flex-direction: row; align-items: center; padding: 0.75em; cursor: pointer; }
+.landFlagge         { /* border: 1px solid red; */}
+.landName           { font-size: inherit;  /* border:1px solid green; */}
+.inputTel           { padding-left: 0; padding-right: 0; text-align: center; }
+.loginButton        { letter-spacing: 0.375em;}
+.anmeldeWechseln    { color: #999; cursor: pointer; }
+.loginSuccess       {  /* border: 1px solid red; */ }
+.seccussTable caption   { padding: 0.8em 0; font-family: "Times New Roman", Times, serif; font-size: 1.2em; color: #000080; }
+.seccussTable td    { padding: 0.8em 0; font-family: "Lucida Console", "Courier New", monospace; }
+.seccussTd          { /* only screen 576px */ }
+.successAhref       { background: #000; color: white; border-radius: 5px; font-weight: 600; padding: 0.8em 1.2em; letter-spacing: 0.2em;
+                      margin-left: 16.99999%; }
+.successAhref:hover { background: #777; color: #FFBF00; }
+
+@media only screen and (max-width: 1205px) {  }
+@media only screen and (max-width: 805px)  {  }
+@media (max-width: 576px){ .loginInput{ width: 99.99999%; }  .seccussTd{ width: 4.99999%; } .successAhref{ margin-left: 11.99999%; } }
+
+
+/* components.html
+ _________________*/
+
+                /* laender */
+.lenderContainer    { position: relative; }
+.lenderBox          { display: none; position: absolute; left: 0; top: 0; width: 100%;
+                      border: 1px solid rgb(0, 0, 0, 0.125); border-radius: 0.25em;
+                      background: #FFF; z-index: 20; box-sizing: border-box;
+                    }
+.lenderKop          { background-color: rgb(0, 0, 0, 0.03); border-bottom: 1px solid rgb(0, 0, 0, 0.125); padding: 0.75em 1.25em; }
+.lenderSuche        { width: 70.0%; max-width: 35.0em; padding: 0.75em 3.0em; font-size: 1.2em;
+                      background-image: url("../img/search.png"); background-size: 2.0em 2.0em; background-repeat: no-repeat;
+                      background-position: 5px 6px; border: 1px solid #F2F2F2; border-radius: 6px; font-size: inherit;
+                    }
+.lenderAbbruch      { width: 25%; text-align: center; cursor: pointer; color:#1608D3; }
+.lenderOutput       { }
+.lenderBody         { display: flex; justify-content: space-between; min-height: 45em; max-height: 90vh; background: #FAFFFF;
+                      overflow: auto; -ms-overflow-style: none; scrollbar-width: none;
+                        /* flex für: lenderName & lenderAnker */ /* border: 1px solid black; */
+                    }
+.lenderBody::-webkit-scrollbar { width: 0px;  }
+.lenderName         { width: 95%; padding-left: 0.8em; box-sizing: border-box; /*border: 1px solid green;*/ }
+.lenderName ol      { list-style-type: none; }
+.lenderH3           { color: #CC0066; padding: 0.8em 0; }
+.lenderItem         { display: flex; padding: 0.2em 0;  border-bottom: 1px solid #F2F2F2; }
+.lenderItem div     { flex: 1; display:flex; justify-content: space-between; cursor: pointer; /* border: 1px solid red; */ }
+.lenderItem p       { padding: 0.6em 0; text-size: inherit; font-family: monospace, "Times New Roman", Times, serif;   }
+
+.lenderAnker        { position: relative; width: 2.0em; /*border: 1px solid red;*/ }
+.lenderAlphabet     { position: fixed; margin: 0; top: 50%; transform: translateY(-50%); text-align: center;
+                      width: 2.0em; /*border: 1px solid blue;*/
+                    }
+.lenderBuchstaben   { display: flex; text-align: center; /* border: 1px solid blue; */ }
+.lenderBuchstaben a { flex: 1; padding: 0.35em 0; color:#1608D3; /* border:1px solid red; */ }
+@media only screen and (max-width: 805px)  { .lenderSuche { width: 55.0%; } .lenderBuchstaben a { padding: 0.2em 0; }}
+@media (max-width: 576px) { .lenderSuche { width: 40.0%; } .lenderBuchstaben a { padding: 0.1em 0; } }
+
+
+         /* cookie Enabled */
+.cookieBox          { display: none; position: absolute; top: 0; left: 0; border: 5px solid red; padding: 0.8em;
+                        text-size: inherit; background: #ECE9E6;  /* fallback for old browsers */
+                        background: -webkit-linear-gradient(to right, #FFFFFF, #ECE9E6);
+                        background: linear-gradient(to right, #FFFFFF, #ECE9E6);
+                    }
+.cookieWarnung      { background: #F85032;  /* fallback for old browsers */
+                      background: -webkit-linear-gradient(to right, #E73827, #F85032);  /* Chrome 10-25, Safari 5.1-6 */
+                      background: linear-gradient(to right, #E73827, #F85032); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+                      padding: 0.4em; text-align: center; color: white; font-size: 1.4em;
+ }
+
+    /* messenger.html
+     -----------------*/
+            /* nur slider Box */
+div.sliderBox       { display: flex; width: 100%; height: 100%; }
+div.freundeBox      { width: 300px; min-width: 300px; height: 100%;  /*border: 1px solid red;*/ }
+div.messageBox      { width: 100%; min-width: 350px; height: 100%; border-left: 1px solid #999; }
+@media only screen and (max-width: 650px) { div.freundeBox { width: 100%; max-width: 650px; }
+                                            div.messageBox { height: 100%; width: 0; min-width: 0; overflow-x: hidden;
+                                            position: fixed; z-index: 1; top: 0; right: 0; transition: 0.5s;
+                                            background-color: #FFF; border-left: 0;
+                                            } }
+
+div.freundeGrid, div.messageGrid    { height: 100vh; display: grid; grid-template-rows: auto 1fr auto; /* Original: 2.5em 1fr 2.5em */  }
+             /* Freunde-Linke Seite */
+div.freundeHead         { background-color: #FAFAFF; border-bottom: 1px solid #E6E6FF; }
+
+div.freundeBody         { overflow: scroll; }
+div.freundeDaten        { border-bottom: 1px solid #999; }
+div.freundeDaten:hover  { background-color: #80CEFF; color: white; }
+div.freundeDaten table pre    { font-size: 80%; }
+div.freund              { /* FORSICH: ncht löschen, nicht belegen, wird für die javascript function benutzt */ }
+span.freundeBild        { display: table-cell; width: 1.5em; height: 1.5em; border: 1px solid #999; border-radius: 1.9em;
+                          padding:0.4em; font-size: inherit; text-align: center; vertical-align: middle; }
+td.freundeName           { font-size: inherit; }
+span.freundMessageUngelesen { display: table-cell; background-color: #1608D3; width: 20px; border: 1px solid #1608D3;
+                              border-radius: 15px; text-align: center; color:#FFF; padding: 2px; }
+div.freundeDaten:hover span.freundMessageUngelesen  { background-color: #FAFAFF; color: #99004D; }
+p.freundeNo             { margin: 2.2em 0.4em; padding: 0.4em; text-align: center; background: #FFFFE6; border: 1px solid #FFFF33;
+                          box-sizing: border-box; box-shadow: 0px 0px 5px 0px #000000; border-radius: 3px; }
+
+div.freundeFooter       { background-color: #FAFAFF; border-top: 1px solid #E6E6FF; }
+div.freundeFooterBet    { display: flex; justify-content: space-between; align-items: center; height: 2.5em; }
+div.freundeFooterBet div{ width: 24.99999%; text-align: center; }
+p.freundeFooterNo       { font-size: inherit; text-align: center; color: rgba(0,0,0,0.6); padding: 0.5em;
+                          text-shadow: 2px 8px 6px rgba(0,0,0,0.2), 0px -5px 35px rgba(255,255,255,0.3); }
+            /* Message-Ausgabe Rechte Seite */
+div.messageHead         { background-color: #FAFAFF; border-bottom: 1px solid #E6E6FF; }
+span.messageZuruck      { display: none; color: #1608D3; padding: 0.2em 0em; font-size: 1.2em; /*border: 1px solid blue;*/ }
+span.messageSchliessen  { color: #1608D3; padding: 0.2em 0em; font-size: 1.2em; }
+p.messageHeadName       { color: #000099; font-size: 1.4em; /* border: 1px solid green; */ }
+small.messageHeadLetzteBesuch   { color: #999; }
+div.messageBody         { position: relative; overflow: scroll; /* border: 1px solid red; */}
+
+div.messageBodyMy       { display: flex; justify-content: flex-end; padding: 0.6em 0; }
+div.messageBodyMy section   { width: 5px; /* border: 1px solid red;  Leer */ }
+div.messageBodyMy nav   { display:flex; flex-direction: row-reverse; /* border: 1px solid blue; */}
+div.messageBodyMy nav > table   { background-color: #E6FFF2; max-width: 80%; box-shadow: 0px 0px 5px 0px #999999;
+                                  padding: 0.6em 0.6em 0; border: 1px soid #E6FFF2; border-radius: 10px; }
+div.messageBodyMy nav table small { color: #999; }
+div.messageBodyMy aside { width: 20px; /* border: 1px solid red;  Leer */ }
+
+div.messageBodyFreund   { display: flex; padding:0.6em 0; }
+div.messageBodyFreund section { width: 20px; /*border: 1px solid green;*/ }
+div.messageBodyFreund nav { display:flex; flex-direction: row; /* border: 1px solid red; */ }
+div.messageBodyFreund nav > table { background-color: #ECE9E6; background: linear-gradient(to right, #FFFFFF, #ECE9E6);
+                                    max-width: 80%; box-shadow: 0px 0px 5px 0px #999999;
+                                    padding: 0.6em 0.6em 0; border: 1px soid #FAFFFF; border-radius: 10px; }
+div.messageBodyFreund nav table small { color: #999; }
+div.messageBodyFreund aside     { width: 5px; /* border: 1px solid black;*/ }
+
+div.nochKeineMessage     { position: absolute; bottom: 1.8em; width: 99.55555%;  text-align: center; /* border: 1px solid green;*/ }
+
+div.messageFooter       { display: flex; flex-direction: row; align-items: center; min-height: 2.5em;
+                          background-color: #FAFAFF; border-top: 1px solid #E6E6FF; }
+div.messageFoto         { position: relative; width: 2.5em; align-self: flex-end; margin-bottom: 6px; }
+    /* Kamera Verstect */
+div.messageKamera       { display: none; }
+div.messageFoto:hover div.messageKamera { display: block; position: absolute; bottom: 1.5em; left: 0; padding: 0.5em; }
+div.kameraBox           { background-color: #FFF; box-shadow: 0px 0px 5px 0px #000000; border: 1px solid #FFF; border-radius: 8px;}
+div.kameraBox div       { padding: 0.6em; }
+div.kameraBox pre       { display: flex; align-items: center; }
+div.kameraBox div:hover { background-color: #C6C6EC;  }
+
+div.messageText         { flex: auto; box-sizing: border-box; margin: 5px 0;  }
+textarea.messageTextarea        { display: block; width: 100.0%; resize: none; overflow: hidden; border: none; background: transparent;
+                                  margin: 0; max-height: 300px; padding: 0.2em; font-size: 1.0em; box-sizing: border-box;  }
+textarea.messageTextarea:focus  { outline: none !important; }
+div.messageSenden       { display: flex; width: 3.0em; align-items: center; align-self: flex-end; margin-bottom: 6px; /* border: 1px solid black; */}
+div.messageSenden img   { border: 0px;}
+div.messageUnless       { text-align: center; margin-top: 30%; }
+@media only screen and (max-width: 650px) { span.messageZuruck { display: block; } span.messageSchliessen{ display: none; } }
+
+
+
+            /* Fragment neuerchat */
+div.neuerChat           { /* border: 1px solid red;*/ }
+div.neuerChatKop        { background: #EBFAFA; height: 3.0em; border-bottom: 1px solid #33CCCC; }
+div.neuerChatKop a      { font-size: 1.0em; }
+td.neuerChatMyname      { color: #003399;}
+div.neuerChatBody       { /*border: 1px solid green;*/ }
+div.neuerChatForm       { margin: 0px; padding: 0.6em;  border-bottom: 1px solid #999; }
+div.neuerChatForm label { padding: 6px; } /* Label: Vergrosert den umfeld von Radio buttons */
+span.neuerChatToken     { color: #CDCDCD; }
+div.neuerChatForm input[type='radio'] { transform: scale(1.6); margin: 10px; }
+button.neuerChatButton  { float: right; border-radius: 3px;
+                          font-family: "Times New Roman", Times, serif; font-size: inherit; padding:0.2em 0.6em; }
+
+@media only screen and (max-width: 1205px) {  }
+@media only screen and (max-width: 650px)  {  }
+@media (max-width: 576px){  }
+
+    /* kamera */
+/*
+div.kamera              { display: none; position: absolute; top:0; left: 0; background-image: url('../img/schwarz30.png');
+                          width: 100%; height: 100%; padding-top: 4.0em; box-sizing: border-box;
+                        }
+div.kameraBox           { height: 20.0em; max-width: 40.0em; margin-left: auto; margin-right: auto; background: #FAFFFF;
+                          border: 1px solid #000; box-shadow: 0px 0px 5px 0px rgba(23,29,255,0.9);
+                        }
+div.kameraBox p        { color: #1608D3; padding: 0.25em; }
+*/
+@media only screen and (max-width: 650px) {  }
+
+
+
+/* error.html
+-------------*/
+.error              { width: 100%; height: 100%; border: 5px solid red; box-sizing: border-box; }
+.errorKop           { padding: 1.2em; text-align: center; color: white;
+                      background: #ff0084;  /* fallback for old browsers */
+                      background: -webkit-linear-gradient(to right, #33001b, #ff0084);  /* Chrome 10-25, Safari 5.1-6 */
+                      background: linear-gradient(to right, #33001b, #ff0084); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+                    }
+.errorOutput        { padding: 0.6em; }
+.errorOutput span   { color: red; }
+.errorOutput span::after { content: '\00A0' '\003A' '\002A'; color: red; }
+.errorOutput span, em { font-size: 1.6em; }
+
+/* setting.html
+ --------------- */
+.setting            { width 100%; height: 100%; }
+.settingKop         { }
+.settingUserName    { }
+.settingBox         { }

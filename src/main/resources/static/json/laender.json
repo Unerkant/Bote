@@ -1,0 +1,109 @@
+{
+  "A":[
+        {"stadt":"Fürstentum Andorra", "vorwahl": 376, "flagge": "andorra", "language": "ca"},
+        {"stadt":"Amerikanisch-Samoa", "vorwahl": 1684, "flagge": "amersamoa", "language": "sm"},
+        {"stadt":"Antiqua und Barbuda", "vorwahl": 1268, "flagge": "antiguabarbuda", "language": "bd"}
+      ],
+  "B": [
+        {"stadt":"Barbados", "vorwahl": 1246, "flagge": "barbados", "language": "bb"},
+        {"stadt":"Belize", "vorwahl": 501, "flagge": "belize", "language": "bz"},
+        {"stadt":"Föderative Republik Brasilien", "vorwahl": 55, "flagge": "brasilien", "language": "pt"}
+      ],
+  "C": [
+        {"stadt":"Volksrepublik China", "vorwahl": 86, "flagge": "china", "language": "zh"},
+        {"stadt":"Republik Chile", "vorwahl": 56, "flagge": "chili", "language": "cl"}
+      ],
+  "D": [
+        {"stadt":"Bundesrepublik Deutschland", "vorwahl": 49, "flagge": "deutschland", "language": "de"},
+        {"stadt":"Commonwealth von Dominica", "vorwahl": 1767, "flagge": "dominica", "language": "do"}
+      ],
+  "E": [
+        {"stadt":"Republik Ecuador", "vorwahl": 593, "flagge": "ecuador", "language": "ec"},
+        {"stadt":"England", "vorwahl": 44, "flagge": "england", "language": "gb"},
+        {"stadt":"Europäischen Union", "vorwahl": 32, "flagge":  "europa", "language": "eu"}
+      ],
+  "F": [
+        {"stadt":"Falklandinseln", "vorwahl": 500, "flagge": "falklandinsel", "language": "fk"},
+        {"stadt":"Republik Fidschi", "vorwahl": 679, "flagge": "fidschi", "language": "fj"}
+      ],
+  "G": [
+        {"stadt":"Georgien", "vorwahl": 995, "flagge": "georgien", "language": "ge"},
+        {"stadt":"Griechenland", "vorwahl": 30, "flagge": "griechenland", "language": "gr"}
+      ],
+  "H": [
+        {"stadt":"Republik Haiti", "vorwahl": 509, "flagge": "haiti", "language": "ht"},
+        {"stadt":"Republik Honduras", "vorwahl": 504, "": "honduras", "language": "hn"}
+      ],
+  "I": [
+        {"stadt":"Republik Indien", "vorwahl": 91, "flagge": "indien", "language": "in"},
+        {"stadt":"Staat Israel", "vorwahl": 972, "flagge": "israel", "language": "il"},
+        {"stadt":"Isle of Man", "vorwahl": 44, "flagge": "inselman", "language": "im"},
+        {"stadt":"Italienische Republik", "vorwahl": 39, "": "italien", "language": "it"}
+      ],
+  "J": [
+        {"stadt":"Japan", "vorwahl": 81, "flagge": "japan", "language": "jp"},
+        {"stadt":"Haschemitisches Königreich Jordanien", "vorwahl": 962, "flagge": "jordanien", "language": "jo"}
+      ],
+  "K": [
+        {"stadt":"Kanada", "vorwahl": 1, "flagge": "kanada", "language": "ca"},
+        {"stadt":"Republik Kasachstan","vorwahl": 76, "flagge": "kasachstan", "language": "kz"},
+        {"stadt":"Gebiet der Kokos- (Keeling-) Inseln", "vorwahl": 61, "": "kokosinsel", "language": "cc"}
+      ],
+  "L": [
+        {"stadt":"Fürstentum Liechtenstein", "vorwahl": 423, "flagge": "liechtenstein", "language": "li"},
+        {"stadt":"Großherzogtum Luxemburg,", "vorwahl": 352, "flagge": "luxemburg", "language": "lu"}
+      ],
+  "M": [
+        {"stadt":"Republik Malediven", "vorwahl": 960, "flagge": "malediven", "language": "mv"},
+        {"stadt": "Königreich Marokko", "vorwahl": 212, "flagge": "marokko", "language": "ma"}
+      ],
+  "N": [
+        {"stadt":"Nordirland", "vorwahl": 44, "flagge": "nordirland", "language": "ie"},
+        {"stadt":"Königreich Norwegen", "vorwahl": 47, "flagge": "norwegen", "language": "no"}
+      ],
+  "O": [
+        {"stadt":"Sultanat Oman", "vorwahl": 968, "flagge": "oman", "language": "om"},
+        {"stadt":"Demokratische Republik Timor-Leste", "vorwahl": 670, "flagge":  "osttimor", "language": "tl"}
+      ],
+  "P": [
+        {"stadt":"Republik Panama", "vorwahl": 507, "flagge":  "panama", "language": "pa"},
+        {"stadt":"Republik Polen", "vorwahl": 48, "flagge":  "polen", "language": "pl"}
+      ],
+  "R": [
+        {"stadt":"Russische Föderation", "vorwahl": 73, "flagge": "russland", "language": "ru"},
+        {"stadt":"Rumänien", "vorwahl": 40, "flagge": "rumenien", "language": "ro"}
+      ],
+  "S": [
+        {"stadt":"Schottland", "vorwahl": 44, "flagge": "schottland", "language": "uk"},
+        {"stadt":"Königreich Schweden", "vorwahl": 46, "flagge": "schweden", "language": "se"},
+        {"stadt":"Schweizerische Eidgenossenschaft", "vorwahl": 41, "flagge": "schweiz", "language": "ch"}
+      ],
+  "T": [
+        {"stadt":"Republik China (Taiwan)", "vorwahl": 886, "flagge": "taiwan", "language": "tw"},
+        {"stadt":"Republik Türkei", "vorwahl": 90, "flagge": "tuerkei", "language": "tr"}
+      ],
+  "U": [
+        {"stadt":"Ukraine", "vorwahl": 380, "flagge": "ukraine", "language": "ua"},
+        {"stadt":"Ungarn", "vorwahl": 36, "flagge": "ungarn", "language": "hu"},
+        {"stadt":"Vereinigte Staaten von Amerika", "vorwahl": 1, "flagge": "usa", "language": "us"}
+      ],
+  "V": [
+        {"stadt":"Staat Vatikanstadt", "vorwahl": 379, "flagge": "vatikanstadt", "language": "va"},
+        {"stadt":"Bolivarische Republik Venezuela", "vorwahl": 58, "flagge": "venezuela", "language": "ve"}
+      ],
+  "W": [
+        {"stadt":"Wallis und Futuna", "vorwahl": 44, "flagge": "walllis", "language": "wf"},
+        {"stadt":"Republik Belarus", "vorwahl": 375, "": "belarus", "language": "by"}
+      ],
+  "Z": [
+        {"stadt":"Zentralafrikanische Republik", "vorwahl": 236, "flagge": "zentralafrika", "language": "zf"},
+        {"stadt":"Republik Zypern", "vorwahl": 357, "flagge": "zipern", "language": "cy"}
+  ],
+  "Ä": [
+        {"stadt":"Arabische Republik Ägypten", "vorwahl": 20, "flagge": "aegypten", "language": "eg"},
+        {"stadt":"Demokratische Bundesrepublik Äthiopien", "vorwahl": 251, "flagge": "aethiopien", "language": "et"}
+      ],
+  "Ö": [
+        {"stadt":"Republik Österreich", "vorwahl": 43, "flagge": "oestereich", "language": "at"}
+      ]
+}

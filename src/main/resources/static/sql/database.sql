@@ -1,0 +1,13 @@
+DROP TABLE IF EXISTS user;
+
+CREATE TABLE user(
+id INT AUTO_INCREMENT PRIMARY KEY,
+name VARCHAR(250) NOT NULL,
+userId VARCHAR(64) NOT NULL,
+telefon BIGINT(20),
+email VARCHAR(70) DEFAULT NULL,
+datum TIMESTAMP WITH TIME ZONE,
+sitzung TIMESTAMP,
+other VARCHAR(64) NOT NULL,
+role ENUM('default','clubs','gruppe','kanal','chat')
+);

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org">
+
+<head>
+    <title>Mail Success</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/img/podcasts.png" rel="icon" sizes="32x32" type="image/png">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/javascript/cookie.js}"></script>
+</head>
+<body>
+
+    <div th:insert="fragments/components :: registersuccess"></div>
+
+</body>
+</html>
+<!--  <a th:href="@{/messenger}">zum chat message</a> -->

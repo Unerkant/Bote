@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org">
+
+<head>
+    <title>Error</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/img/snapchat_24.png" rel="icon" sizes="32x32" type="image/png">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
+<div class="error">
+
+<div class="errorKop"><h2>ERROR 404</h2></div>
+<br>
+    <div class="errorOutput"><span th:text="${linkName}">:</span><em>&#160;&#160;Seite nicht gefunden.</em>
+        <br>
+        <br>
+        Weiter:&#160;&#160;<a th:href="@{/login/maillogin}">Registrieren</a>
+        <br>
+        <br>
+        Weiter:&#160;&#160;<a th:href="@{/messenger}">Messenger</a>
+    </div>
+</div>
+</body>
+</html>

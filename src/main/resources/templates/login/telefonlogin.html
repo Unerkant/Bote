@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org">
+
+<head>
+  <title>Telefon Login</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="/img/podcasts.png" rel="icon" sizes="32x32" type="image/png">
+  <link th:href="@{/css/style.css}" rel="stylesheet">
+  <script type="text/javascript" th:src="@{/javascript/cookie.js}"></script>
+  <script type="text/javascript" th:src="@{/javascript/laender.js}"></script>
+</head>
+<body>
+
+      <!-- ********************************************************** -->
+      <!--  Länder vorwahl ermitteln                                  -->
+      <!--                                                            -->
+      <!--  1. wird geladen von templates/fragments/components.html   -->
+      <!--  Teil: länder Vorwahl Zeile: 142                           -->
+      <!--                                                            -->
+      <!-- ********************************************************** -->
+<div class="lenderVorwahl" th:insert="fragments/components::laendervorwahl" ></div>
+
+
+      <!-- Platzhalter -->
+      <div class="leer4">&#160;</div>
+
+<div class="login" id="LOGIN">
+  <div class="loginBox">
+    <div class="loginKop">Telefon Register</div>
+    <div class="loginBody">
+
+
+      <!-- ********************************************************** -->
+      <!--  Überprüfen Browserunterstützung für cookie                -->
+      <!--                                                            -->
+      <!--  1. geladen wird von templates/fragments/components.html   -->
+      <!--  Teil den Cookie Enabled Zeile: 21                         -->
+      <!--                                                            -->
+      <!-- ********************************************************** -->
+      <div class="cookieEnabled" th:insert="fragments/components::cookieenabled"></div>
+      <script th:inline="javascript">
+        /*<![CDATA[*/
+            cookieEnabled();
+        /*]]>*/
+      </script>
+
+      <!-- Fehler Ausgeben -->
+      <div id="TELEFONFEHLER" th:class="loginFehler" th:if="${telefonfehler}"  th:text="${telefonfehler}" ></div>
+      <div class="leer1">&#160;</div>
+
+      <!-- ********************************************************** -->
+      <!--  Alle Daten werden von TelefonController zugesendet        -->
+      <!--                                                            -->
+      <!-- ********************************************************** -->
+      <form name="form" method="POST" th:action="@{/login/telefonregister}">
+        <!-- mit dem Telefon anmelden -->
+        <div id="LT" class="loginTelefon">
+          <div class="loginGroup">
+            <div class="loginInput">
+              <table border="0" width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td colspan="2">
+
+                    <p class="inputNoShadow inputLand" th:onClick="lender('LAENDER')" >
+                      <img id="LANDFLAGGE" class="landFlagge" width="32"  th:src="@{${'/flagge/'+landflagge+'.png'}}">
+                      &#160;&#160;&#160;
+                      <span id="LANDNAME" class="landName" th:text="${landname}"></span>
+                    </p>
+
+                  </td>
+                </tr>
+                <tr>
+                  <td width="70">
+                    <input id="LANDVORWAHL" type="text" class="inputAll inputTel" minlength="2" maxlength="5" name="vorwahl"
+                           onkeyup="this.value=this.value.replace(/[^+0-9]/g,'');" required="required" th:value="${'+ '+landvorwahl}">
+                  </td>
+                  <td>
+                    <input id="LOGINTELEFON" type="text" class="inputAll" minlength="5" maxlength="15" name="telefon" placeholder="- - -   - - - - - -"
+                           onkeyup="this.value=this.value.replace(/[^0-9]/g,'');" required autofocus>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div><!-- /loginTelefon -->
+
+        <!-- Login Button -->
+        <div class="loginGroup">
+          <div class="loginInput">
+            <button id="TELREGISTER" type="submit" name="butt"  class="loginButton buttonAll buttonBlau">Telefonnummer pr&#252;fen</button>
+          </div>
+        </div>
+      </form>
+
+      <!-- Wechseln zwischen E-Mail und Telefon anmeldung -->
+      <div class="loginGroup" style="margin-bottom: -1.4em;">
+        <div class="loginInput">
+          <a class="anmeldeWechseln" id="AmT" th:href="@{/login/maillogin}">mit E-Mail Registrieren</a>
+        </div>
+      </div>
+
+      <div class="leer1">&#160;</div>
+
+    </div><!-- /LoginBody -->
+  </div><!-- /loginBox -->
+</div>
+</body>
+</html>

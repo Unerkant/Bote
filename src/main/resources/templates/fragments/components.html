@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head th:fragment="header">
+    <!-- leer -->
+</head>
+<body>
+
+    <!-- ********************************************************** -->
+    <!--    Fragment für den Cookie Enabled                         -->
+    <!--                                                            -->
+    <!--    wird benutzt:                                           -->
+    <!--    1. maillogin.html Zeile 39                              -->
+    <!--    2. mailregister.html Zeile 30                           -->
+    <!--    3. telefonlogin.html                                    -->
+    <!--    4. telefonregister.html                                 -->
+    <!--    5. mailsuccess.html                                     -->
+    <!--    6. telefonrsuccess.html                                 -->
+    <!--                                                            -->
+    <!-- ********************************************************** -->
+
+<div th:id="COOKIEBOX" class="cookieBox" th:fragment="cookieenabled">
+    <div class="cookieWarnung">cookies sind nicht aktiviert</div>
+    <h3>Datenschutz & Transparenz</h3>
+    <br>
+    Wir und unsere Partner verwenden Cookies, um Informationen auf einem Gerät speichern und/oder abrufen.<br>
+    Wir und unsere Partner verwenden Daten für Personalisierte Anzeigen und Inhalte,
+    Anzeigen- und Inhaltsmessungen, Erkenntnisse über Zielgruppen und Produktentwicklungen.<br>
+    Ein Beispiel für Daten, welche verarbeitet werden, kann eine in einem Cookie gespeicherte eindeutige Kennung sein.<br><br>
+    Einige unserer Partner können Ihre Daten im Rahmen ihrer legitimen Geschäftsinteressen verarbeiten,
+    ohne Ihre Zustimmung einzuholen. Um die Verwendungszwecke einzusehen,
+    für die diese ihrer Meinung nach ein berechtigtes Interesse haben,
+    oder um dieser Datenverarbeitung zu widersprechen, verwenden Sie den unten stehenden Link zur Anbieterliste.<br><br>
+    Die übermittelte Einwilligung wird nur für die von dieser Webseite ausgehende Datenverarbeitung verwendet.<br><br>
+    Wenn Sie Ihre Einstellungen ändern oder Ihre Einwilligung jederzeit widerrufen möchten,
+    finden Sie den Link dazu in unserer <a th:href="@{/datenschutz}">Datenschutzerklärung</a>,
+    die von unserer Homepage aus zugänglich ist<br>
+    <div class="leer3">&#160;</div>
+    <a th:href="@{/datenschutz}">Datenschutz</a>
+</div>
+
+    <!-- ********************************************************** -->
+    <!--    Fragment für Daten anzeige nach den Registrierung       -->
+    <!--                                                            -->
+    <!--    Benutzt wird:                                           -->
+    <!--    1. mailsuccess.html                                     -->
+    <!--    2. telefonsuccess.html                                  -->
+    <!--                                                            -->
+    <!-- ********************************************************** -->
+
+<div th:fragment="registersuccess">
+<!-- Platzhalter -->
+<div class="leer5">&#160;</div>
+
+<div class="login" id="LOGIN">
+    <div class="loginBox">
+        <div class="loginKop">Register Success</div>
+        <div class="loginBody">
+
+            <!-- /* cookie enabled fragment */ -->
+            <div class="cookieEnabled" th:insert="fragments/components::cookieenabled"></div>
+            <script th:inline="javascript">
+            /*<![CDATA[*/
+                cookieEnabled();
+
+                var datum =     /*[[${registerDatum}]]*/;
+                var userId =    /*[[${registerId}]]*/;
+                var pseudonym = /*[[${registerPseudonym}]]*/;
+                var mail =      /*[[${registerMail}]]*/;
+                var value = [datum, userId, mail, pseudonym];
+
+            /*]]>*/
+        </script>
+
+            <!-- registrierte Daten Anzeigen / Success -->
+            <div class="loginSuccess">
+                <table class="seccussTable" width="100%" border="0" cellpadding="0" cellspacing="0">
+                    <caption>Gespeicherte Daten von
+                        <span th:text="${registerPseudonym}"></span>
+                    </caption>
+                    <tr>
+                        <td width="13.99999%" class="seccussTd">&#160;</td>
+                        <td width="42.99999%">Registrier Datum</td>
+                        <td width="42.99999%" th:text="${registerDatum}"></td>
+                    </tr>
+                    <tr>
+                        <td>&#160;</td>
+                        <td>User Id</td>
+                        <td th:text="${registerToken}"></td>
+                    </tr>
+                    <tr>
+                        <td>&#160;</td>
+                        <td>Name</td>
+                        <td th:utext="${registerName}"></td>
+                    </tr>
+                    <tr>
+                        <td>&#160;</td>
+                        <td>Pseudonym</td>
+                        <td th:text="${registerPseudonym}"></td>
+                    </tr>
+                    <tr>
+                        <td>&#160;</td>
+                        <td>E-Mail Adresse</td>
+                        <td th:utext="${registerMail}"></td>
+                    </tr>
+                    <tr>
+                        <td>&#160;</td>
+                        <td>Telefon</td>
+                        <td th:utext="${registerTelefon}"></td>
+                    </tr>
+                    <tr>
+                        <td>&#160;</td>
+                        <td>Cookie</td>
+                        <td th:utext="${registerCookie}"></td>
+                    </tr>
+                    <tr>
+                        <td>&#160;</td>
+                        <td colspan="2" >
+                            <div class="leer2">&#160;</div>
+                            <a th:href="@{/messenger}" class="successAhref">Weiter zu Messenger</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div><!-- /LoginBody -->
+    </div><!-- /loginBox -->
+</div>
+</div><!-- /* Ende registersuccess */ -->
+
+
+    <!-- ********************************************************** -->
+    <!--    Fragment für die Länder Vorwahl anzeige                 -->
+    <!--                                                            -->
+    <!--    Zeile: 139 search methode funktioniert nicht            -->
+    <!--    Zeile: 156, 1 schleife: wird von Datei laender.json     -->
+    <!--    den key ausgelesen                                      -->
+    <!--    Zeile 159, 2 schleife: wird von Date laender.json       -->
+    <!--    die value ausgelesen und schließlich in 'p' ausgegeben  -->
+    <!--    Zeile 161, zu methode lenderLaden() werden 3 parameter  -->
+    <!--    übergeben: stadt, vorwahl und flagge                    -->
+    <!--                                                            -->
+    <!-- ********************************************************** -->
+<div class="lenderContainer" th:fragment="laendervorwahl">
+   <div id="LAENDER" class="lenderBox" > <!-- LAENDER: display none-->
+    <div class="lenderKop">
+
+        <input type="text" class="lenderSuche" onkeyup="this.value=this.value.replace(/[^a-zA-Z]/g,'');" th:onKeyUp="search('#LENDERITEM', this.value )"
+               maxlength="10" pattern="[A-Z]"  placeholder="Suchen" autofocus>
+
+        &#160;&#160;&#160;
+        <span class="lenderAbbruch" th:onClick="lender('LAENDER')">Abbrechen</span>
+
+    </div>
+       <div class="lenderBody">
+           <div class="lenderName">
+               <ol th:each="item : ${lender}">
+                   <li>
+                       <h3 th:id="${item.key}" class="lenderH3" th:text="${item.key}"></h3>
+                       <div id="LENDERITEM"  class="lenderItem" th:each="entry : ${item.value}">
+
+                           <div th:onClick="lenderLaden([[${entry['stadt']}]],[[${entry['vorwahl']}]],[[${entry['flagge']}]]);">
+                                <p th:text="${entry['stadt']}"></p>
+                                <p text-align="right">
+                                   <span>+</span><span th:text="${entry['vorwahl']}"></span>
+                                </p>
+                           </div>
+
+                       </div>
+                   </li>
+               </ol>
+           </div>   <!-- ende lenderName -->
+
+           <div class="lenderAnker">
+               <div class="lenderAlphabet">
+                   <h5 class="lenderBuchstaben" th:each="buchstaben : ${alphabet}"><a th:href="${'#'+buchstaben}" th:text="${buchstaben}"></a></h5>
+               </div>
+           </div> <!-- ende lenderAnker -->
+       </div>   <!-- ende lenderBody -->
+   </div>
+</div>
+
+</body>
+</html>

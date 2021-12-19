@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org">
+<head>
+  <title th:text="${title}"></title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="/img/podcasts.png" rel="icon" sizes="32x32" type="image/png">
+  <link th:href="@{/css/style.css}" rel="stylesheet">
+  <script type="text/javascript" th:src="@{/javascript/cookie.js}"></script>
+</head>
+<body>
+
+<!-- Platzhalter -->
+<div class="leer5">&#160;</div>
+
+<div class="login" id="LOGIN">
+  <!-- Code Box -->
+  <div id="CODEBOX" class="codeBox">
+    <div class="loginBox">
+      <div class="loginKop">Mail Register</div>
+      <div class="loginBody">
+        <!--
+        |------------------------------------------------------------
+        |   Überprüfen Browserunterstützung für cookie
+        |------------------------------------------------------------
+        |
+        |   1. components Teil wird von templates/fragments.html geladen
+        |
+        -->
+        <div class="cookieEnabled" th:insert="fragments/components::cookieenabled"></div>
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+                cookieEnabled();
+            /*]]>*/
+        </script>
+
+
+        <!--
+        |--------------------------------------------------------
+        |   Fehler Ausgeben
+        |--------------------------------------------------------
+        |
+        |   1. bei Falschen Aktivierung Code eingabe
+        |   2. ...
+        |
+        -->
+
+        <div id="MAILINFO" th:class="loginInfo" th:if="${mailInfo}" th:text="${mailInfo}" >&#160;</div>
+        <div id="MAILFEHLER" th:class="loginFehler" th:if="${mailFehler}" th:text="${mailFehler}">&#160;</div>
+        <div class="leer1">&#160;</div>
+
+        <!--
+        |--------------------------------------------------------
+        |   Aktivierung Code eingabe
+        |--------------------------------------------------------
+        |
+        |   1. bei vertippen die Aktivierung Code werden sie zurückgeleitet
+        |      die Seite wird Aktualisiert, die Daten sind weg.
+        |      mit den if function werden alle Daten wiederherstellt,
+        |      zugesendet von RegisterController.java - 'rediAttr.addFlashAttribute("returnMail", saveMail);'
+        |      und schließlich in th:value ausgegeben( nach den prüfung auf null reguläre Daten)
+        |   2. ...
+        |
+        -->
+
+        <form name="form" method="POST" th:action="@{/login/mailsuccess}">
+          <!-- onsubmit="validateCode()" -->
+          <!-- th:action@{/messenger}" -->
+          <span  th:if="${returnDatum}"></span>
+          <input id="SENDDATUM" name="regDatum" type="hidden" th:value="${sendDatum == null}? ${returnDatum} : ${sendDatum}">
+          <span  th:if="${returnMail}"></span>
+          <input id="SENDMAIL" name="regMail" type="hidden" th:value="${sendMail == null}? ${returnMail} : ${sendMail}">
+          <span  th:if="${returnPseudonym}"></span>
+          <input id="SENDPSEUDO" name="regPseudonym" type="hidden" th:value="${sendPseudonym == null}? ${returnPseudonym} : ${sendPseudonym}">
+          <span  th:if="${returnToken}"></span>
+          <input id="IDNUMMER"  name="regToken" type="hidden" th:value="${sendToken == null}? ${returnToken} : ${sendToken}">
+          <span  th:if="${returnCode}"></span>
+          <input id="SENDCODE" name="regCode" type="hidden" th:value="${sendCode == null}? ${returnCode} : ${sendCode}" >
+
+          <!-- E-Mail anzeigen -->
+          <div class="loginEmail">
+            <div class="loginGroup">
+              <div class="loginInput">
+                <span  th:if="${returnMail}"></span>
+                <input th:value="${sendMail == null}? ${returnMail} : ${sendMail}" type="text" class="inputAll" align="center"  required="required" disabled>
+              </div>
+            </div>
+          </div>
+
+          <!-- Code prüfen -->
+          <div class="loginEmail">
+            <div class="loginGroup">
+              <div class="loginInput">
+                <div class="loginCode">
+                  <div class="codeDiv">
+                    <input id="CODE1" type="text" class="inputAll inputCode" onkeyup="this.value=this.value.replace(/[^0-9]/g,''); if(this.value.length == 1){ document.getElementById('CODE2').focus();}"
+                           minlength="1" maxlength="1" name="codeEins"  required="required" autofocus>
+                  </div>
+                  <div>&#160;&#160;&#160;&#160;&#160;</div>
+                  <div class="codeDiv">
+                    <input id="CODE2" type="text" class="inputAll inputCode" onkeyup="this.value=this.value.replace(/[^0-9]/g,''); if(this.value.length == 1){ document.getElementById('CODE3').focus();}"
+                           minlength="1" maxlength="1" name="codeZwei" placeholder="-" required="required">
+                  </div>
+                  <div>&#160;&#160;&#160;&#160;&#160;</div>
+                  <div class="codeDiv">
+                    <input id="CODE3" type="text" class="inputAll inputCode" onkeyup="this.value=this.value.replace(/[^0-9]/g,''); if(this.value.length == 1){ document.getElementById('CODE4').focus();}"
+                           minlength="1" maxlength="1" name="codeDrei" placeholder="-" required="required">
+                  </div>
+                  <div>&#160;&#160;&#160;&#160;&#160;</div>
+                  <div class="codeDiv">
+                    <input id="CODE4" type="text" class="inputAll inputCode" onkeyup="this.value=this.value.replace(/[^0-9]/g,''); if(this.value.length == 1){ document.getElementById('BUTCODE').focus();}"
+                           minlength="1" maxlength="1" name="codeVier" placeholder="-" required="required">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Registrierung Button -->
+          <div class="loginGroup">
+            <div class="loginInput">
+              <button id="BUTCODE"  name="butt" type="submit"  class="loginButton buttonAll buttonBlau" >Registrieren</button>
+            </div>
+          </div>
+        </form>
+
+
+      </div><!-- /LoginBody -->
+    </div><!-- /LoginBox -->
+  </div><!-- Ende codeBox -->
+</div><!-- Ende Login -->
+
+</body>
+</html>

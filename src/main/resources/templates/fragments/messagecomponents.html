@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+
+<body>
+
+    <!-- ********************************************************************** -->
+    <!-- Message Fragment: ausgabe in messenger.html ID:BOXRIGHT                -->
+    <!-- Daten zugesendet von MessageController/@PostMapping(fragmentmessages)  -->
+    <!-- ********************************************************************** -->
+
+    <div th:fragment="messagefragment">
+        <!-- Socket Connect Fehler ausgeben: Quelle:messe.js Zeile: 114 -->
+        <script>
+        /*<![CDATA[*/
+
+            function stompFehler(){
+                //alert('stomp');
+                $('#STOMPFEHLER').html('<div class="fehler"><h2>Socket: Verbindung nicht aufgebaut!</h2>' +
+                                         '<small>Quelle:messenger.js Zeile:114</small></div>');
+            }
+
+        /*]]>*/
+        </script>
+
+    <div data-th-if="${meinMessageToken}"><!-- nur auf Leer prüfen -->
+
+    <div class="messageGrid" data-th-if="${meinMessageToken == freundMessageToken}" ><!-- th:if="${messagetoken}" -->
+        <!-- Daten zugesendet von MessageController.java: @PostMapping(fragmentmessages)-->
+        <div class="messageHead">
+         <table border="0" width="100%"  cellpadding="0" cellspacing="0">
+         <tr>
+             <td width="100" align="center" rowspan="2" >
+                 <span class="messageZuruck finger" th:onclick="messageZuruck()">&#160; &#60; zuruck</span>
+                 <span class="messageSchliessen finger">
+                     <a href="/messenger">Schließen</a>
+                 </span>
+             </td>
+             <td align="center">
+                 <p class="messageHeadName" th:text="${freundPseu}"></p>
+             </td>
+             <td width="100" height="40" align="center" rowspan="2">
+                 <span class="freundeBild" th:text="${freundPseu}"></span>
+             </td>
+         </tr>
+         <tr>
+             <td align="center">
+                 <p><small class="messageHeadLetzteBesuch">zul. online heute um 20:20</small></p>
+             </td>
+         </tr>
+         </table>
+
+            <div id="STOMPFEHLER"></div>
+        </div><!-- Ende messageHead -->
+
+<!-- MESSAGE ASUGABE -->
+        <div class="messageBody">
+
+            <!-- variable zwieschen speichern für neue message Aktualiesierung -->
+            <!-- benutz wird in messenger.js Zeile: 150 fragmentAktualisieren()-->
+
+            <div id="frTok" th:name="${freundToken}"></div>
+            <div id="msTok" th:name="${freundMessageToken}"></div>
+
+        <!-- H2:Database Tabelle:MESSAGES id, datum, messagetoken, vorname, name, pseudonym, meinToken, text, role-->
+        <div data-th-each="messech :${gemeinsamemessage}">
+            <div th:class="${meinToken} == ${messech['meintoken']} ? 'messageBodyMy' : 'messageBodyFreund' ">
+                <section>&#160;</section>
+                <nav>
+                    <table  cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td colspan="3">
+                                <p th:text="${messech['text']}"></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><!-- toLowerCase() -->
+                                <small th:text="${messech['name'].length == 0} ? ${messech['pseudonym'].toLowerCase()} : ${messech['vorname'].toLowerCase()} +' '+ ${messech['name'].toLowerCase()}"></small>
+                            </td>
+                            <td width="40">
+                                <small th:text="${messech['datum'].substring(8,14)}"></small><!-- .substring(10,16) -->
+                            </td>
+                            <td width="20">
+                                <img width="15" th:src="@{/img/done.png}">
+                            </td>
+                        </tr>
+                    </table>
+                </nav>
+                <aside>&#160;</aside>
+            </div>
+        </div>
+<!-- ENDE MESSAGE AUSGABE -->
+
+        <div class="nochKeineMessage" th:if="${gemeinsamemessage.size == 0}">
+            <p class="freundeFooterNo">Keine Nachrichten noch verfasst</p>
+        </div>
+
+        </div><!-- Ende messageBody -->
+    <!-- Ende message Ausgabe -->
+
+
+    <!-- FOOTER: Textarea und senden -->
+        <div class="messageFooter">
+
+            <div class="messageFoto">
+                <img class="itemCenter finger" th:src="@{/img/file.png}" width="30">
+
+                <!-- ACHTUNG: VERSTECKT  Photo, bilder oder Datei Auswahl anzeigen -->
+                <div class="messageKamera">
+                    <div class="kameraBox">
+                        <div><pre><img width="20" th:src="@{/img/image.png}">&#160;Bild oder Vodeo</pre></div>
+                        <div><pre><img width="20" th:src="@{/img/camera.png}">&#160;Kamera</pre></div>
+                        <div><pre><img width="20" th:src="@{/img/datei.png}">&#160;Datei</pre></div>
+                    </div>
+                    <div class="leer1"></div>
+                </div>
+
+
+            </div><!-- Ende messageFoto -->
+
+            <div class="messageText">
+                <textarea id="MESSAGETEXT" rows="1" maxlength="500"  th:onInput="autoRow(this)"
+                onkeydown="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                placeholder="Message schreiben" class="messageTextarea" required autofocus></textarea>
+            </div>
+
+            <div class="messageSenden">
+                <img class="itemCenter finger" src="/img/senden.png" width="30" id="send" th:onClick="sendeMessage([[${meinPseudonym}]],[[${meinToken}]], [[${freundMessageToken}]]);">
+            </div>
+
+        </div><!-- ende messageFooter -->
+
+    </div> <!-- Ende messageGrid -->
+
+        <!-- Wenn Message Token sind ungleich -->
+        <div class="messageUnless"  data-th-if="${meinMessageToken != freundMessageToken}" > <!-- th:unless="${messageToken}" -->
+            <p class="freundeFooterNo">Fehler: Message Token stimmt nicht überein</p>
+        </div>
+
+    </div><!-- Ende, nur auf Leer prüfen  -->
+
+        <!-- Wenn Leer ist -->
+        <div class="messageUnless"  th:unless="${meinMessageToken}" > <!-- th:unless="${messageToken}" -->
+            <p class="freundeFooterNo">Keinen Chat noch ausgewählt</p>
+        </div>
+
+    </div><!-- Ende .messageFragments -->
+
+
+    <!-- ********************************************************************** -->
+    <!-- NEUERCHAT Fragment: ausgabe in messenger.html ID:NUERCHAT              -->
+    <!--                                                                        -->
+    <!-- h2:database tabelle:user                                               -->
+    <!-- datum, email, name, pseudonym, role, telefon, token, vorname           -->
+    <!-- ********************************************************************** -->
+
+    <div th:fragment="neuerchat">
+        <script>
+        /*<![CDATA[*/
+
+        /*]]>*/
+        </script>
+
+        <div class="neuerChat" th:if="${myDaten}" >
+
+            <div class="neuerChatKop">
+                <table border="0" width="100%" cellpadding="0" cellspacing="0">
+                <tr data-th-each="mydata : ${myDaten}">
+                    <td width="100"><a th:href="@{/messenger}">&#160; &#60; Abbrechen</a></td>
+                    <td class="neuerChatMyname" align="center" data-th-text="${mydata['name'].length == 0} ? ${mydata['pseudonym']} : ${mydata['vorname']} +' '+ ${mydata['name']} "></td>
+                    <td width="100" height="46" align="center">
+                        <span class="freundeBild" th:text="${mydata['pseudonym']}"></span>
+                    </td>
+                </tr>
+                </table>
+            </div><!-- Ende neuerChatKop -->
+
+
+    <!-- Freunde aus dem Datenbank anzeigen -->
+            <div data-th-each=" einUser : ${allUser}" class="neuerChatBody">
+               <div data-th-if="${einUser['token']} != ${myToken}" class="neuerChatForm">
+                   <label>
+                       <input type="radio" name="radio" th:onClick="radioButton([[${einUser['token']}]])" required>
+                   </label>
+                       <span data-th-text="${einUser['name'].length == 0} ? ${einUser['pseudonym']} : ${einUser['vorname']} +' '+ ${einUser['name']} "></span>
+                       <span class="neuerChatToken">[<small data-th-text="${einUser['token']}"></small>]</span>
+                       <button class="neuerChatButton buttonGrun" name="neuerchatbutton" data-th-id="${einUser['token']}"
+                               th:onClick="neuerFreundSave([[${einUser['token']}]], [[${einUser['pseudonym']}]], [[${myToken}]], [[${myPseudonym}]])"
+                               disabled>Kontakt hinzufügen</button>
+                                <!-- neuerchat.js -->
+                       <span class="clear">&#160;</span>
+               </div><!-- Ende neuerChatForm-->
+            </div><!-- Ende neuerChatBody -->
+
+        </div><!-- Ende class:neuerChat-->
+
+    </div><!-- Ende fragment:neuerchat -->
+
+</body>
+</html>
