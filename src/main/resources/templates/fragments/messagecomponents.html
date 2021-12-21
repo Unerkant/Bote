@@ -24,7 +24,7 @@
 
     <div data-th-if="${meinMessageToken}"><!-- nur auf Leer prüfen -->
 
-    <div class="messageGrid" data-th-if="${meinMessageToken == freundMessageToken}" ><!-- th:if="${messagetoken}" -->
+    <div class="messageGrid" data-th-if="${meinMessageToken.equals(freundMessageToken)}" ><!-- th:if="${messagetoken}" -->
         <!-- Daten zugesendet von MessageController.java: @PostMapping(fragmentmessages)-->
         <div class="messageHead">
          <table border="0" width="100%"  cellpadding="0" cellspacing="0">
@@ -57,7 +57,7 @@
 
             <!-- variable zwieschen speichern für neue message Aktualiesierung -->
             <!-- benutz wird in messenger.js Zeile: 150 fragmentAktualisieren()-->
-
+            <div id="myTok" th:name="${meinToken}"></div>
             <div id="frTok" th:name="${freundToken}"></div>
             <div id="msTok" th:name="${freundMessageToken}"></div>
 
@@ -134,6 +134,8 @@
         <!-- Wenn Message Token sind ungleich -->
         <div class="messageUnless"  data-th-if="${meinMessageToken != freundMessageToken}" > <!-- th:unless="${messageToken}" -->
             <p class="freundeFooterNo">Fehler: Message Token stimmt nicht überein</p>
+            <p th:text="${meinMessageToken}"></p>
+            <p th:text="${freundMessageToken}"></p>
         </div>
 
     </div><!-- Ende, nur auf Leer prüfen  -->

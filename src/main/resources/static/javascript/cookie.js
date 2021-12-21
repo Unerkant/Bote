@@ -1,7 +1,6 @@
 /*
- *   den 14.08.2021
- *   richtig programieren
- *   https://www.youtube.com/watch?v=Lu-eBtYTRBY
+ *   Den 14.08.2021
+ *
  */
 
     /* Überprüfen Browserunterstützung für cookie */
@@ -18,7 +17,6 @@
     */
     function setCookie(name, value, xday){
 
-    	//alert(name+'/'+value+'/'+xday);
         var d = new Date();
     	d.setTime(d.getTime() + (xday * 24 * 60 * 60 * 1000));
     	var expires = "expires="+d.toUTCString();
@@ -27,7 +25,7 @@
     }
 
 
-    /*
+   /**
     *	getCookie: prüft ob mit gleichen Namen cookie vorhanden ist
     *	z.b.s getCookie('hammer'); function abrufen. Fertig
     */
@@ -46,7 +44,7 @@
           return c.substring(na.length, c.length);
         }
       }
-      return "";
+      return null;
     }
 
     // Cookie Löschen

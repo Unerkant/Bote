@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +32,7 @@ import org.slf4j.LoggerFactory;
 public class MessageController {
 
     private List<Freunde>   meineFreunde;
-    private User            findMyTokenInH2;
+    private String          findMyTokenInH2;
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
@@ -55,23 +57,13 @@ public class MessageController {
     public String index(@CookieValue(value = "userid", required = false) String meineId, Model model,
                         HttpServletRequest request, HttpServletResponse response)
     {
-        /** prüfen in H2 nach vorhandene Cookie(userid)
-         *  wenn Datenbank leer ist, Cookie Löschen
-         *  zurück zum login
-         */
-        findMyTokenInH2 = userService.findeUserToken(meineId);
-        if (findMyTokenInH2 == null){
-            //meineId = null;
-            GlobalConfig.deleteCookie(response);
-        }
-
         //freundToken = request.getParameter("freunde");
         meineFreunde = freundeService.freundeSuchen(meineId);
         /* Freunden-Daten an mess.html senden -> Freunde ausgeben(Linke Seite) */
         model.addAttribute("meinefreunde", meineFreunde);
         model.addAttribute("meineId", meineId);
 
-        logger.info("MessageController/GetMapping/ meine Cookie(token): " + meineId);
+        logger.info("MessageController/GetMapping: " + meineFreunde);
         return (meineId == null ? "/login/maillogin" : "/messenger");
     }
 
@@ -88,6 +80,7 @@ public class MessageController {
     private User            freundDaten;
     private String          freundToken;
     private String          freundMessageToken;
+    private List<String>    alleFreundeMessageToken;
     private String          freundPseu;
     private List<Message>   gemeinsameMessage;
 
@@ -97,9 +90,21 @@ public class MessageController {
             HttpServletRequest request, Model model){
 
         //zugesendet per post(jQuery) von messenger.js
-        meinMessageToken = request.getParameter("freundMessageId");
         freundToken = request.getParameter("freundeId");
         freundMessageToken = request.getParameter("freundMessageId");
+
+        // finden in H2 das gleiche messageToken wie von meiner Chat-Freund
+        alleFreundeMessageToken = freundeService.freundeSuchen(meinecookie)
+                .stream()
+                .map(Freunde::getMessagetoken).collect(Collectors.toList());
+                //.map((Freunde freund) -> freund
+                //.getMessagetoken());
+        for (int i = 0; i < alleFreundeMessageToken.size(); i++){
+            if (alleFreundeMessageToken.get(i).equals(freundMessageToken) ){
+                meinMessageToken = alleFreundeMessageToken.get(i);
+                break;
+            }
+        }
 
         meineDaten = userService.findeUserToken(meinecookie);
         meinPseu = meineDaten.getPseudonym();
@@ -112,13 +117,13 @@ public class MessageController {
         //weitergeleitet an fragments/messagecomponents.html
         model.addAttribute("meinToken", meinecookie);
         model.addAttribute("meinPseudonym", meinPseu);
+        model.addAttribute("meinMessageToken", meinMessageToken);
         model.addAttribute("freundToken", freundToken);
         model.addAttribute("freundPseu", freundPseu);
-        model.addAttribute("meinMessageToken", meinMessageToken);
         model.addAttribute("freundMessageToken", freundMessageToken);
         model.addAttribute("gemeinsamemessage", gemeinsameMessage);
 
-        logger.info("PostMapping: " + gemeinsameMessage);
+        logger.info("PostMapping: " + freundMessageToken + "/" + meinMessageToken);
 
        return "messenger :: #MESSAGEFRAGMENT";
     }

@@ -67,8 +67,8 @@ public class GlobalConfig {
     public static void setCookie(HttpServletResponse response, String name, String value){
         Cookie cookie = new Cookie(name, value);
         cookie.setMaxAge(5000 * 24 * 60 * 60);
-        //cookie.setSecure(true);   // funktioniert nicht
-        cookie.setHttpOnly(true);
+        //cookie.setSecure(true);       // funktioniert nicht
+        //cookie.setHttpOnly(true);     // Lesen mit javascript ist unmöglich ( geschützt)
         cookie.setPath("/");
         response.addCookie(cookie);
     }
@@ -100,7 +100,7 @@ public class GlobalConfig {
        Cookie cookie = new Cookie("userid", null);
        cookie.setMaxAge(0);
        //cookie.setSecure(true);
-       cookie.setHttpOnly(true);
+       //cookie.setHttpOnly(true);      // Lesen mit javascript ist unmöglich ( geschützt)
        cookie.setPath("/");
 
         //add cookie to response
