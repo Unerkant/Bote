@@ -14,7 +14,7 @@ import java.util.List;
 public interface UserRepository extends CrudRepository<User, Integer> {
 
     User findById(String id);
-    User findByToken(String token);
+    User findByToken(Long token);
     User findByEmail(String email);
     User findByTelefon(String telefon);
     List<User> findAll();

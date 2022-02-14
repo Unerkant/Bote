@@ -1,6 +1,7 @@
 package Bote.controller;
 
 import Bote.configuration.GlobalConfig;
+import Bote.model.User;
 import Bote.service.UserService;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
@@ -24,6 +25,7 @@ import java.util.Locale;
 @Controller
 public class TelefonLoginController {
 
+    private User    meineDaten;
     private String  aktuelleDatum;
     private String  identToken;
     private int     aktivierCode;
@@ -45,9 +47,10 @@ public class TelefonLoginController {
 
     @SneakyThrows
     @GetMapping(value = "/login/telefonregister")
-    public String login(@CookieValue(value = "userid", required = false) String userId){
+    public String login(@CookieValue(value = "userid", required = false) Long userId){
 
-        return (userId == null ? "/login/telefonregister" : "/messenger");
+        meineDaten = userService.findeUserToken(userId);
+        return (meineDaten == null ? "/login/telefonregister" : "/messenger");
     }
 
     @PostMapping("/login/telefonregister")
@@ -57,12 +60,12 @@ public class TelefonLoginController {
         /*                   Daten Sammeln                      */
         /*  ==================================================  */
         /*  1. Aktuelle Datum                                   */
-        /*  2. Identifikation Nummer (Token)                           */
+        /*  2. Identifikation Nummer (Token)                    */
         /*  3. Aktivierung Code                                 */
         /*                                                      */
         /*  Telefon Nummer mit Internationale vorwahl           */
         /*                                                      */
-        /*  Pseudonym Name erstellen (Letzte 2 Zahlen)           */
+        /*  Pseudonym Name erstellen (Letzte 2 Zahlen)          */
         /*                                                      */
         /* **************************************************** */
         aktuelleDatum = GlobalConfig.deDatum();
@@ -94,6 +97,7 @@ public class TelefonLoginController {
         /*  Telefonnummer: von England, kostenlos SMS- empfangen            */
         /*  https://sms-online.co/de/kostenlos-sms-empfangen/447520635797   */
         /*                                                                  */
+        /*  leider mit dem Deutsche-Handy-Nummert hatte nicht functioniert  */
         /* **************************************************************** */
                 try {
                     // Construct data
@@ -144,7 +148,7 @@ public class TelefonLoginController {
         model.addAttribute("sendeToken", identToken);
         model.addAttribute("sendeCode", aktivierCode);
 
-        logger.info("Telefon Controller: " + telPseudonym +"/"+ aktivierCode);
+        logger.info("Telefon Controller: " + requestNummer+"/"+ aktivierCode);
         return "/login/telefonregister";
     }
 }

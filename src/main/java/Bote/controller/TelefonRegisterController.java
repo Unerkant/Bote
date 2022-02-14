@@ -1,6 +1,7 @@
 package Bote.controller;
 
 import Bote.configuration.GlobalConfig;
+import Bote.model.Session;
 import Bote.model.User;
 import Bote.service.SessionService;
 import Bote.service.UserService;
@@ -21,11 +22,12 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class TelefonRegisterController {
 
+    private User    meineDaten;
     private String  saveTelefon;
     private String  saveDatum;
     private String  saveName;
     private String  savePseudonym;
-    private String  saveToken;
+    private Long    saveToken;
     private int     mailCode;
     private String  ersteCode;
     private String  zweiteCode;
@@ -44,9 +46,10 @@ public class TelefonRegisterController {
 
     @SneakyThrows
     @GetMapping(value = "/login/telefonsuccess")
-    public String login(@CookieValue(value = "userid", required = false) String userId){
+    public String login(@CookieValue(value = "userid", required = false) Long userId){
 
-        return (userId == null ? "/login/telefonsuccess" : "/messenger");
+        meineDaten = userService.findeUserToken(userId);
+        return (meineDaten == null ? "/login/telefonsuccess" : "/messenger");
     }
 
     @PostMapping("/login/telefonsuccess")
@@ -63,7 +66,7 @@ public class TelefonRegisterController {
         saveDatum       = request.getParameter("telDatum");
         saveName        = request.getParameter("telName");
         savePseudonym   = request.getParameter("telPseudonym");
-        saveToken       = request.getParameter("telToken");
+        saveToken       = Long.valueOf(request.getParameter("telToken"));
         mailCode        = Integer.parseInt(request.getParameter("telCode"));
 
         ersteCode = request.getParameter("telCodeEins");
@@ -105,33 +108,33 @@ public class TelefonRegisterController {
          *  5. cookie setzen
          *
          */
-        
+
+        saveTelefon = saveTelefon.trim().replaceAll("\\s+", "").replace("+","");
         altUser = userService.sucheTelefon(saveTelefon);
         if (altUser == null) {
             newUser = new User();
-            newUser.setBild("");
-            newUser.setDatum(saveDatum);
-            newUser.setEmail("");
-            newUser.setName("");
-            newUser.setPseudonym(savePseudonym);
-            newUser.setRole("default");
-            newUser.setTelefon(saveTelefon);
             newUser.setToken(saveToken);
+            newUser.setDatum(saveDatum);
+            newUser.setBild("");
+            newUser.setPseudonym(savePseudonym);
+            newUser.setName("");
             newUser.setVorname("");
+            newUser.setEmail("");
+            newUser.setTelefon(saveTelefon);
+            newUser.setRole("default");
+            newUser.setOther("");
 
             userService.saveNewUser(newUser);
-            logger.info("NEU USER: " + newUser);
 
             /* H2 datenbank Tabelle:Session */
-     /*       Session logDaten = new Session();
+            Session logDaten = new Session();
             logDaten.setDatum(saveDatum);
             logDaten.setLetztenlogin(saveDatum);
             logDaten.setLetztenoutlog("");
             logDaten.setOther("");
-            logDaten.setToken(saveToken);*/
+            logDaten.setToken(String.valueOf(saveToken));
 
-
-            //sessionService.saveLogDaten(logDaten);
+            sessionService.saveLogDaten(logDaten);
         }
 
 
@@ -145,7 +148,7 @@ public class TelefonRegisterController {
         model.addAttribute("registerCookie", (altUser != null) ? altUser.getToken() : uniCode);
 
         /* cookie "userid" setzen */
-        GlobalConfig.setCookie(response, "userid", (altUser != null) ? altUser.getToken() : saveToken);
+        GlobalConfig.setCookie(response, "userid", String.valueOf((altUser != null) ? altUser.getToken() : saveToken));
         logger.info("Telefon Register Controller/ altUser: " + altUser);
         return "/login/telefonsuccess";
     }

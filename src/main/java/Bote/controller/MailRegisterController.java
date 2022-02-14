@@ -20,10 +20,11 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class MailRegisterController {
 
+    private User    meineDaten;
     private String  saveDatum;
     private String  saveMail;
     private String  savePseudonym;
-    private String  saveToken;
+    private Long    saveToken;
     private int     mailCode;
     private String  ersteCode;
     private String  zweiteCode;
@@ -43,9 +44,10 @@ public class MailRegisterController {
 
     @SneakyThrows
     @GetMapping(value = "/login/mailsuccess")
-    public String login(@CookieValue(value = "userid", required = false) String userId){
+    public String login(@CookieValue(value = "userid", required = false) Long userId){
 
-        return (userId == null ? "/login/mailsuccess" : "/messenger");
+        meineDaten = userService.findeUserToken(userId);
+        return (meineDaten == null ? "/login/mailsuccess" : "/messenger");
     }
 
 
@@ -66,7 +68,7 @@ public class MailRegisterController {
         saveDatum = request.getParameter("regDatum");
         saveMail = request.getParameter("regMail");
         savePseudonym = request.getParameter("regPseudonym");
-        saveToken = request.getParameter("regToken");
+        saveToken = Long.valueOf(request.getParameter("regToken"));
         mailCode = Integer.parseInt(request.getParameter("regCode"));
 
         ersteCode = request.getParameter("codeEins");
@@ -126,27 +128,27 @@ public class MailRegisterController {
 
             /* H2 Datenbank Tabelle:User */
             User newUser = new User();
-            newUser.setBild("");
-            newUser.setDatum(saveDatum);
-            newUser.setEmail(saveMail);
-            newUser.setName("");
-            newUser.setPseudonym(savePseudonym);
-            newUser.setRole("default");
-            newUser.setTelefon("");
             newUser.setToken(saveToken);
+            newUser.setDatum(saveDatum);
+            newUser.setBild("");
+            newUser.setPseudonym(savePseudonym);
+            newUser.setName("");
             newUser.setVorname("");
+            newUser.setEmail(saveMail);
+            newUser.setTelefon("");
+            newUser.setRole("default");
+            newUser.setOther("");
 
             userService.saveNewUser(newUser);
 
             /* H2 datenbank Tabelle:Session */
- /*           Session logDaten = new Session();
+            Session logDaten = new Session();
             logDaten.setDatum(saveDatum);
             logDaten.setLetztenlogin(saveDatum);
             logDaten.setLetztenoutlog("");
             logDaten.setOther("");
-            logDaten.setToken(saveToken);
-*/
-            //sessionService.saveLogDaten(logDaten);
+            logDaten.setToken(String.valueOf(saveToken));
+            sessionService.saveLogDaten(logDaten);
         }
 
             /* User Daten in mailsuccess ausgeben */
@@ -159,9 +161,9 @@ public class MailRegisterController {
             model.addAttribute("registerCookie", (altUser != null) ? altUser.getToken() : uniCode);
 
         /* cookie "userid" setzen */
-        GlobalConfig.setCookie(response, "userid", (altUser != null) ? altUser.getToken() : saveToken);
+        GlobalConfig.setCookie(response, "userid", String.valueOf((altUser != null) ? altUser.getToken() : saveToken));
 
-        logger.info("MailRegisterController: " + altUser);
+        logger.info("MailRegisterController: " + saveToken);
         return "/login/mailsuccess";
     }
 

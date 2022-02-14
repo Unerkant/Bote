@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="de">
+
+<head>
+    <title th:text="${appName}">Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/img/podcasts.png" rel="icon" sizes="32x32" type="image/png">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/javascript/cookie.js}"></script>
+    <script type="text/javascript" th:src="@{/javascript/jquery360.js}"></script>
+    <script type="text/javascript" th:src="@{/javascript/neuerchat.js}"></script>
+</head>
+<body>
+
+<noscript>
+    <div class="noScript">
+        <h3> Seems your browser doesn't support Javascript!
+            Websocket relies on Javascript being enabled. Please enable
+            Javascript and reload this page!
+        </h3>
+    </div>
+</noscript>
+
+
+<!-- ********************************************************************** -->
+<!--                            bekanteneinladung.html                              -->
+<!--                                                                        -->
+<!-- h2:database tabelle:user                                               -->
+<!-- datum, email, name, pseudonym, role, telefon, token, vorname           -->
+<!-- ********************************************************************** -->
+
+    <script>
+        /*<![CDATA[*/
+
+        /*]]>*/
+        </script>
+
+    <div class="neuerChat" data-th-if="${myDaten}" >
+
+        <div class="neuerChatKop">
+            <table border="1" width="100%" cellpadding="0" cellspacing="0">
+                <tr data-th-each="mydata : ${myDaten}">
+                    <td width="110"><a data-th-href="@{/messenger}">&#160; &#60; Abbrechen</a></td>
+                    <td class="neuerChatMyname" align="center" data-th-text="${mydata['name'].length == 0} ? ${mydata['pseudonym']} : ${mydata['vorname']} +' '+ ${mydata['name']} "></td>
+                    <td width="110" height="46" align="center">
+                        <span class="freundeBild" data-th-text="${mydata['pseudonym']}"></span>
+                    </td>
+                </tr>
+            </table>
+        </div><!-- Ende neuerChatKop -->
+
+
+        <!-- Freunde aus dem Datenbank anzeigen -->
+        <div data-th-each=" einUser : ${allUser}" class="neuerChatBody">
+            <div data-th-if="${einUser['token']} != ${myToken}" class="neuerChatForm">
+                <label>
+                    <input type="radio" name="radio" data-th-onClick="radioButton([[${einUser['token']}]])" required>
+                </label>
+                <span data-th-text="${einUser['name'].length == 0} ? ${einUser['pseudonym']} : ${einUser['vorname']} +' '+ ${einUser['name']} "></span>
+                <button class="neuerChatButton buttonGrun" name="neuerchatbutton" data-th-id="${einUser['token']}"
+                        data-th-onClick="neuerFreundSave([[${einUser['token']}]], [[${einUser['pseudonym']}]], [[${myToken}]], [[${myPseudonym}]])"
+                        disabled>Kontakt hinzufügen</button>
+                <!-- freunde.js -->
+                <span class="clear">&#160;</span>
+            </div><!-- Ende neuerChatForm-->
+        </div><!-- Ende neuerChatBody -->
+
+    </div><!-- Ende class:neuerChat-->
+
+
+</body>
+</html>

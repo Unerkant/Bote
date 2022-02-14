@@ -1,11 +1,10 @@
 package Bote.service;
 
 import Bote.model.Freunde;
-import Bote.model.User;
 import Bote.repository.FreundeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,22 +19,44 @@ public class FreundeService {
 
    /* Nach Meinen Freuden suchen */
    public List<Freunde> freundeSuchen(String meinentoken){
-
       List<Freunde> freund = new ArrayList<>();
       freundeRepository.findByMeinentoken(meinentoken).forEach(freund::add);
       return freund;
    }
 
-   /* Neuer mein Chat Registrieren */
+
+   /* functioniert 100% - zurzeit nicht benutzt */
+   public List<Freunde> findeMessagetoken(String token){
+
+      return freundeRepository.findByMessagetoken(token);
+   }
+
+
+   /* Meinen NeuerChat Registrieren */
    public void saveMeinChat(Freunde freunde) {
 
       freundeRepository.save(freunde);
    }
 
-   /* Neuer Freund Chat Registrieren */
+
+   /* Freunde NeuerChat Registrieren */
    public void saveFreundChat(Freunde freunde) {
 
       freundeRepository.save(freunde);
+   }
+
+
+   /* Update role (Löschen von 2x eiträgen in die Spalte role, einladung freischalten) */
+   public Integer roleUpdate(String role, String token){
+      return freundeRepository.updateRole(role, token);
+   }
+
+
+   /* Freund loschen */
+   @Transactional
+   public void freundLoschen(String token){
+
+      freundeRepository.deleteByMessagetoken(token);
    }
 
 }

@@ -1,27 +1,297 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 
 <head>
     <title>Einstellung</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="/img/snapchat_24.png" rel="icon" sizes="32x32" type="image/png">
-    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link href="/img/podcasts.png" rel="icon" sizes="32x32" type="image/png">
+    <style type="text/css"><!-- @import"/css/style.css"; --></style>
+    <script type="text/javascript" th:src="@{/javascript/cookie.js}"></script>
+    <script type="text/javascript" th:src="@{/javascript/jquery360.js}"></script>
+
 </head>
 <body>
-<div class="setting">
-<h2 align="center">EINSTELLUNGEN</h2>
-    <div class="settingKop">
-        Photo+emal-adresse
+<noscript>
+    <div class="noScript">
+        <h3> Seems your browser doesn't support Javascript!
+            Websocket relies on Javascript being enabled. Please enable
+            Javascript and reload this page!
+        </h3>
     </div>
+</noscript>
 
-    <div class="settingUserName">@ Benutzernamen festlegen</div>
+<div class="sliderBox">
 
-    <!-- weitere einstellungen-->
-    <div class="settingBox">
+    <div class="linksBox boxSizing">
 
-    </div>
-    <a href="index">zu messenger</a>
-</div>
+        <!-- Setting Box(gridBox) -->
+    <div class="gridBox">
+
+        <!-- Setting Head -->
+    <div class="linksBoxKop">
+        <span>Allgemeine Einstellungen</span>
+    </div><!-- Ende settingKop-->
+
+    <!-- Setting Body -->
+<div class="linksBoxBody">
+
+    <!-- H2/Tabelle user:id, bild, datum, email, name, pseudonym, role, telefon, token, vorname -->
+    <!-- VORSICH: den class: einstellung bitte nicht benutzen oder Löschen                      -->
+    <!-- wird von function abruf benutzt in setting.js Zeile:9                                  -->
+
+<!-- Profil -->
+    <div class="profil" data-th-each=" mydaten : ${meinedaten}">
+        <div class="einstellung" data-th-id="PROFIL" data-th-titel="profil"
+             data-th-name="profilfragment" data-th-token="${mydaten['token']}">
+    <article>
+        <table border="0" width="100%" cellspacing="0" cellpadding="0">
+            <tr>
+                <td rowspan="2" width="60" height="60" align="center">
+                    <span class="profilBild" data-th-text="${mydaten['pseudonym']}"></span>
+                </td>
+                <td height="30" valign="bottom">
+                    <span data-th-text="${mydaten['name'].length == 0} ? ${mydaten['pseudonym']} : ${mydaten['vorname']} +' '+ ${mydaten['name']}"></span>
+                </td>
+                <td rowspan="2" width="40" align="center">
+                    <span>QR</span>
+                </td>
+                <td rowspan="2" width="20">
+                    <span>&#62;</span>
+                </td>
+            </tr>
+            <tr>
+                <td height="30" valign="top" class="profilEmail">
+                    <small data-th-text="${mydaten['email'].length == 0} ? ${mydaten['telefon']} : ${mydaten['email']}"></small>
+                </td>
+            </tr>
+        </table>
+    </article>
+        </div><!-- profil -->
+    </div><!-- ende schleife -->
+
+
+        <div class="leer4">&#160;</div>
+
+<!-- Allgemein -->
+    <div class="profil">
+        <div class="einstellung" data-th-id="ALLGEMEIN" data-th-titel="allgemein"
+             data-th-name="allgemeinfragment" data-th-token="${myToken}">
+           <nav>
+              <table border="0" width="100%" cellspacing="0" cellpadding="0">
+                  <tr>
+                      <td width="60" height="60" align="center">
+                          <figure class="gold70 settingBild">
+                              <img class="blok" data-th-src="@{/img/settingAllgemein.png}">
+                          </figure>
+                      </td>
+                      <td>Allgemein</td>
+                      <td width="20">
+                          <span>&#62;</span>
+                      </td>
+                  </tr>
+              </table>
+           </nav>
+        </div>
+    </div><!-- Ende Allgemein/ ende class profil -->
+
+
+<!-- Darstellung & Töne -->
+    <div class="profil">
+        <div class="einstellung" data-th-id="DARSTELLUNG" data-th-titel="darstellung"
+             data-th-name="darstellungfragment" data-th-token="${myToken}">
+            <nav>
+                <table border="0" width="100%" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td width="60" height="60" align="center">
+                            <figure class="grun70 settingBild">
+                                <img class="blok" data-th-src="@{/img/settingDarstellung.png}">
+                            </figure>
+                        </td>
+                        <td>Darstellung</td>
+                        <td width="20">
+                            <span>&#62;</span>
+                        </td>
+                    </tr>
+                </table>
+            </nav>
+        </div>
+    </div><!-- Ende Darstellung & Töne/ ende class profil -->
+
+
+<!-- Sicherheits -->
+    <div class="profil">
+        <div class="einstellung" data-th-id="SICHERHEIT" data-th-titel="privatsicher"
+             data-th-name="sicherheitfragment" data-th-token="${myToken}">
+            <nav>
+                <table border="0" width="100%" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td width="60" height="60" align="center">
+                            <figure class="lila70 settingBild">
+                                <img class="blok" data-th-src="@{/img/settingPrivatsphera.png}">
+                            </figure>
+                        </td>
+                        <td>Privatsphäre & Sicherheit</td>
+                        <td width="20">
+                            <span>&#62;</span>
+                        </td>
+                    </tr>
+                </table>
+            </nav>
+        </div>
+    </div><!-- Ende Sicherheit/ ende class profil -->
+
+<div class="leer2">&#160;</div>
+
+<!-- Mitteilungen & Töner -->
+    <div class="profil">
+        <div class="einstellung" data-th-id="MITTEILUNG" data-th-titel="mitteilung"
+             data-th-name="mitteilungfragment" data-th-token="${myToken}">
+            <nav>
+                <table border="0" width="100%" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td width="60" height="60" align="center">
+                            <figure class="blue70 settingBild">
+                                <img class="blok" data-th-src="@{/img/settingTone.png}">
+                            </figure>
+                        </td>
+                        <td>Mitteilungen & Töne</td>
+                        <td width="20">
+                            <span>&#62;</span>
+                        </td>
+                    </tr>
+                </table>
+            </nav>
+        </div>
+    </div><!-- Ende Mitteilungen & Töne / ende class profil -->
+
+
+<!-- Sprache -->
+    <div class="profil">
+        <div class="einstellung" data-th-id="SPRACHE" data-th-titel="sprache"
+             data-th-name="sprachefragment" data-th-token="${myToken}">
+            <nav>
+                <table border="0" width="100%" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td width="60" height="60" align="center">
+                            <figure class="brau70 settingBild">
+                                <img class="blok" data-th-src="@{/img/settingSprache.png}">
+                            </figure>
+                        </td>
+                        <td>Sprache</td>
+                        <td width="20">
+                            <span>&#62;</span>
+                        </td>
+                    </tr>
+                </table>
+            </nav>
+        </div>
+    </div><!-- Ende Darstellung & Töne/ ende class profil -->
+
+
+<!-- Sticker -->
+    <div class="profil">
+        <div class="einstellung" data-th-id="STICKER" data-th-titel="sticker"
+             data-th-name="stickerfragment" data-th-token="${myToken}">
+            <nav>
+                <table border="0" width="100%" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td width="60" height="60" align="center">
+                            <figure class="blau70 settingBild">
+                                <img class="blok" data-th-src="@{/img/settingStiker.png}">
+                            </figure>
+                        </td>
+                        <td>Sticker</td>
+                        <td width="20">
+                            <span>&#62;</span>
+                        </td>
+                    </tr>
+                </table>
+            </nav>
+        </div>
+    </div><!-- Ende Darstellung & Töne/ ende class profil -->
+
+<div class="leer3">&#160;</div>
+
+<!-- FAQ -->
+    <div class="profil">
+        <div class="einstellung" data-th-id="FAQ" data-th-titel="botefaq"
+             data-th-name="faqfragment" data-th-token="${myToken}">
+            <nav>
+                <table border="0" width="100%" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td width="60" height="60" align="center">
+                            <figure class="caci70 settingBild">
+                                <img class="blok" data-th-src="@{/img/settingFaq.png}">
+                            </figure>
+                        </td>
+                        <td>Bote FAQ</td>
+                        <td width="20">
+                            <span>&#62;</span>
+                        </td>
+                    </tr>
+                </table>
+            </nav>
+        </div>
+    </div><!-- Ende Darstellung & Töne/ ende class profil -->
+
+
+<!-- Support -->
+    <div class="profil">
+        <div class="einstellung" data-th-id="SUPPORT" data-th-titel="support"
+             data-th-name="supportfragment" data-th-token="${myToken}">
+            <nav>
+                <table border="0" width="100%" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td width="60" height="60" align="center">
+                            <figure class="rote70 settingBild">
+                                <img class="blok" data-th-src="@{/img/settingSupport.png}">
+                            </figure>
+                        </td>
+                        <td>Frage & Support</td>
+                        <td width="20">
+                            <span>&#62;</span>
+                        </td>
+                    </tr>
+                </table>
+            </nav>
+        </div>
+    </div><!-- Ende Darstellung & Töne/ ende class profil -->
+
+</div><!-- Ende linksBoxBody -->
+
+        <!-- setting Links Footer -->
+    <div class="linksBoxFooter">
+
+        <div th:if="${#httpServletRequest.requestURI == '/setting'}"
+                th:insert="fragments/footercomponents :: footerfragment"></div>
+
+    </div><!-- Ende linksBoxFooter -->
+
+    </div><!-- Ende gridBox -->
+    </div><!-- Ende linksBox, BoxSizing -->
+    
+    
+
+    <!-- ********************************* Rechte Seite/ Fragments Ausgabe ********************** -->
+    
+
+    <div id="RECHTSBOX" class="rechtsBox boxSizing">
+    <div id="RECHTSBOXBODY" class="rechtsBoxBody">
+
+        <!--                                                    -->
+        <!--    Alle Setting Fragments Ausgabe:                 -->
+        <!--    von settingcomponents.html                      -->
+        <!--    variable zugesendet von SettingController.java  -->
+        <!--    @PostMapping(value = "/einstellung")            -->
+        <!--                                                    -->
+        <div id="FRAGMENTANZEIGEN" data-th-insert="fragments/settingcomponents :: ${fragmentName}" ></div>
+
+    </div><!-- Ende rechtsBoxBody(fragment-Ausgabe) -->
+    </div><!-- Ende rechtsBox(für slideBox)-->
+
+</div><!-- Ende sliderBox -->
+
+<script type="text/javascript" th:src="@{/javascript/setting.js}"></script>
 </body>
 </html>

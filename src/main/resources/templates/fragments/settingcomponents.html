@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+
+<body>
+
+    <!-- ********************************************************************** -->
+    <!--                               Head Fragment                            -->
+    <!--                                                                        -->
+    <!-- WIRD IN JEDER EINSTELLUNG: FRAGMENT INCLUDET                           -->
+    <!--                                                                        -->
+    <!-- H2/Tabelle user:id, bild, datum, email, name, pseudonym, role,         -->
+    <!-- telefon, token, vorname                                                -->
+    <!-- ********************************************************************** -->
+
+<div data-th-if="${fragmentTitel}" th:fragment="settingHeadFragment">
+
+    <!-- Profil Kop -->
+<div class="frSetting">
+    <div class="frSettingKop">
+        <table border="0" width="100%" cellpadding="0" cellspacing="0">
+            <tr>
+                <td width="80">
+                    <span th:onClick="settingZuruck()" class="frSettingZuruck finger">&#60;&#160;Zurück</span>
+                </td>
+                <td align="center">
+                    <span data-th-text="${fragmentTitel}"></span>
+                </td>
+                <td width="80">&#160;</td>
+            </tr>
+        </table>
+    </div><!-- Ende frProfilKop -->
+</div>
+
+</div><!-- Ende settingHeadFragment -->
+
+
+    <!-- ********************************************************************** -->
+    <!--                            Profil Fragment                            -->
+    <!--                                                                        -->
+    <!-- H2/Tabelle user:id, bild, datum, email, name, pseudonym, role,         -->
+    <!-- telefon, token, vorname                                                -->
+    <!-- ********************************************************************** -->
+<div th:fragment="profilfragment" data-th-if="${fragmentName == 'profilfragment'}">
+    <!-- Einstellung Head -->
+    <div data-th-insert="fragments/settingcomponents :: settingHeadFragment"></div>
+
+    <!-- Profil Body -->
+     <div class="frProfilBody"  data-th-each=" profil: ${profilDaten}">
+         <div class="leer2">&#160;</div>
+         <!-- Bild -->
+         <div class="flexCenter">
+         <div class="flexCenter frProfilBild">
+             <img width="24"  th:src="${profil['bild'] == null} ? @{/img/camera.png} : ${profil['bild']}" >
+         </div>
+         </div>
+
+         <!-- Nachricht Ausgeben -->
+         <div class="settingOk">
+             <div id="OK" class="ok"></div>
+         </div>
+         <!-- Name / Vorname-->
+         <div>
+             Name
+         </div>
+
+     </div><!-- Ende frProfilBody -->
+
+</div><!-- Ende profilfragment-->
+
+
+<!-- ********************************************************************** -->
+<!--                          Allgemein Fragment                            -->
+<!--                                                                        -->
+<!-- H2/Tabelle user:id, bild, datum, email, name, pseudonym, role,         -->
+<!-- telefon, token, vorname                                                -->
+<!-- ********************************************************************** -->
+<div th:fragment="allgemeinfragment" data-th-if="${fragmentName == 'allgemeinfragment'}">
+    <!-- Einstellung Head -->
+    <div data-th-insert="fragments/settingcomponents :: settingHeadFragment"></div>
+
+    <h2 align="center" data-th-text="${fragmentTitel}"></h2>
+    <div th:text="${fragmentName}"></div>
+
+
+</div><!-- Ende allgemeinfragment -->
+
+
+<!-- ********************************************************************** -->
+<!--                        Darstellung Fragment                            -->
+<!--                                                                        -->
+<!-- H2/Tabelle user:id, bild, datum, email, name, pseudonym, role,         -->
+<!-- telefon, token, vorname                                                -->
+<!-- ********************************************************************** -->
+<div th:fragment="darstellungfragment" data-th-if="${fragmentName == 'darstellungfragment'}">
+    <!-- Einstellung Head -->
+    <div data-th-insert="fragments/settingcomponents :: settingHeadFragment"></div>
+
+    <h2>Hallo Darstellung</h2>
+    <div th:text="${fragmentName}"></div>
+
+</div><!-- Ende Darstellung -->
+
+
+<!-- ********************************************************************** -->
+<!--                        Sicherheits Fragment                            -->
+<!--                                                                        -->
+<!-- H2/Tabelle user:id, bild, datum, email, name, pseudonym, role,         -->
+<!-- telefon, token, vorname                                                -->
+<!-- ********************************************************************** -->
+<div th:fragment="sicherheitfragment" data-th-if="${fragmentName == 'sicherheitfragment'}">
+    <!-- Einstellung Head -->
+    <div data-th-insert="fragments/settingcomponents :: settingHeadFragment"></div>
+
+    <h2>Hallo Sicherheits</h2>
+    <div th:text="${fragmentName}"></div>
+
+</div><!-- Ende Sicherheit -->
+
+
+<!-- ********************************************************************** -->
+<!--                   Miteilung & Töne Fragment                            -->
+<!--                                                                        -->
+<!-- H2/Tabelle user:id, bild, datum, email, name, pseudonym, role,         -->
+<!-- telefon, token, vorname                                                -->
+<!-- ********************************************************************** -->
+<div th:fragment="mitteilungfragment" data-th-if="${fragmentName == 'mitteilungfragment'}">
+    <!-- Einstellung Head -->
+    <div data-th-insert="fragments/settingcomponents :: settingHeadFragment"></div>
+
+    <h2>Hallo Miteilung</h2>
+    <div th:text="${fragmentName}"></div>
+
+</div><!-- Ende Darstellung -->
+
+
+<!-- ********************************************************************** -->
+<!--                            Sprache Fragment                            -->
+<!--                                                                        -->
+<!-- H2/Tabelle user:id, bild, datum, email, name, pseudonym, role,         -->
+<!-- telefon, token, vorname                                                -->
+<!-- ********************************************************************** -->
+<div th:fragment="sprachefragment" data-th-if="${fragmentName == 'sprachefragment'}">
+    <!-- Einstellung Head -->
+    <div data-th-insert="fragments/settingcomponents :: settingHeadFragment"></div>
+
+    <h2>Hallo Sprache</h2>
+    <div th:text="${fragmentName}"></div>
+
+</div><!-- Ende Darstellung -->
+
+
+<!-- ********************************************************************** -->
+<!--                            Sticker Fragment                            -->
+<!--                                                                        -->
+<!-- H2/Tabelle user:id, bild, datum, email, name, pseudonym, role,         -->
+<!-- telefon, token, vorname                                                -->
+<!-- ********************************************************************** -->
+<div th:fragment="stickerfragment" data-th-if="${fragmentName == 'stickerfragment'}">
+    <!-- Einstellung Head -->
+    <div data-th-insert="fragments/settingcomponents :: settingHeadFragment"></div>
+
+    <h2>Hallo Sticker</h2>
+    <div th:text="${fragmentName}"></div>
+
+</div><!-- Ende Darstellung -->
+
+
+<!-- ********************************************************************** -->
+<!--                                FAQ Fragment                            -->
+<!--                                                                        -->
+<!-- H2/Tabelle user:id, bild, datum, email, name, pseudonym, role,         -->
+<!-- telefon, token, vorname                                                -->
+<!-- ********************************************************************** -->
+<div th:fragment="faqfragment" data-th-if="${fragmentName == 'faqfragment'}">
+    <!-- Einstellung Head -->
+    <div data-th-insert="fragments/settingcomponents :: settingHeadFragment"></div>
+
+    <h2>Hallo FAQ</h2>
+    <div th:text="${fragmentName}"></div>
+
+</div><!-- Ende Darstellung -->
+
+<!-- ********************************************************************** -->
+<!--                            Support Fragment                            -->
+<!--                                                                        -->
+<!-- H2/Tabelle user:id, bild, datum, email, name, pseudonym, role,         -->
+<!-- telefon, token, vorname                                                -->
+<!-- ********************************************************************** -->
+<div th:fragment="supportfragment" data-th-if="${fragmentName == 'supportfragment'}">
+    <!-- Einstellung Head -->
+    <div data-th-insert="fragments/settingcomponents :: settingHeadFragment"></div>
+
+    <h2>Hallo Support</h2>
+    <div th:text="${fragmentName}"></div>
+
+</div><!-- Ende Darstellung -->
+
+</body>
+</html>

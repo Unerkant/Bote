@@ -7,45 +7,43 @@ import javax.persistence.Id;
 /**
  * Created by Paul Richter on Sat 24/07/2021
  */
-@Entity(name = "SETTING_ENTRIES")
-public class SettingEntry {
+@Entity(name = "countentry")
+public class CountEntry {
 
     @Id
     @Column(nullable = false)
     private String key;
 
+    private String token;
+
     @Column(nullable = false)
     private String value;
 
-    private String token;
 
-    public SettingEntry() {
 
+    public CountEntry() {
     }
 
-    public SettingEntry(String key, String value, String token) {
+    public CountEntry(String key, String token, String value) {
         this.key = key;
-        this.value = value;
         this.token = token;
+        this.value = value;
     }
 
     public String getKey() {
         return key;
     }
-
-    public String getValue() {
-        return value;
-    }
-
     public void setKey(String key) {
         this.key = key;
     }
 
+    public String getToken() { return token; }
+    public void setToken(String token) { this.token = token; }
+
+    public String getValue() {
+        return value;
+    }
     public void setValue(String value) {
         this.value = value;
     }
-
-    public String getToken() { return token; }
-
-    public void setToken(String token) { this.token = token; }
 }

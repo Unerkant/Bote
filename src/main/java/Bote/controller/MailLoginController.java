@@ -1,6 +1,7 @@
 package Bote.controller;
 
 import Bote.configuration.GlobalConfig;
+import Bote.model.User;
 import Bote.service.UserService;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
@@ -22,6 +23,7 @@ import java.util.Locale;
 @Controller
 public class MailLoginController {
 
+    private User    meineDaten;
     private String  aktuelleDatum;
     private String  tokenNummer;
     private int     aktivierungCode;
@@ -43,9 +45,10 @@ public class MailLoginController {
 
     @SneakyThrows
     @GetMapping(value = "/login/mailregister")
-    public String login(@CookieValue(value = "userid", required = false) String userId){
+    public String login(@CookieValue(value = "userid", required = false) Long userId){
 
-        return (userId == null ? "/login/mailregister" : "/messenger");
+        meineDaten = userService.findeUserToken(userId);
+        return (meineDaten == null ? "/login/mailregister" : "/messenger");
     }
 
     @SneakyThrows
@@ -136,7 +139,7 @@ public class MailLoginController {
                 "\n"+
                 "Ihr Messenger Team");
 
-        logger.info("Mail Controller: " + emailParam + "/" + pseudonym +"/"+ aktivierungCode );
+        logger.info("Mail Login Controller: " + emailParam + "/" + tokenNummer +"/"+ aktivierungCode );
         return "/login/mailregister";
 
     }

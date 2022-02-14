@@ -1,10 +1,16 @@
 package Bote.controller;
 
+import Bote.model.User;
+import Bote.service.UserService;
 import lombok.SneakyThrows;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,14 +19,24 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Iterator;
 
+@Controller
 public class TelefonController {
 
+    public User meineDaten;
+
     public TelefonController() throws IOException, ParseException { }
+    Logger logger = LoggerFactory.getLogger(getClass());
+    @Autowired
+    private UserService userService;
+
 
     @SneakyThrows
     @GetMapping(value = "/login/telefonlogin")
-    public String login(@CookieValue(value = "userid", required = false) String userId,
+    public String login(@CookieValue(value = "userid", required = false) Long userId,
                         Model model){
+
+       // prüfen auf Meine Daten in Datenbank
+          meineDaten = userService.findeUserToken(userId);
 
         /**
          *   Wird benutzt nur bei Registrierung oder Einloggen
@@ -76,6 +92,6 @@ public class TelefonController {
             }
         }
 
-        return (userId == null ? "/login/telefonlogin" : "/messenger");
+        return (meineDaten == null ? "/login/telefonlogin" : "/messenger");
     }
 }

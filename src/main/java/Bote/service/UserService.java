@@ -22,7 +22,7 @@ public class UserService {
     }
 
     /* functioniert 100% */
-    public User findeUserToken(String token){
+    public User findeUserToken(Long token){
 
         return userRepository.findByToken(token);
     }

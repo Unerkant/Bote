@@ -21,11 +21,11 @@ public class Message {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private String datum;
+    private String meintoken;
     private String messagetoken;
+    private String pseudonym;
     private String vorname;
     private String name;
-    private String pseudonym;
-    private String meintoken;
     private String text;
     private String role;
 
@@ -35,14 +35,14 @@ public class Message {
         // empty
     }
 
-    public Message(Long id, String datum, String messagetoken, String vorname, String name, String pseudonym, String meintoken , String text, String role ) {
+    public Message(Long id, String datum, String meintoken, String messagetoken, String pseudonym, String vorname, String name, String text, String role ) {
         this.id = id;
         this.datum = datum;
+        this.meintoken = meintoken;
         this.messagetoken = messagetoken;
+        this.pseudonym = pseudonym;
         this.vorname = vorname;
         this.name = name;
-        this.pseudonym = pseudonym;
-        this.meintoken = meintoken;
         this.text = text;
         this.role = role;
     }
@@ -56,14 +56,11 @@ public class Message {
     public String getDatum() { return datum; }
     public void setDatum(String datum) { this.datum = datum; }
 
+    public String getMeintoken() { return meintoken; }
+    public void setMeintoken(String meintoken) { this.meintoken = meintoken; }
+
     public String getMessagetoken() { return messagetoken; }
     public void setMessagetoken(String messagetoken) { this.messagetoken = messagetoken; }
-
-    public String getVorname() { return vorname; }
-    public void setVorname(String vorname) { this.vorname = vorname; }
-
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
 
     public String getPseudonym() {
         return pseudonym;
@@ -72,8 +69,11 @@ public class Message {
         this.pseudonym = pseudonym;
     }
 
-    public String getMeintoken() { return meintoken; }
-    public void setMeintoken(String meintoken) { this.meintoken = meintoken; }
+    public String getVorname() { return vorname; }
+    public void setVorname(String vorname) { this.vorname = vorname; }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
     public String getText() {
         return text;
@@ -90,11 +90,11 @@ public class Message {
         return "Message{" +
                 "id='" + id + '\'' +
                 ", datum='" + datum + '\'' +
+                ", meintoken='" + meintoken + '\'' +
                 ", messagetoken='" + messagetoken + '\'' +
+                ", pseudonym='" + pseudonym + '\'' +
                 ", vorname='" + vorname + '\'' +
                 ", name='" + name + '\'' +
-                ", pseudonym='" + pseudonym + '\'' +
-                ", meintoken='" + meintoken + '\'' +
                 ", text='" + text + '\'' +
                 ", role='" + role + '\'' +
                 '}';

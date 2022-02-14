@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<body>
+
+<!-- **************************************************************************** -->
+<!-- ***** Bekanten Einladen(neuer Chat) Ausgabe: messenger.html Zeile: 63 ****** -->
+<!-- *                                                                          * -->
+<!-- *  Daten zugesendet von FreundeController.java  von                        * -->
+<!-- *  @PostMapping(value = "/bekantensave") Zeile: ab 205                     * -->
+<!-- *  List-Array meinefreunde: Daten von eingeladenen Freunden                * -->
+<!-- *                                                                          * -->
+<!-- *   data-th-onClick="freundeRemove([[........................]])" - nein   * -->
+<!-- *   die Daten werden von Tabelle Freunde geloöscht                         * -->
+<!-- *   data-th-onClick="einladungAnnehmen([[........................]])" - ja * -->
+<!-- *   den einträge(2x) in die Spalte role werden gelöscht das Fragment wird  * -->
+<!-- *   nicht mehr angezegt:data-th-if="${................ == 'wartenaufok' }" * -->
+<!-- *                                                                          * -->
+<!-- *   Die Fragment dient nur für reines Information, kein Klick-function     * -->
+<!-- **************************************************************************** -->
+
+<div data-th-fragment="werdeeingeladen" >
+    <div id="BE" class="bekantenEinladung" data-th-each=" bekanten : ${meinefreunde}" data-th-if="${bekanten['role'].length > 0}">
+    <!-- 1 -->
+        <div class="bekantenEach" data-th-if="${bekanten['role'] == 'wartenaufok' }">
+            <p>
+                <span>Freundschaftliche Einladung</span>
+                <span>an</span>
+                <span data-th-text="${bekanten['freundename'].length == 0 } ? ${bekanten.freundepseudonym} :
+                                    ${bekanten.freundevorname} +' '+ ${bekanten.freundename}"></span>
+                <br>
+                <small>&#40;</small>
+                <small data-th-if="${bekanten['freundetelefon'].length != 0}">Tel:</small>
+                <small data-th-text="${bekanten['freundemail'].length == 0 } ? ${bekanten.freundetelefon} : ${bekanten.freundemail}"></small>
+                <small>&#41;</small>
+            </p>
+            <p class="Rot">Warten, noch nicht angenommen!</p>
+        </div><!-- Ende bekantenEach -->
+
+    <div class="linie">&#160;</div>
+    <!-- 2 -->
+        <div class="bekantenEach" data-th-if="${bekanten['role'] == 'werdeeingeladen' }">
+            <p>
+                <span>Freundschaftliche Einladung</span>
+                <span>von</span>
+                <span data-th-text="${bekanten['freundename'].length == 0 } ? ${bekanten.freundepseudonym} :
+                                    ${bekanten.freundevorname} +' '+ ${bekanten.freundename}"></span>
+                <br>
+                <small>&#40;</small>
+                <small data-th-if="${bekanten['freundetelefon'].length != 0}">Tel:</small>
+                <small data-th-text="${bekanten['freundemail'].length == 0 } ? ${bekanten.freundetelefon} :
+                                     ${bekanten.freundemail}"></small>
+                <small>&#41;</small>
+            </p>
+            <table width="100%" cellpadding="0" cellspacing="0">
+                <caption>&#160;</caption>
+                <tr>
+                    <td>&#160;</td>
+                    <td width="50%"><button class="buttonAll buttonRot" data-th-onClick="freundeRemove([[${bekanten.messagetoken}]])">Ablehnen</button></td>
+                    <td>&#160;</td>
+                    <td><button class="buttonAll buttonGrun" data-th-onClick="einladungAnnehmen([[${bekanten.messagetoken}]])">Annehmen</button></td>
+                    <td>&#160;</td>
+                </tr>
+            </table>
+        </div><!-- Ende bekantenEach -->
+
+    <div class="linie">&#160;</div>
+
+    </div><!-- Ende #BE & schleife -->
+</div><!-- Ende fragment -->
+
+</body>
+</html>

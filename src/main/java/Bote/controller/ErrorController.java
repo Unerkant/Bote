@@ -13,9 +13,9 @@ import java.io.IOException;
     *   Falsch angegebene Links: error Seite ausgeben
     */
 
-public class errorController {
+public class ErrorController {
 
-    public errorController() throws IOException, ParseException { }
+    public ErrorController() throws IOException, ParseException { }
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @GetMapping(value = {"/{errLink}", "/messenger/{errLink}"})

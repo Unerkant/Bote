@@ -1,15 +1,56 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 
 <head>
     <title>Kontakte</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="/img/snapchat_24.png" rel="icon" sizes="32x32" type="image/png">
-    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link href="/img/podcasts.png" rel="icon" sizes="32x32" type="image/png">
+    <style type="text/css"><!-- @import"/css/style.css"; --></style>
+    <script type="text/javascript" th:src="@{/javascript/cookie.js}"></script>
+    <script type="text/javascript" th:src="@{/javascript/jquery360.js}"></script>
+
 </head>
 <body>
-<h2 align="center">Kontakte</h2>
-<a href="/messenger">Messenger</a>
+<noscript>
+    <div class="noScript">
+        <h3> Seems your browser doesn't support Javascript!
+            Websocket relies on Javascript being enabled. Please enable
+            Javascript and reload this page!
+        </h3>
+    </div>
+</noscript>
+<div class="kontakteBox">
+<div class="kontakte">
+    <div class="gridBox">
+
+        <div class="kontakteHead">
+            <table border="0" width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td width="100">&#160;&#60;
+                        <a th:href="@{/messenger}">Zurück</a>
+                    </td>
+                    <td align="center" class="kontakteTitel">Kontakte</td>
+                    <td width="100">&#160;</td>
+                </tr>
+            </table>
+        </div><!-- Ende Kop -->
+
+
+        <div class="kontakteBody">
+            <h2>Body</h2>
+        </div><!-- Ende Body -->
+
+
+        <div class="kontakteFooter">
+
+            <div th:if="${#httpServletRequest.requestURI == '/kontakte'}"
+                    th:insert="fragments/footercomponents :: footerfragment"></div>
+
+        </div><!-- Ende footer -->
+
+    </div><!-- Ende gridBox -->
+</div><!-- ende kontakte -->
+</div><!-- Ende kontakteBox -->
 </body>
 </html>

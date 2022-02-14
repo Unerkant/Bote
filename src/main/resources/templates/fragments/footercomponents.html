@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<body>
+
+
+<!-- ********************************************************************** -->
+<!-- Footer Fragment: ausgabe in messenger.html ID:FREUNDEFOOTER            -->
+<!-- wird nur eine variable 'meinefreunde' benutzt von                      -->
+<!-- MessageController.html @GetMapping(value = {"/", "/messenger"})        -->
+<!-- ********************************************************************** -->
+<div th:fragment="footerfragment">
+
+    <div class="freundeFooterBet">
+        <div>
+            <a th:href="@{/kontakte}">
+                <img width="30" th:src="${#httpServletRequest.requestURI == '/kontakte'} ? @{/img/accountblau.png} : @{/img/accountblack.png}" id="ACCOUNT">
+            </a>
+        </div>
+        <div>
+            <a th:href="@{/phone}">
+            <img width="30" th:src="${#httpServletRequest.requestURI == '/phone'} ? @{/img/phoneblau.png} : @{/img/phone.png}" id="PHONE">
+            </a>
+        </div>
+        <div>
+            <a th:href="@{/messenger}">
+                <img width="30" th:src="${#httpServletRequest.requestURI == '/messenger' || #httpServletRequest.requestURI == '/'}
+                 ? @{/img/forumblau.png} : @{/img/forum.png} " id="FORUM">
+            </a>
+        </div>
+        <div>
+            <a th:href="@{/setting}">
+                <img width="30"
+                th:src="${#httpServletRequest.requestURI == '/setting'} ? @{/img/settingblau.png} : @{/img/setting.png} "
+                id="SETTING">
+            </a>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- ********************************************************************** -->
+<!-- footerNo Fragment: ausgabe in messenger.html ID:FREUNDEFOOTER            -->
+<!-- wird nur eine variable 'meinefreunde' benutzt von                      -->
+<!-- MessageController.html @GetMapping(value = {"/", "/messenger"})        -->
+<!-- ********************************************************************** -->
+<div th:fragment="footerNo">
+    <p class="freundeFooterNo">From By Messenger</p>
+</div>
+
+
+</body>
+</html>

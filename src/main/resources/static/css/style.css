@@ -5,10 +5,11 @@
 @charset "UTF-8";
 @import url(https://fonts.googleapis.com/css?family=Rye|Nunito);
 
-*                   { margin: 0px; padding: 0px; }
+*, *::before, *::after { box-sizing: border-box; padding: 0; margin: 0; }
 html, body          { width: 100%; height: 100%; }
 a:link              { text-decoration: none; cursor: pointer; }
 .itemCenter         { display: block; margin-left: auto; margin-right: auto; }
+.flexCenter         { display: flex; justify-content: center; align-items: center;}
 .boxSizing          { box-sizing: border-box; }
 .finger             { cursor: pointer; }
 .clear              { clear: both;}
@@ -24,25 +25,43 @@ a:link              { text-decoration: none; cursor: pointer; }
 .leer4              { height: 4.0em; }
 .leer5              { height: 5.0em; }
 
+.Rot                { color: #CC2900; }
+
     /* richtung grau*/
 .Platinum           { color: #E8E9E9; } /* hell grau */
 .LightGray          { color: #D1D3D4; }
 .Gray               { color: #BABDBF; }
 .OldSilver          { color: #808488; }
-.DimGray            { color: #666A6D; }
+.DimGray            { color: #666A6D; } /* dunkel Grau */
 
     /* richtung blau */
 .ice                { color: #E1EFF8; }
-.royal              { color: #4169E1; }
+.royal              { color: #4169E1; } /* violett Blau */
 .blau               { color: #1608D3; }
 .twilight           { color: #203763; } /* dunkel Blau */
-.bluetack           { color: #82BFE0; }
-.powderblue         { color: #B5D0E0; }
+.bluetack           { color: #82BFE0; } /* blass Blau */
+.powderblue         { color: #B5D0E0; } /* grau Blau */
 .microsoft          { color: #00A2ED; }
 
-.fehler                 { background: #FFB3B3; border: 1px solid red; box-shadow: 0px 0px 10px 0px rgba(7,1,5,0.9);
+    /* IMG style */
+figure.settingBild  { width: 2.25em; border: 1px solid #FFF; border-radius: 5px; }
+img.blok			{ display: block; width: 100%; }
+img.rund            { width: 48px; border: 1px solid transparent; border-radius: 50%; }
+.gold70             { background-color: #FFCC66; }
+.grun70             { background-color: #66FF66; }
+.lila70             { background-color: #CC66FF; }
+.blue70             { background-color: #6666FF; }
+.brau70             { background-color: #D9B38C; }
+.blau70             { background-color: #66ffff; }
+.caci70             { background-color: #CCCC00; }
+.rote70             { background-color: #FF6666; }
+.linie              { border: none; height: 1px; background-color: #CCC; }
+
+.fehler                 { display: none; background: #FFB3B3; border: 1px solid red; box-shadow: 0px 0px 3px 0px rgba(7,1,5,0.4);
                            margin: 1.0em; padding: 0.6em; border-radius: 3px; font-size: inherit; color: #CC0000; text-align: center; }
 .fehler small           { color: #333; }
+.ok                     { display: none; background: #E6FFE6; border: 1px solid #CDCDCD; box-shadow: 0px 0px 3px 0px rgba(7,1,5,0.4);
+                          margin: 1.0em; padding: 0.6em; border-radius: 4px; font-size: inherit; text-align: center;}
 
 .buttonBlau				{ background: linear-gradient(to bottom, #3D94F6 5%, #1E62D0 100%); background-color: #3D94F6; border: 1px solid #337FED; }
 .buttonGrun				{ background: linear-gradient(to bottom, #77D42A 5%, #5CB811 100%); background-color: #77D42A; border: 1px solid #268A16; }
@@ -56,21 +75,33 @@ a:link              { text-decoration: none; cursor: pointer; }
 .buttonGrun:hover		{ background: linear-gradient(to bottom, #5CB811 5%, #77D42A 100%); background-color: #5CB811; }
 .buttonRot:hover        { background:linear-gradient(to bottom, #bc3315 5%, #d0451b 100%); background-color:#bc3315; }
 .buttonRot:active .buttonGrun:active .buttonBlau:active		{ position: relative;	top: 1px; }
-
-.inputAll		        { width: 100%; padding: 0.75em; box-sizing: border-box; font-size: inherit; line-height: 1.6; text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+                         /* geloscht am 30.1.22 .inputAll: line-height: 1.6;*/
+.inputAll		        { width: 100%; padding: 0.75em; box-sizing: border-box; font-size: inherit; text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
 					      color: #495057; background-color: inherit; background-clip: padding-box; border: none; outline: none; border: #CED4DA solid 1px;
 					      border-radius: 0.25em; box-shadow: inset 0 -5px 45px rgba(0,0,0,0.125), 0px 10px 14px -7px #276873; -webkit-transition: box-shadow .5s ease;
 					      -moz-transition: box-shadow .5s ease; -o-transition: box-shadow .5s ease; -ms-transition: box-shadow .5s ease; transition: box-shadow .5s ease;
 					      letter-spacing: 0.1em;
 					    }
 .inputAll:focus	        { box-shadow: inset 0 -5px 45px rgb(255,253,230); }
-.inputNoShadow		    { width: 100%; padding: 0.375em 0.75em; box-sizing: border-box; font-size: inherit; line-height: 1.6; text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+                        /* geloscht am 30.1.22 .inputNoShadow: line-height: 1.6;*/
+.inputNoShadow		    { width: 100%; padding: 0.375em 0.75em; box-sizing: border-box; font-size: inherit; text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
 					      color: #495057; background-color: inherit; background-clip: padding-box; border: none; outline: none; border: #CED4DA solid 1px;
 					      border-radius: 0.25em; box-shadow: inset 0 -5px 45px rgba(0,0,0,0.125), 0px 0px 0px 0px #276873;
 					    }
-.noScript           { max-width: 45.0em; margin-left: auto; margin-right: auto; border: 1px solid #FF0000; box-sizing: border-box;
-                      padding: 0.8em; color: #FF0000; margin-top: 1.8em; background: #ffe6e6; }
+.noScript               { max-width: 45.0em; margin-left: auto; margin-right: auto; border: 1px solid #FF0000; box-sizing: border-box;
+                          padding: 0.8em; color: #FF0000; margin-top: 1.8em; background: #ffe6e6; }
 
+            /* slider, horizontale-Ausrichtung*/
+div.sliderBox           { display: flex; width: 100%; height: 100%; }
+div.linksBox            { width: 300px; min-width: 300px; height: 100%;  /*border: 1px solid red;*/ }
+div.rechtsBox           { width: 100%; min-width: 350px; height: 100%; border-left: 1px solid #999; /* border: 1px solid green; */ }
+@media only screen and (max-width: 650px) { div.linksBox { width: 100%; max-width: 650px; }
+                                            div.rechtsBox { height: 100%; width: 0; min-width: 0; overflow-x: hidden;
+                                            position: fixed; z-index: 1; top: 0; right: 0; transition: 0.5s;
+                                            background-color: #FFF; border-left: 0;
+                                            } }
+            /* Verticale Ausrichtung( Head, Body & Footer) px 100% px */
+div.gridBox         { height: 100vh; display: grid; grid-template-rows: auto 1fr auto; /* Original: 2.5em 1fr 2.5em */  }
 
 
 /* maillogin.html + mailregister.html + telefonlogin.html + telefonregister.html + registersuccess.html(in fragments)
@@ -163,44 +194,41 @@ a:link              { text-decoration: none; cursor: pointer; }
 
     /* messenger.html
      -----------------*/
-            /* nur slider Box */
-div.sliderBox       { display: flex; width: 100%; height: 100%; }
-div.freundeBox      { width: 300px; min-width: 300px; height: 100%;  /*border: 1px solid red;*/ }
-div.messageBox      { width: 100%; min-width: 350px; height: 100%; border-left: 1px solid #999; }
-@media only screen and (max-width: 650px) { div.freundeBox { width: 100%; max-width: 650px; }
-                                            div.messageBox { height: 100%; width: 0; min-width: 0; overflow-x: hidden;
-                                            position: fixed; z-index: 1; top: 0; right: 0; transition: 0.5s;
-                                            background-color: #FFF; border-left: 0;
-                                            } }
+ /* div.sliderBox, div.linksBox, div.rechtsBox & div.gridBox */
+ /* gridBox(linke Seite) für die: freundeHead, freundeBody und freundeFooter & (rechte Seite): messageHead, messageBody & messageFooter*/
 
-div.freundeGrid, div.messageGrid    { height: 100vh; display: grid; grid-template-rows: auto 1fr auto; /* Original: 2.5em 1fr 2.5em */  }
              /* Freunde-Linke Seite */
 div.freundeHead         { background-color: #FAFAFF; border-bottom: 1px solid #E6E6FF; }
-
 div.freundeBody         { overflow: scroll; }
-div.freundeDaten        { border-bottom: 1px solid #999; }
-div.freundeDaten:hover  { background-color: #80CEFF; color: white; }
+div.freundeDaten        { /* border-bottom: 1px solid #999;*/ }
+div.freundeDaten:hover  { background-color: #80CEFF; }
 div.freundeDaten table pre    { font-size: 80%; }
-div.freund              { /* FORSICH: ncht löschen, nicht belegen, wird für die javascript function benutzt */ }
-span.freundeBild        { display: table-cell; width: 1.5em; height: 1.5em; border: 1px solid #999; border-radius: 1.9em;
-                          padding:0.4em; font-size: inherit; text-align: center; vertical-align: middle; }
-td.freundeName           { font-size: inherit; }
-span.freundMessageUngelesen { display: table-cell; background-color: #1608D3; width: 20px; border: 1px solid #1608D3;
-                              border-radius: 15px; text-align: center; color:#FFF; padding: 2px; }
+div.freund              { position: relative; padding: 10px 0; /* VORSICHT: ncht löschen, nicht belegen, wird für die javascript function benutzt */ }
+img.freundeRemove       { display: none; }
+span.freundeBild        { display: table-cell; width: 40px; height: 40px; background: #FFF; border: 1px solid transparent;
+                          border-radius: 50%; font-size: inherit; text-align: center; vertical-align: middle; }
+td.freundeName          { font-size: inherit; }
+span.freundMessageUngelesen {text-align: center; border-radius: 50%; }
 div.freundeDaten:hover span.freundMessageUngelesen  { background-color: #FAFAFF; color: #99004D; }
+div.freundGeloscht      { display: none; position: absolute; left: 0; bottom: 0; width: 100%; height: 100%;
+                          background: #E6FFE6; padding: 0.6em; text-align: center; font-size: inherit; color: #CC0000;}
 p.freundeNo             { margin: 2.2em 0.4em; padding: 0.4em; text-align: center; background: #FFFFE6; border: 1px solid #FFFF33;
                           box-sizing: border-box; box-shadow: 0px 0px 5px 0px #000000; border-radius: 3px; }
 
 div.freundeFooter       { background-color: #FAFAFF; border-top: 1px solid #E6E6FF; }
-div.freundeFooterBet    { display: flex; justify-content: space-between; align-items: center; height: 2.5em; }
+    /* Fragment: messagecomponents.html Fragment: footerfragment Zeile: 11 */
+div.freundeFooterBet    { display: flex; justify-content: space-between; align-items: center; min-height: 2.5em; padding: 0.45em 0; }
+@media only screen and (max-width: 650px) { div.freundeFooterBet { padding: 0.6em 0; } }
 div.freundeFooterBet div{ width: 24.99999%; text-align: center; }
 p.freundeFooterNo       { font-size: inherit; text-align: center; color: rgba(0,0,0,0.6); padding: 0.5em;
                           text-shadow: 2px 8px 6px rgba(0,0,0,0.2), 0px -5px 35px rgba(255,255,255,0.3); }
+
             /* Message-Ausgabe Rechte Seite */
 div.messageHead         { background-color: #FAFAFF; border-bottom: 1px solid #E6E6FF; }
 span.messageZuruck      { display: none; color: #1608D3; padding: 0.2em 0em; font-size: 1.2em; /*border: 1px solid blue;*/ }
 span.messageSchliessen  { color: #1608D3; padding: 0.2em 0em; font-size: 1.2em; }
-p.messageHeadName       { color: #000099; font-size: 1.4em; /* border: 1px solid green; */ }
+@media only screen and (max-width: 650px) { span.messageZuruck { display: block; } span.messageSchliessen{ display: none; } }
+p.messageHeadName       { color: #000099; font-size: 1.2em; /* border: 1px solid green; */ }
 small.messageHeadLetzteBesuch   { color: #999; }
 div.messageBody         { position: relative; overflow: scroll; /* border: 1px solid red; */}
 
@@ -224,7 +252,8 @@ div.messageBodyFreund aside     { width: 5px; /* border: 1px solid black;*/ }
 div.nochKeineMessage     { position: absolute; bottom: 1.8em; width: 99.55555%;  text-align: center; /* border: 1px solid green;*/ }
 
 div.messageFooter       { display: flex; flex-direction: row; align-items: center; min-height: 2.5em;
-                          background-color: #FAFAFF; border-top: 1px solid #E6E6FF; }
+                          background-color: #FAFAFF; border-top: 1px solid #E6E6FF; padding: 0.4em 0;}
+@media only screen and (max-width: 650px) { div.messageFooter { padding: 0.6em 0; } }
 div.messageFoto         { position: relative; width: 2.5em; align-self: flex-end; margin-bottom: 6px; }
     /* Kamera Verstect */
 div.messageKamera       { display: none; }
@@ -241,37 +270,108 @@ textarea.messageTextarea:focus  { outline: none !important; }
 div.messageSenden       { display: flex; width: 3.0em; align-items: center; align-self: flex-end; margin-bottom: 6px; /* border: 1px solid black; */}
 div.messageSenden img   { border: 0px;}
 div.messageUnless       { text-align: center; margin-top: 30%; }
-@media only screen and (max-width: 650px) { span.messageZuruck { display: block; } span.messageSchliessen{ display: none; } }
+
+
+    /* neuerchat(Freunde)-Ausgabe Rechte Seite */
+div.neuerChat           { /*border: 1px solid red;*/ }
+div.neuerChatKop        { background: #EBFAFA; border-bottom: 1px solid #33CCCC; }
+span.neuerChatZuruck    { display: none; color: #1608D3; padding: 0.2em 0em; font-size: 1.2em; }
+span.neuerChatSchliessen a { color: #1608D3; padding: 0.2em 0em; font-size: 1.2em; }
+@media only screen and (max-width: 650px) { span.neuerChatZuruck { display: block; } span.neuerChatSchliessen{ display: none; } }
+td.neuerChatMyName      { color: #000066; font-size: 1.2em; font-weight: 600;}
+
+div.neuerChatBody       { background-color: #EBFAF6; overflow: scroll; }
+div.neuerChatBox        { width: 100%; min-width: 305px; max-width: 600px; margin: auto; padding: 5px; /* border: 1px solid red;*/ }
+form.neuerChatForm      { margin: 0; padding: 0; }
+fieldset.neuerChatFieldset { border: 1px solid #C2F0F0; font-size: 1.2em; letter-spacing: 3px; padding: 2.0em 0.6em; }
+fieldset.neuerChatFieldset legend { padding: 0 10px;}
+input.neuerChatInput    { padding: 0.55em; font-size: 0.9em;; }
+tr.neuerChatText        { background-color: #D6F5F5; letter-spacing: normal; }
+tr.neuerChatText td     { padding: 1.0em 0.25em; }
+button.neuerChatButton  { letter-spacing: 5px; width: 50%;}
+div.neuerChatGefunden   { margin: 0; padding: 0; }
+
+    /* Fragment: bekanteneinladung.html, Ausgabe messenger.html Zeile: 64*/
+div.bekantenEinladung   { background-color: #D9FFCC; }
+div.bekantenEach        { padding: 0.4em 0; }
+div.bekantenEach p      { text-align: center; padding: 0.25em 0; letter-spacing: 2px; }
+div.bekantenEach span   { color: #203763; }
+div.bekantenEach small  { color: #999; }
 
 
 
-            /* Fragment neuerchat */
-div.neuerChat           { /* border: 1px solid red;*/ }
-div.neuerChatKop        { background: #EBFAFA; height: 3.0em; border-bottom: 1px solid #33CCCC; }
-div.neuerChatKop a      { font-size: 1.0em; }
-td.neuerChatMyname      { color: #003399;}
-div.neuerChatBody       { /*border: 1px solid green;*/ }
-div.neuerChatForm       { margin: 0px; padding: 0.6em;  border-bottom: 1px solid #999; }
-div.neuerChatForm label { padding: 6px; } /* Label: Vergrosert den umfeld von Radio buttons */
-span.neuerChatToken     { color: #CDCDCD; }
-div.neuerChatForm input[type='radio'] { transform: scale(1.6); margin: 10px; }
-button.neuerChatButton  { float: right; border-radius: 3px;
-                          font-family: "Times New Roman", Times, serif; font-size: inherit; padding:0.2em 0.6em; }
+
+    /* setting.html
+     ---------------*/
+ /* div.sliderBox, linksBox & rechtsBox sind in Allgemein (oben) deffiniert */
+/* div.gridBox: gültig für die settingKop, settingBody & settingFooter... */
+div.linksBoxKop         { background: #F5F5F5; border-bottom: 1px solid #C1C1C1; padding: 0.8em; text-align: center; color: #191970; }
+div.linksBoxBody        { height: 100%; overflow: scroll; /* border: 1px solid blue; */ }
+div.linksBoxFooter      { background-color: #F5F5F5; border-top: 1px solid #C1C1C1; }
+div.rechtsBoxBody       { width: 100%; height: 100%; overflow: scroll;  /*border: 1px solid red;*/ }
+div.einstellung         { /* nur für den click function */ }
+div.profil              { background-color: #F5F5F5; /*border: 1px solid red;*/ }
+div.profil:hover        { background-color: #80CEFF; }
+div.profil article      { padding: 0.8em 0.1em; }
+div.profil nav          { padding: 0.1em; /*border: 1px solid red;*/ }
+
+td.profilEmail          { border-top: 1px solid #999; color: #606060; }
+
+    /* Fragment: settingcomponents.html*/
+div.frSetting           { width: 100%; /* border: 1px solid red;*/ }
+div.frSettingKop        { background: #F5F5F5; border-bottom: 1px solid #C1C1C1; padding: 0.8em 0.2em; }
+span.frSettingZuruck    { color: #1608D3; padding: 0.6em; /* border: 1px solid red;*/ }
+
+div.frProfilBody        { width: 100%; min-width: 350px; max-width: 600px; margin: auto;/*border: 1px solid red;*/ }
+div.frProfilBild        { width: 8.0em; height: 8.0em; border-radius: 4.0em; border: 1px solid #999;}
+div.frProfilImg         { }
+
+
+    /* kontakte.html
+     ----------------*/
+div.kontakte            {  }
+
+
+    /* phone.html + kontakte.html
+     -----------------------------*/
+div.phoneBox, div.kontakteBox       { width: 100%; max-width: 40.0em; margin-right: auto; margin-left: auto; padding: 0 0.25em;/* border: 1px solid red;*/ }
+div.phone, div.kontakte             { border: 1px solid #F5F5F5; /* border: 1px solid black;*/ }
+/* div.gridBox - deffiniert Oben */
+div.phoneHead, div.kontakteHead     { background-color: #FAFAFF; border-bottom: 1px solid #E6E6FF; }
+td.phoneTitel, td.kontakteTitel     { font-size: 1.2em; color: #1608D3; padding: 0.6em 0; }
+div.phoneFooter, div.kontakteFooter {  background-color: #FAFAFF; border-top: 1px solid #E6E6FF; }
+p.phoneAnrufNo                      { font-size: inherit; font-weight: 600; color: #990000; padding: 0.6em 0; text-align: center; }
+
+div.phoneBody           { position: relative; overflow: scroll; }
+div.phoneAnruf          { position: relative; }
+img.anrufRemove         { display: none; }
+td.phoneBorder          { border-bottom: 1px solid #999; }
+td.phoneBorder small    { color: #999; }
+div.anrufGeloscht       { display: none; position: absolute; left: 0; bottom: 0; width: 100%; height: 100%; background: #E6FFE6;
+                          padding: 0.6em; text-align: center; font-size: inherit; /*border: 1px solid red;*/}
+       /* versteckt */
+div.phoneKamera         { display:none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+                          background-image: url("../img/schwarz30.png"); padding: 3.2em 2.8em;}
+@media only screen and (max-width: 650px) { div.phoneKamera { padding: 2.2em 1.2em ; } }
+div.phoneKameraBox      { background-color: #FAFAFF; width: 100%; height: auto; border: 1px solid #FFF; border-radius: 5px;
+                          box-shadow: 0px 0px 5px 0px #000000; }
+div.phoneKameraTitel    { background-color: #FFF; padding: 0.8em 0; }
+div.phoneVideoBox       { padding: 1.5em 1.0em; /* border: 1px solid red;*/ }
+.phoneTextLeft          { font-weight: lighter; padding: 0.5em 0 0.5em 1.0em ; }
+.phoneTextRight         { padding: 0.5em 1.0em 0.5em 0; color: #999; }
+td.phoneTextHr          { padding: 0 1.0em; }
+div.phoneVideo          { background-color: #FFF; border: 1px solid #FFF; border-radius: 10px; }
+video.phoneVideoCam     { width: 100%; height: auto; }
+
+
+
+
+div.kontakteBody        {  }
+
 
 @media only screen and (max-width: 1205px) {  }
 @media only screen and (max-width: 650px)  {  }
 @media (max-width: 576px){  }
-
-    /* kamera */
-/*
-div.kamera              { display: none; position: absolute; top:0; left: 0; background-image: url('../img/schwarz30.png');
-                          width: 100%; height: 100%; padding-top: 4.0em; box-sizing: border-box;
-                        }
-div.kameraBox           { height: 20.0em; max-width: 40.0em; margin-left: auto; margin-right: auto; background: #FAFFFF;
-                          border: 1px solid #000; box-shadow: 0px 0px 5px 0px rgba(23,29,255,0.9);
-                        }
-div.kameraBox p        { color: #1608D3; padding: 0.25em; }
-*/
 @media only screen and (max-width: 650px) {  }
 
 
@@ -288,10 +388,3 @@ div.kameraBox p        { color: #1608D3; padding: 0.25em; }
 .errorOutput span   { color: red; }
 .errorOutput span::after { content: '\00A0' '\003A' '\002A'; color: red; }
 .errorOutput span, em { font-size: 1.6em; }
-
-/* setting.html
- --------------- */
-.setting            { width 100%; height: 100%; }
-.settingKop         { }
-.settingUserName    { }
-.settingBox         { }

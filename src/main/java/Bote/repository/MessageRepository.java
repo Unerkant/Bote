@@ -12,5 +12,5 @@ public interface MessageRepository extends CrudRepository<Message, Long> {
 
     List<Message> findAll();
     List<Message> findByMessagetoken(String messagetoken);
-
+    
 }

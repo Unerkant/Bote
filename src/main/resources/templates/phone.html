@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <title>Phone</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/img/podcasts.png" rel="icon" sizes="32x32" type="image/png">
+    <style type="text/css"><!-- @import"/css/style.css"; --></style>
+    <script type="text/javascript" th:src="@{/javascript/cookie.js}"></script>
+    <script type="text/javascript" th:src="@{/javascript/jquery360.js}"></script>
+    <script type="text/javascript" th:src="@{/javascript/phone.js}"></script>
+
+</head>
+<body>
+<noscript>
+    <div class="noScript">
+        <h3> Seems your browser doesn't support Javascript!
+            Websocket relies on Javascript being enabled. Please enable
+            Javascript and reload this page!
+        </h3>
+    </div>
+</noscript>
+
+
+<div class="phoneBox">
+<div class="phone">
+    <div class="gridBox">
+
+        <div class="phoneHead">
+            <table border="0" width="100%" cellpadding="0" cellspacing="0" data-th-if="${telefonaten.size != 0}">
+                <tr>
+                    <td width="60" align="center" valign="center" th:onClick="anrufBearbeiten()">
+                        <span class="blau finger">Bearb...</span>
+                    </td>
+                    <td align="center" class="phoneTitel">Letzte Anrufe</td>
+                    <td width="60" align="center" valign="center" th:onClick="cameraEinstellung()">
+                        <img width="25" class="finger" th:src="@{/img/settingphone.png}">
+                    </td>
+                </tr>
+            </table>
+            <!-- Wenn keine aufgezeichnete Telefonate vorhanden sind  -->
+            <div data-th-if="${telefonaten.size == 0}">
+                <p class="phoneAnrufNo">Keine Aufgezeichnete Telefonate vorhanden</p>
+            </div>
+        </div><!-- Ende phoneHead -->
+
+
+        <div class="phoneBody">
+
+            <!-- Schleife - Alle Telefonate ausgeben-->
+
+            <div class="phoneAnruf" data-th-if="${telefonaten.size != 0}" data-th-each="telefonat : ${telefonaten}">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" th:id="${telefonat['id']}">
+                    <tr>
+                        <td rowspan="2" width="1" align="center" valign="center" class="finger"
+                           data-th-onClick="anrufDelete([[${telefonat['id']}]], [[${telefonat['token']}]])">
+                            <img class="anrufRemove"  width="30" th:src="@{/img/remove.png}">
+                        </td>
+                        <td rowspan="2" width="50" align="center" valign="middle">
+                            <img class="phoneBild" width="40" th:src="@{/img/account.png}">
+                        </td>
+                        <td height="25" valign="bottom">
+                            <span data-th-text="${telefonat['name'].length == 0} ? ${telefonat['pseudonym']} : ${telefonat['vorname']}+' '+${telefonat['name']}"></span>
+                        </td>
+                        <td class="phoneBorder" rowspan="2" width="100" align="center">
+                            <span data-th-text="${telefonat['datum'].substring(0,10)}"></span>
+                            <br>
+                            <small>&#40;</small>
+                            <small data-th-text="${telefonat['datum'].substring(10,19)}"></small>
+                            <small>&#41;</small>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="phoneBorder" height="25" valign="top">
+                            <small data-th-text="${telefonat['phoneart']}"></small>
+                            <small>&#40;</small>
+                            <small data-th-text="${telefonat['dauert']}"></small>
+                            <small>Min &#41;</small>
+                        </td>
+                    </tr>
+                </table>
+                <!-- wenn geloscht/ Nachricht kurz anzeigen -->
+                <div class="anrufGeloscht" data-th-id="'OK'+${telefonat['id']}">Anruf Gelöscht!</div>
+            </div><!-- Ende phoneAnruf-->
+
+            <!-- Ende Schleife -->
+
+    <!-- Simple Kamera zugriff (versteckt) -->
+    <div id="PHONEKAMERA" class="phoneKamera">
+    <div class="phoneKameraBox">
+
+            <div class="phoneKameraTitel">
+                <table border="0" width="100%" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="40" align="center" class="finger" th:onClick="cameraEinstellungClose()">
+                        <img width="30" id="IMG" th:src="@{/img/closerot.png}">
+                    </td>
+                    <td align="center">Kamera Einstellung</td>
+                    <td width="40">&#160;</td>
+                </tr>
+                </table>
+            </div>
+
+
+        <div class="phoneVideoBox">
+        <div class="phoneTextLeft">KAMERA</div>
+            <div class="phoneVideo">
+                <table border="0" width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td width="50%" class="phoneTextLeft">Eingabegerät</td>
+                    <td align="right" class="phoneTextRight">Normal&#160;&#62;&#160;</td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <video class="phoneVideoCam" autoplay></video>
+                    </td>
+                </tr>
+                </table>
+            </div><!-- ende phoneVideo-->
+
+            <div class="leer1"></div>
+            <div class="phoneTextLeft">MICROFON</div>
+            <div class="phoneVideo">
+                <table border="0" width="100%" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td width="50%" class="phoneTextLeft">Eingabegerät</td>
+                        <td align="right" class="phoneTextRight">Standart&#160;&#62;</td>
+                    </tr>
+                    <tr><td colspan="2" class="phoneTextHr"><hr class="freundeHr"></td></tr>
+                    <tr>
+                        <td width="50%" class="phoneTextLeft">Eingangspegel</td>
+                        <td align="right" class="phoneTextRight">Pegel Anzeige</td>
+                    </tr>
+                </table>
+            </div>
+        </div><!-- Ende phoneVideoBox -->
+
+    </div><!-- Ende phoneKameraBox -->
+    </div><!-- Ende phoneKamera -->
+
+        </div><!-- Ende phoneBody -->
+
+
+        <div class="phoneFooter">
+
+            <div th:if="${#httpServletRequest.requestURI == '/phone'}"
+                    th:insert="fragments/footercomponents :: footerfragment"></div>
+
+        </div><!-- Ende phoneFooter -->
+
+    </div><!-- Ende gridBox -->
+</div><!-- ende phone -->
+</div><!-- Ende phoneBox -->
+
+</body>
+</html>

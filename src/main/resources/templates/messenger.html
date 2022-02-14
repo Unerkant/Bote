@@ -2,16 +2,16 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="de">
 
 <head>
-    <title th:text="${appName}">Title</title>
+    <title data-th-text="${appName}">Title</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/img/podcasts.png" rel="icon" sizes="32x32" type="image/png">
-    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link data-th-href="@{/css/style.css}" rel="stylesheet">
     <script type="text/javascript" th:src="@{/javascript/cookie.js}"></script>
     <script type="text/javascript" th:src="@{/javascript/jquery360.js}"></script>
     <script type="text/javascript" th:src="@{/javascript/sockjs-1.4.0.min.js}"></script>
     <script type="text/javascript" th:src="@{/javascript/stomp-2.3.3.min.js}"></script>
-    <script type="text/javascript" th:src="@{/javascript/neuerchat.js}"></script>
+    <script type="text/javascript" th:src="@{/javascript/zufallColor.js}"></script>
 </head>
 <body>
 
@@ -31,21 +31,23 @@
 
     <!-- ***** Header ***** -->
 
-    <div id="FREUNDEBOX" class="freundeBox boxSizing">
-        <div class="freundeGrid">
+    <div id="FREUNDEBOX" class="linksBox boxSizing">
+        <div class="gridBox">
 
             <div class="freundeHead">
                 <table border="0" width="100%" cellspacing="0" cellpadding="0">
                     <tr>
-                        <td width="50" valign="bottom">
-                            &#160;<img src="/img/account.png" width="30">
+                        <td width="50" align="center">
+                            <img data-th-src="@{/img/outperson.png}" class="finger" width="30" data-th-onclick="freundeBearbeiten()">
                         </td>
                         <td>
-                            <h3 align="center">Chat</h3>
+                            <h3 align="center">Alle Chats</h3>
                         </td>
-                        <td width="50" height="46" align="right" valign="bottom">
-                            <img src="/img/plusperson.png" width="30" th:onclick="neuerChat([[${meineId}]])">
-                            &#160;
+                        <td width="50" height="46" align="center">
+                            <!--<a data-th-href="@{/neuerchat}" >-->
+                            <img data-th-src="@{/img/plusperson.png}" width="30" class="finger" data-th-onClick="neuerChat()" >
+                            <!--</a>-->
+                            <!-- th:onclick="neuerChat([[${meineId}]])" -->
                         </td>
                     </tr>
                 </table>
@@ -55,102 +57,134 @@
 
             <!--
             *   DIE JSON-ARRAY(meinefreunde) Werden Von denn MessageController.java ZUGESENDET
-            *   von diesem Array werden alle Freunde aufgelistet in mess.html (linke Teil)
+            *   von diesem Array werden alle Freunde aufgelistet in messenger.html (linke Teil)
             -->
             <div class="freundeBody" >
 
-                <!-- H2:database Tabelle freunde: id, datum, freundetoken, freundpseudonym, meinentoken, meinpseudonym, messagetoken, role -->
-                <div id="FREUNDEDATEN" class="freundeDaten" data-th-each=" freunde : ${meinefreunde} ">
+    <!-- Daten werden mit javascript ins fragment eingebetet: freund.js function bekantenSave(bekantenToken) -->
+    <div id="NEUERCHAT"  data-th-insert="fragments/bekanteneinladung :: ${werdeEingeladen}"></div>
 
+                <!-- H2:database Tabelle freunde: id, datum, freundetoken, freundepseudonym, meinentoken, meinpseudonym, messagetoken, role -->
+                <div id="FREUNDEDATEN" class="freundeDaten" data-th-each=" freunde : ${meinefreunde} "
+                     data-th-if="${freunde['role'].length == 0}">
                     <!-- Freunde ausgebe in thymeleaf-schleife..  -->
                     <!-- class: freund wird benutzt nur für jQuery function in messenger.js Zeile: 53 -->
                     <!-- die 3 variablen(name, id, token) nicht löschen oder verändern:  -->
                     <div  class="freund" data-th-name="${meineId}"  data-th-id="${freunde['freundetoken']}" data-th-token="${freunde['messagetoken']}">
-                        <table border="0" width="100%" cellpadding="0" cellspacing="0">
+                        <table border="0" width="100%" cellpadding="0" cellspacing="0" data-th-id="${freunde['messagetoken']}">
                             <tr>
-                                <td width="45" rowspan="2" align="center">
-                                    <span class="freundeBild" data-th-text="${freunde['freundpseudonym']}"></span>
+                            <!-- Remove -->
+                                <td data-th-id="FREUNDLOSCHEN" rowspan="3" width="1" align="center" valign="center" class="finger"
+                                    data-th-onClick="freundeRemove([[${freunde['messagetoken']}]])">
+                                    <img class="freundeRemove"  width="30" th:src="@{/img/remove.png}">
                                 </td>
-                                <td class="freundeName" data-th-text="${freunde['freundpseudonym']}"></td>
+                            <!-- Bild -->
+                                <td width="45" rowspan="3" align="center">
+                                    <span data-th-if="${freunde['freundebild'].length == 0}">
+                                        <span data-th-id="${'color'+freunde.id}"  class="freundeBild" data-th-text="${freunde.freundepseudonym}"></span>
+                                    </span>
+                                    <span data-th-if="${freunde['freundebild'].length > 0}">
+                                    <img class="rund" data-th-src="@{${'/profilbild/'+freunde.freundebild+'.png'}}">
+                                    </span>
+                                </td>
+                            <!-- Name -->
+                                <td class="freundeName"
+                                    data-th-text="${freunde['freundename'].length == 0} ? ${freunde.freundepseudonym} :
+                                    ${freunde.freundevorname}+' '+${freunde.freundename} ">
+                                </td>
+                            <!-- Zeit -->
                                 <td width="60">
-                                    <pre th:text="${freunde['datum'].substring(0,10).replace('-','.')}"></pre>
+                                    <pre class="OldSilver" data-th-text="${freunde['datum'].substring(0,10).replace('-','.')}"></pre>
                                 </td>
+                            <!-- Gelesen -->
                                 <td width="25" align="center" >
-                                    <img width="15" th:src="@{/img/done.png}"  th:alt-title="#{Done}">
+                                    <img width="15" data-th-src="@{/img/done.png}"  th:alt-title="#{Done}">
                                 </td>
                             </tr>
                             <tr>
+                            <!-- Text -->
                                 <td colspan="2" height="40">
                                     <!-- 70 Zeichen -->
-                                    <small>Es kann vorkommen, dass das gleiche Zeichen, das wir ersetzen wollen, in...</small>
+                                    <small class="OldSilver">Es kann vorkommen, dass das gleiche Zeichen, das wir ersetzen wollen, in...</small>
                                 </td>
+                            <!-- Neue Nachricht -->
                                 <td width="25">
-                                    <span class="freundMessageUngelesen">34</span>
+                                    <span class="freundMessageUngelesen"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                            <!-- HR-Linie -->
+                                <td colspan="3">
+                                    <hr id="FREUNDHR" class="linie" >
                                 </td>
                             </tr>
                         </table>
-                    </div>
-                    <!-- Ende thymeleaf-schleife -->
-                </div><!-- Freunde Daten (schleife)-->
+                    <!-- Gelöscht ( nur benachricht ) -->
+                        <div class="freundGeloscht" data-th-id="${'OK'+freunde['messagetoken']}">
+                            Freund <b data-th-text="${freunde['freundepseudonym']}"></b> Geloscht!
+                        </div>
+                    </div><!-- Ende freund-->
+                    <script th:inline="javascript">
+                        // function für den backgrond-color, hier span Zeile: 84
+                         /*<![CDATA[*/
+                            var id = [[${freunde.id}]]
+                            setRandomColor(id);
+                         /*]]>*/
+                    </script>
+
+                </div><!-- Ende Freunde Daten (schleife)-->
 
                 <!-- Keine Chat vorhanden -->
-                <div th:if="${meinefreunde.size == 0}">
-                    <p class="freundeNo">Keine Freunde - normal?</p>
+                <div data-th-if="${meinefreunde.size == 0}">
+                    <p class="freundeNo">Keine Freunde?</p>
                 </div>
-
-                <!-- Zum Testen: wird gelöscht von unteren navigation -->
-                <div id="auswahlOut" style="position:absolute; bottom: 100px; border: 1px solid red; margin-left: auto; margin-right: auto; "></div>
-
             </div><!-- Ende freundeBody -->
 
+        <!-- ***** Footer ***** -->
 
-            <!-- ***** Footer ***** -->
+        <div id="FREUNDEFOOTER" class="freundeFooter">
 
-            <div class="freundeFooter">
-                <div th:if="${meinefreunde.size > 0}" class="freundeFooterBet">
-                    <div>
-                        <img width="30" th:src="@{/img/accountblack.png}" id="ACCOUNT" th:onClick="auswahl(this.id)">
-                    </div>
-                    <div>
-                        <img width="30" th:src="@{/img/phone.png}" id="PHONE" th:onClick="auswahl(this.id)">
-                    </div>
-                    <div>
-                        <img width="30" th:src="@{/img/forum.png}" id="FORUM" th:onClick="auswahl(this.id)">
-                    </div>
-                    <div>
-                        <img width="30" th:src="@{/img/setting.png}" id="SETTING" th:onClick="auswahl(this.id)">
-                    </div>
-                </div>
-                <p th:if="${meinefreunde.size == 0}" class="freundeFooterNo">From By Messenger</p>
+            <!-- Footer Fragment ausgabe: messagecomponents.html Frgment: footerfragment -->
+            <div data-th-if="${meinefreunde.size != 0}">
+                <div data-th-if="${#httpServletRequest.requestURI == '/messenger' || #httpServletRequest.requestURI == '/'}"
+                     data-th-insert="fragments/footercomponents :: footerfragment"></div>
             </div>
 
-        </div><!-- ende freundeGrid-->
+            <!--wird nur angezeigt, wenn keine Freunde vorhanden sind -->
+            <div data-th-if="${meinefreunde.size == 0}" data-th-insert="fragments/footercomponents :: footerNo" ></div>
+
+        </div>
+
+        </div><!-- ende gridBox-->
     </div><!-- Ende freundeBox -->
 
 
     <!-- ******************** Rechte Seite (message Ausgabe) Fragments: messages ****************** -->
 
-    <div id="MESSAGEBOX" class="messageBox boxSizing">
+    <div id="MESSAGEBOX" class="rechtsBox boxSizing">
 
-    <!-- ********************************************************** -->
-    <!-- Message Ausgaba                                            -->
-    <!-- messagecomponents.html fragment: messagefragment-->
-    <!-- ********************************************************** -->
+    <!-- ****************************************************************** -->
+    <!--      2x - Message Ausgabe & Freunde einladen(neuer Chat)           -->
+    <!--                                                                    -->
+    <!-- Insgesamt werden 2 Fragments  Angezeigt:                           -->
+    <!-- 1. data-th-fragment="messagefragment" aus den                      -->
+    <!--    messagecomponents.html Zeile:11 &                               -->
+    <!-- variable ${nameFragment} aus dem MessageController.java Zeile: 96  -->
+    <!--                                                                    -->
+    <!-- 2. data-th-fragment="neuerchatfragment" aus den                    -->
+    <!--    messagecomponents.html Zeile:11 &                               -->
+    <!-- variable ${nameFragment} aus dem FreundeController.java Zeile: 57  -->
+    <!--                                                                    -->
+    <!-- ****************************************************************** -->
 
-    <div id="MESSAGEFRAGMENT"  th:insert="fragments/messagecomponents :: messagefragment"></div>
+    <div id="MESSAGEFRAGMENT"  data-th-insert="fragments/messagecomponents :: ${nameFragment}"></div>
 
 
-    <!-- ********************************************************** -->
-    <!-- Neuer Chat                                                 -->
-    <!-- ********************************************************** -->
-
-    <div id="NEUERCHAT" th:insert="fragments/messagecomponents :: neuerchat"></div>
-
-
-    </div><!-- Ende MESSAGEBOX -->
+    </div><!-- Ende #MESSAGEBOX/class: rechtsBox-->
 
 </div><!-- Ende sliderBox -->
 
 <script type="text/javascript" th:src="@{/javascript/messenger.js}"></script>
+<script type="text/javascript" th:src="@{/javascript/freunde.js}"></script>
 </body>
 </html>
