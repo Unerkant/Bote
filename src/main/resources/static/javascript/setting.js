@@ -23,7 +23,7 @@ $('.einstellung').click(function(){
        activ[i].style.background = 'transparent';
        activ[i].style.color = '#000';
     }
-    $(this).css({"background-color":"#007ECC", "background":"linear-gradient(to right, #363795, #007ECC)", "color":"#FFF"});
+    $(this).css({"background-color":"#80CEFF", "background":"linear-gradient(to right, #66C4FF, #80CEFF)", "color":"#FFF"});
 
     // Rechtes Box: width 100%
     if(window.innerWidth < 651){

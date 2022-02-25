@@ -3,6 +3,7 @@ package Bote.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -26,6 +27,7 @@ public class Message {
     private String pseudonym;
     private String vorname;
     private String name;
+    @Column(columnDefinition="TEXT")
     private String text;
     private String role;
 

@@ -48,6 +48,7 @@ public class FreundeService {
 
    /* Update role (Löschen von 2x eiträgen in die Spalte role, einladung freischalten) */
    public Integer roleUpdate(String role, String token){
+
       return freundeRepository.updateRole(role, token);
    }
 

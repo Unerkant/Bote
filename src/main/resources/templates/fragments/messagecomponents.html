@@ -62,10 +62,10 @@
 <!-- 1. Message Ausgabe von Datenbank -->
         <!-- H2:Database Tabelle:MESSAGES id, datum, messagetoken, vorname, name, pseudonym, meinToken, text, role-->
         <div data-th-each="messech : ${gemeinsamemessage}">
-            <div th:class="${meinToken} == ${messech['meintoken']} ? 'messageBodyMy' : 'messageBodyFreund' ">
-                <section>&#160;</section>
+            <div data-th-class="${meinToken} == ${messech['meintoken']} ? 'messageBodyMy' : 'messageBodyFreund' ">
+                <section></section>
                 <nav>
-                    <table  cellpadding="0" cellspacing="0">
+                    <table cellpadding="0" cellspacing="0">
                         <tr>
                             <td colspan="3">
                                 <p data-th-text="${messech['text']}"></p>
@@ -84,7 +84,7 @@
                         </tr>
                     </table>
                 </nav>
-                <aside>&#160;</aside>
+                <aside></aside>
             </div>
         </div>
 
@@ -122,7 +122,7 @@
             </div><!-- Ende messageFoto -->
 
             <div class="messageText">
-                <textarea id="MESSAGETEXT" rows="1" maxlength="500"  th:onInput="autoRow(this)"
+                <textarea id="MESSAGETEXT" rows="1" maxlength="5000"  th:onInput="autoRow(this)"
                 onkeydown="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                 placeholder="Message schreiben" class="messageTextarea" required autofocus></textarea>
             </div>
@@ -174,7 +174,7 @@
     <div class="neuerChatBody">
         <div class="neuerChatBox">
             <div class="leer3">&#160;</div>
-            <form class="neuerChatForm" name="form">
+            <form class="marginNull" name="form">
             <fieldset class="neuerChatFieldset">
                 <legend align="center">Freunde Suchen</legend>
             <div id="NEUERCHATINPUT">

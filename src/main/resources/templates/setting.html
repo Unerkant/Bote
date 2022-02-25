@@ -41,27 +41,37 @@
     <!-- wird von function abruf benutzt in setting.js Zeile:9                                  -->
 
 <!-- Profil -->
-    <div class="profil" data-th-each=" mydaten : ${meinedaten}">
+    <div class="einstellungBox" data-th-each=" mydaten : ${meinedaten}">
         <div class="einstellung" data-th-id="PROFIL" data-th-titel="profil"
              data-th-name="profilfragment" data-th-token="${mydaten['token']}">
     <article>
         <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
+            <!-- Bild oder Pseudonym -->
                 <td rowspan="2" width="60" height="60" align="center">
-                    <span class="profilBild" data-th-text="${mydaten['pseudonym']}"></span>
+                    <span data-th-if="${mydaten['bild'].length == 0}">
+                        <span class="freundeBild blau80" data-th-text="${mydaten['pseudonym']}"></span>
+                    </span>
+                    <span data-th-if="${mydaten['bild'].length > 0}">
+                        <img class="rund" data-th-src="@{${'/profilbild/'+mydaten.bild+'.png'}}">
+                    </span>
                 </td>
+            <!-- Name -->
                 <td height="30" valign="bottom">
                     <span data-th-text="${mydaten['name'].length == 0} ? ${mydaten['pseudonym']} : ${mydaten['vorname']} +' '+ ${mydaten['name']}"></span>
                 </td>
+            <!-- QR -->
                 <td rowspan="2" width="40" align="center">
                     <span>QR</span>
                 </td>
+            <!-- Fail -->
                 <td rowspan="2" width="20">
                     <span>&#62;</span>
                 </td>
             </tr>
             <tr>
-                <td height="30" valign="top" class="profilEmail">
+            <!-- E-Mail oder Telefon -->
+                <td height="30" valign="top" class="einstellungBoxEmail">
                     <small data-th-text="${mydaten['email'].length == 0} ? ${mydaten['telefon']} : ${mydaten['email']}"></small>
                 </td>
             </tr>
@@ -74,7 +84,7 @@
         <div class="leer4">&#160;</div>
 
 <!-- Allgemein -->
-    <div class="profil">
+    <div class="einstellungBox">
         <div class="einstellung" data-th-id="ALLGEMEIN" data-th-titel="allgemein"
              data-th-name="allgemeinfragment" data-th-token="${myToken}">
            <nav>
@@ -93,11 +103,11 @@
               </table>
            </nav>
         </div>
-    </div><!-- Ende Allgemein/ ende class profil -->
+    </div><!-- Ende Allgemein/ ende class einstellungBox -->
 
 
 <!-- Darstellung & Töne -->
-    <div class="profil">
+    <div class="einstellungBox">
         <div class="einstellung" data-th-id="DARSTELLUNG" data-th-titel="darstellung"
              data-th-name="darstellungfragment" data-th-token="${myToken}">
             <nav>
@@ -116,11 +126,11 @@
                 </table>
             </nav>
         </div>
-    </div><!-- Ende Darstellung & Töne/ ende class profil -->
+    </div><!-- Ende Darstellung & Töne/ ende class einstellungBox -->
 
 
 <!-- Sicherheits -->
-    <div class="profil">
+    <div class="einstellungBox">
         <div class="einstellung" data-th-id="SICHERHEIT" data-th-titel="privatsicher"
              data-th-name="sicherheitfragment" data-th-token="${myToken}">
             <nav>
@@ -139,12 +149,12 @@
                 </table>
             </nav>
         </div>
-    </div><!-- Ende Sicherheit/ ende class profil -->
+    </div><!-- Ende Sicherheit/ ende class einstellungBox -->
 
 <div class="leer2">&#160;</div>
 
 <!-- Mitteilungen & Töner -->
-    <div class="profil">
+    <div class="einstellungBox">
         <div class="einstellung" data-th-id="MITTEILUNG" data-th-titel="mitteilung"
              data-th-name="mitteilungfragment" data-th-token="${myToken}">
             <nav>
@@ -163,11 +173,11 @@
                 </table>
             </nav>
         </div>
-    </div><!-- Ende Mitteilungen & Töne / ende class profil -->
+    </div><!-- Ende Mitteilungen & Töne / ende class einstellungBox -->
 
 
 <!-- Sprache -->
-    <div class="profil">
+    <div class="einstellungBox">
         <div class="einstellung" data-th-id="SPRACHE" data-th-titel="sprache"
              data-th-name="sprachefragment" data-th-token="${myToken}">
             <nav>
@@ -186,11 +196,11 @@
                 </table>
             </nav>
         </div>
-    </div><!-- Ende Darstellung & Töne/ ende class profil -->
+    </div><!-- Ende Darstellung & Töne/ ende class einstellungBox -->
 
 
 <!-- Sticker -->
-    <div class="profil">
+    <div class="einstellungBox">
         <div class="einstellung" data-th-id="STICKER" data-th-titel="sticker"
              data-th-name="stickerfragment" data-th-token="${myToken}">
             <nav>
@@ -209,12 +219,12 @@
                 </table>
             </nav>
         </div>
-    </div><!-- Ende Darstellung & Töne/ ende class profil -->
+    </div><!-- Ende Darstellung & Töne/ ende class einstellungBox -->
 
 <div class="leer3">&#160;</div>
 
 <!-- FAQ -->
-    <div class="profil">
+    <div class="einstellungBox">
         <div class="einstellung" data-th-id="FAQ" data-th-titel="botefaq"
              data-th-name="faqfragment" data-th-token="${myToken}">
             <nav>
@@ -233,11 +243,11 @@
                 </table>
             </nav>
         </div>
-    </div><!-- Ende Darstellung & Töne/ ende class profil -->
+    </div><!-- Ende Darstellung & Töne/ ende class einstellungBox -->
 
 
 <!-- Support -->
-    <div class="profil">
+    <div class="einstellungBox">
         <div class="einstellung" data-th-id="SUPPORT" data-th-titel="support"
              data-th-name="supportfragment" data-th-token="${myToken}">
             <nav>
@@ -256,7 +266,7 @@
                 </table>
             </nav>
         </div>
-    </div><!-- Ende Darstellung & Töne/ ende class profil -->
+    </div><!-- Ende Darstellung & Töne/ ende class einstellungBox -->
 
 </div><!-- Ende linksBoxBody -->
 
@@ -293,5 +303,6 @@
 </div><!-- Ende sliderBox -->
 
 <script type="text/javascript" th:src="@{/javascript/setting.js}"></script>
+<script type="text/javascript" th:src="@{/javascript/profil.js}"></script>
 </body>
 </html>

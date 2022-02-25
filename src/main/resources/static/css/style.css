@@ -19,13 +19,12 @@ a:link              { text-decoration: none; cursor: pointer; }
 /* background-image: url("../img/giter.png"); box-shadow: 0px 0px 5px 0px rgba: 0,0,0,0.9; */
 /* Box auf 100% kommen box-sizing: border-box; */
 
-.leer1              { height: 1.0em; }
-.leer2              { height: 2.0em; }
-.leer3              { height: 3.0em; }
-.leer4              { height: 4.0em; }
-.leer5              { height: 5.0em; }
-
-.Rot                { color: #CC2900; }
+.leer1              { height: 1.0em; border: 1px solid transparent; }
+.leer2              { height: 2.0em; border: 1px solid transparent; }
+.leer3              { height: 3.0em; border: 1px solid transparent; }
+.leer4              { height: 4.0em; border: 1px solid transparent; }
+.leer5              { height: 5.0em; border: 1px solid transparent; }
+.marginNull         { margin: 0; padding: 0; }
 
     /* richtung grau*/
 .Platinum           { color: #E8E9E9; } /* hell grau */
@@ -43,16 +42,19 @@ a:link              { text-decoration: none; cursor: pointer; }
 .powderblue         { color: #B5D0E0; } /* grau Blau */
 .microsoft          { color: #00A2ED; }
 
+.Rot                { color: #CC2900; }
+
     /* IMG style */
 figure.settingBild  { width: 2.25em; border: 1px solid #FFF; border-radius: 5px; }
 img.blok			{ display: block; width: 100%; }
-img.rund            { width: 48px; border: 1px solid transparent; border-radius: 50%; }
+img.rund            { width: 48px; height: 48px; border: 1px solid transparent; border-radius: 50%; }
 .gold70             { background-color: #FFCC66; }
 .grun70             { background-color: #66FF66; }
 .lila70             { background-color: #CC66FF; }
+.blau80             { background-color: #99CCFF; }
 .blue70             { background-color: #6666FF; }
-.brau70             { background-color: #D9B38C; }
 .blau70             { background-color: #66ffff; }
+.brau70             { background-color: #D9B38C; }
 .caci70             { background-color: #CCCC00; }
 .rote70             { background-color: #FF6666; }
 .linie              { border: none; height: 1px; background-color: #CCC; }
@@ -91,7 +93,7 @@ img.rund            { width: 48px; border: 1px solid transparent; border-radius:
 .noScript               { max-width: 45.0em; margin-left: auto; margin-right: auto; border: 1px solid #FF0000; box-sizing: border-box;
                           padding: 0.8em; color: #FF0000; margin-top: 1.8em; background: #ffe6e6; }
 
-            /* slider, horizontale-Ausrichtung*/
+            /* slider, horizontale-Ausrichtung */
 div.sliderBox           { display: flex; width: 100%; height: 100%; }
 div.linksBox            { width: 300px; min-width: 300px; height: 100%;  /*border: 1px solid red;*/ }
 div.rechtsBox           { width: 100%; min-width: 350px; height: 100%; border-left: 1px solid #999; /* border: 1px solid green; */ }
@@ -205,7 +207,7 @@ div.freundeDaten:hover  { background-color: #80CEFF; }
 div.freundeDaten table pre    { font-size: 80%; }
 div.freund              { position: relative; padding: 10px 0; /* VORSICHT: ncht löschen, nicht belegen, wird für die javascript function benutzt */ }
 img.freundeRemove       { display: none; }
-span.freundeBild        { display: table-cell; width: 40px; height: 40px; background: #FFF; border: 1px solid transparent;
+span.freundeBild        { display: table-cell; width: 48px; height: 48px; border: 1px solid transparent;
                           border-radius: 50%; font-size: inherit; text-align: center; vertical-align: middle; }
 td.freundeName          { font-size: inherit; }
 span.freundMessageUngelesen {text-align: center; border-radius: 50%; }
@@ -235,7 +237,7 @@ div.messageBody         { position: relative; overflow: scroll; /* border: 1px s
 div.messageBodyMy       { display: flex; justify-content: flex-end; padding: 0.6em 0; }
 div.messageBodyMy section   { width: 5px; /* border: 1px solid red;  Leer */ }
 div.messageBodyMy nav   { display:flex; flex-direction: row-reverse; /* border: 1px solid blue; */}
-div.messageBodyMy nav > table   { background-color: #E6FFF2; max-width: 80%; box-shadow: 0px 0px 5px 0px #999999;
+div.messageBodyMy nav > table   { background-color: #E6FFF2;  max-width: 80%; box-shadow: 0px 0px 5px 0px #999999;
                                   padding: 0.6em 0.6em 0; border: 1px soid #E6FFF2; border-radius: 10px; }
 div.messageBodyMy nav table small { color: #999; }
 div.messageBodyMy aside { width: 20px; /* border: 1px solid red;  Leer */ }
@@ -264,7 +266,7 @@ div.kameraBox pre       { display: flex; align-items: center; }
 div.kameraBox div:hover { background-color: #C6C6EC;  }
 
 div.messageText         { flex: auto; box-sizing: border-box; margin: 5px 0;  }
-textarea.messageTextarea        { display: block; width: 100.0%; resize: none; overflow: hidden; border: none; background: transparent;
+textarea.messageTextarea        { display: block; width: 100.0%; resize: none; overflow: scroll; border: none; background: transparent;
                                   margin: 0; max-height: 300px; padding: 0.2em; font-size: 1.0em; box-sizing: border-box;  }
 textarea.messageTextarea:focus  { outline: none !important; }
 div.messageSenden       { display: flex; width: 3.0em; align-items: center; align-self: flex-end; margin-bottom: 6px; /* border: 1px solid black; */}
@@ -272,7 +274,7 @@ div.messageSenden img   { border: 0px;}
 div.messageUnless       { text-align: center; margin-top: 30%; }
 
 
-    /* neuerchat(Freunde)-Ausgabe Rechte Seite */
+    /* Fragment: neuerchatfragment - Ausgabe Rechte Seite */
 div.neuerChat           { /*border: 1px solid red;*/ }
 div.neuerChatKop        { background: #EBFAFA; border-bottom: 1px solid #33CCCC; }
 span.neuerChatZuruck    { display: none; color: #1608D3; padding: 0.2em 0em; font-size: 1.2em; }
@@ -282,7 +284,6 @@ td.neuerChatMyName      { color: #000066; font-size: 1.2em; font-weight: 600;}
 
 div.neuerChatBody       { background-color: #EBFAF6; overflow: scroll; }
 div.neuerChatBox        { width: 100%; min-width: 305px; max-width: 600px; margin: auto; padding: 5px; /* border: 1px solid red;*/ }
-form.neuerChatForm      { margin: 0; padding: 0; }
 fieldset.neuerChatFieldset { border: 1px solid #C2F0F0; font-size: 1.2em; letter-spacing: 3px; padding: 2.0em 0.6em; }
 fieldset.neuerChatFieldset legend { padding: 0 10px;}
 input.neuerChatInput    { padding: 0.55em; font-size: 0.9em;; }
@@ -303,29 +304,47 @@ div.bekantenEach small  { color: #999; }
 
     /* setting.html
      ---------------*/
- /* div.sliderBox, linksBox & rechtsBox sind in Allgemein (oben) deffiniert */
-/* div.gridBox: gültig für die settingKop, settingBody & settingFooter... */
-div.linksBoxKop         { background: #F5F5F5; border-bottom: 1px solid #C1C1C1; padding: 0.8em; text-align: center; color: #191970; }
+ /* Linke Seite */
+                        /* div.sliderBox, linksBox & rechtsBox sind in Allgemein (oben) deffiniert */
+                        /* div.gridBox: gültig für die settingKop, settingBody & settingFooter... */
+div.linksBoxKop         { background: #E6E6E6; border-bottom: 1px solid #C1C1C1; padding: 0.8em; text-align: center; color: #191970; }
 div.linksBoxBody        { height: 100%; overflow: scroll; /* border: 1px solid blue; */ }
-div.linksBoxFooter      { background-color: #F5F5F5; border-top: 1px solid #C1C1C1; }
-div.rechtsBoxBody       { width: 100%; height: 100%; overflow: scroll;  /*border: 1px solid red;*/ }
+div.linksBoxFooter      { background-color: #E6E6E6; border-top: 1px solid #C1C1C1; }
 div.einstellung         { /* nur für den click function */ }
-div.profil              { background-color: #F5F5F5; /*border: 1px solid red;*/ }
-div.profil:hover        { background-color: #80CEFF; }
-div.profil article      { padding: 0.8em 0.1em; }
-div.profil nav          { padding: 0.1em; /*border: 1px solid red;*/ }
+div.einstellungBox         { background-color: #F9F9F9; /*border: 1px solid red;*/ }
+div.einstellungBox:hover   { background-color: #80CEFF; }
+div.einstellungBox article { padding: 0.8em 0.1em; }
+div.einstellungBox nav     { padding: 0.1em; /*border: 1px solid red;*/ }
+td.einstellungBoxEmail     { border-top: 1px solid #999; color: #606060; }
+ /* Rechte Seite */
+div.rechtsBoxBody       { width: 100%; height: 100%; background-color: #F2F2F2; overflow: scroll;  /*border: 1px solid red;*/ }
 
-td.profilEmail          { border-top: 1px solid #999; color: #606060; }
+    /* Fragment: settingcomponents.html (rechte Seite)*/
+        /* für Alle */
+div.setting           { width: 100%; /* border: 1px solid red;*/ }
+div.settingKop        { background: #E6E6E6; border-bottom: 1px solid #C1C1C1; padding: 0.8em 0.2em; }
+span.settingZuruck    { color: #1608D3; padding: 0.6em; /* border: 1px solid red;*/ }
+div.settingBody       { width: 100%; min-width: 350px; max-width: 500px; margin: auto; padding: 10px; /* border: 1px solid red; */ }
 
-    /* Fragment: settingcomponents.html*/
-div.frSetting           { width: 100%; /* border: 1px solid red;*/ }
-div.frSettingKop        { background: #F5F5F5; border-bottom: 1px solid #C1C1C1; padding: 0.8em 0.2em; }
-span.frSettingZuruck    { color: #1608D3; padding: 0.6em; /* border: 1px solid red;*/ }
+        /* Profil Bearbeiten */
+div.profilInitial     { background-color: #FFF; border: 1px solid #FFF; border-radius: 8px; padding: 0 1.0em;}
+.profilBild           { width: 256px; height: 256px; border-radius: 50%; border: 1px solid #999;}
+p.profilNoInput       { padding: 0.35em 0; font-size: inherit; color: #003300; }
+input.profilInput     { width: 100%; background-color: transparent; border: 0px solid; outline: none; padding: 0.35em 0; font-size: inherit; }
+input.profilPlaceholder::placeholder { color: #003300; }
+input.profilPlaceholder:focus::placeholder { color: #802000; }
+input.profilInput:focus{ outline: none; }
+button.profilButton   { background: none; border: none; padding: 0; margin: 0; font-size: inherit; }
+button.profilButton:focus { outline: none; }
+td.profilBorder       { border-top: 1px solid #E6E6E6; }
+div.profilAccound     { color: #303030; }
 
-div.frProfilBody        { width: 100%; min-width: 350px; max-width: 600px; margin: auto;/*border: 1px solid red;*/ }
-div.frProfilBild        { width: 8.0em; height: 8.0em; border-radius: 4.0em; border: 1px solid #999;}
-div.frProfilImg         { }
 
+
+
+
+        /* Allgemeine Einstellungen */
+div.frAllgemein         {  }
 
     /* kontakte.html
      ----------------*/
