@@ -27,7 +27,8 @@
         |   1. components Teil wird von templates/fragments.html geladen
         |
         -->
-        <div class="cookieEnabled" th:insert="fragments/components::cookieenabled"></div>
+
+      <div class="cookieEnabled" th:insert="/fragments/components::cookieenabled"></div>
         <script th:inline="javascript">
             /*<![CDATA[*/
                 cookieEnabled();

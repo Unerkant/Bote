@@ -274,7 +274,7 @@
     <div class="linksBoxFooter">
 
         <div th:if="${#httpServletRequest.requestURI == '/setting'}"
-                th:insert="fragments/footercomponents :: footerfragment"></div>
+                th:insert="/fragments/footercomponents :: footerfragment"></div>
 
     </div><!-- Ende linksBoxFooter -->
 
@@ -295,7 +295,7 @@
         <!--    variable zugesendet von SettingController.java  -->
         <!--    @PostMapping(value = "/einstellung")            -->
         <!--                                                    -->
-        <div id="FRAGMENTANZEIGEN" data-th-insert="fragments/settingcomponents :: ${fragmentName}" ></div>
+        <div id="FRAGMENTANZEIGEN" data-th-insert="/fragments/settingcomponents :: ${fragmentName}" ></div>
 
     </div><!-- Ende rechtsBoxBody(fragment-Ausgabe) -->
     </div><!-- Ende rechtsBox(für slideBox)-->

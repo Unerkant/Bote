@@ -62,7 +62,7 @@
             <div class="freundeBody" >
 
     <!-- Daten werden mit javascript ins fragment eingebetet: freund.js function bekantenSave(bekantenToken) -->
-    <div id="NEUERCHAT"  data-th-insert="fragments/bekanteneinladung :: ${werdeEingeladen}"></div>
+    <div id="NEUERCHAT"  data-th-insert="/fragments/bekanteneinladung :: ${werdeEingeladen}"></div>
 
                 <!-- H2:database Tabelle freunde: id, datum, freundetoken, freundepseudonym, meinentoken, meinpseudonym, messagetoken, role -->
                 <div id="FREUNDEDATEN" class="freundeDaten" data-th-each=" freunde : ${meinefreunde} "
@@ -147,11 +147,11 @@
             <!-- Footer Fragment ausgabe: messagecomponents.html Frgment: footerfragment -->
             <div data-th-if="${meinefreunde.size != 0}">
                 <div data-th-if="${#httpServletRequest.requestURI == '/messenger' || #httpServletRequest.requestURI == '/'}"
-                     data-th-insert="fragments/footercomponents :: footerfragment"></div>
+                     data-th-insert="/fragments/footercomponents :: footerfragment"></div>
             </div>
 
             <!--wird nur angezeigt, wenn keine Freunde vorhanden sind -->
-            <div data-th-if="${meinefreunde.size == 0}" data-th-insert="fragments/footercomponents :: footerNo" ></div>
+            <div data-th-if="${meinefreunde.size == 0}" data-th-insert="/fragments/footercomponents :: footerNo" ></div>
 
         </div>
 
@@ -177,7 +177,7 @@
     <!--                                                                    -->
     <!-- ****************************************************************** -->
 
-    <div id="MESSAGEFRAGMENT"  data-th-insert="fragments/messagecomponents :: ${nameFragment}"></div>
+    <div id="MESSAGEFRAGMENT"  data-th-insert="/fragments/messagecomponents :: ${nameFragment}"></div>
 
 
     </div><!-- Ende #MESSAGEBOX/class: rechtsBox-->

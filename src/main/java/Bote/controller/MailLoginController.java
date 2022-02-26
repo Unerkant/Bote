@@ -48,6 +48,7 @@ public class MailLoginController {
     public String login(@CookieValue(value = "userid", required = false) Long userId){
 
         meineDaten = userService.findeUserToken(userId);
+        logger.info("MailLoginController @GetMapping" + meineDaten);
         return (meineDaten == null ? "/login/mailregister" : "/messenger");
     }
 
@@ -139,7 +140,7 @@ public class MailLoginController {
                 "\n"+
                 "Ihr Messenger Team");
 
-        logger.info("Mail Login Controller: " + emailParam + "/" + tokenNummer +"/"+ aktivierungCode );
+        logger.info("MailLoginController @PostMapping: " + emailParam + "/" + tokenNummer +"/"+ aktivierungCode );
         return "/login/mailregister";
 
     }

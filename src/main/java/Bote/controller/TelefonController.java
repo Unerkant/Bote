@@ -47,7 +47,8 @@ public class TelefonController {
          *  1. Länder Daten Laden und in einen Object speichern
          */
         JSONParser jsonParser = new JSONParser();
-        Object object = jsonParser.parse(new FileReader(System.getProperty("user.dir") + "/src/main/resources/static/json/laender.json"));
+        //Object object = jsonParser.parse(new FileReader(System.getProperty("user.dir") + "/src/main/resources/static/json/laender.json"));
+        Object object = jsonParser.parse(new FileReader(getClass().getResource("/static/json/laender.json").getFile()) );
         JSONObject obj = (JSONObject) object;
         /* a. json-object(Komplet array) an fragments: telefonlogin.html Seite senden */
         model.addAttribute("lender", object);
