@@ -42,7 +42,7 @@
     <!-- ********************************************************************** -->
 <div data-th-fragment="profilfragment" data-th-if="${fragmentName == 'profilfragment'}">
     <!-- Head(fragment:settingHeadFragment), uncludet von diese Seite Zeile: 15 -->
-    <div data-th-insert="fragments/settingcomponents :: settingHeadFragment"></div>
+    <div data-th-insert="/fragments/settingcomponents :: settingHeadFragment"></div>
 
     <!-- Profil Body -->
      <div class="settingBody"  data-th-each=" profil: ${meinerDaten}">
@@ -93,7 +93,7 @@
                         <input  type="text" data-th-name="profilvorname" minlength="2" maxlength="30"
                                 data-th-placeholder="${profil['vorname'].length == 0} ? 'Vorname' : ${profil.vorname}"
                                 data-th-class="${profil['vorname'].length == 0} ? 'profilInput' : 'profilInput profilPlaceholder' "
-                                oninput="this.value=this.value.replace(/[^a-zA-Z0-9ß@]/g,'');" >
+                                data-th-onInput="this.value=this.value.replace(/[^a-zA-Z0-9ß@]/g,'');" >
                     </td>
                     <td width="100" class="profilBorder" align="right">
                         <button id="PROFILVORNAME" class="profilButton blau finger"
@@ -106,7 +106,7 @@
                         <input type="text" data-th-name="profilname" minlength="2" maxlength="30"
                                data-th-placeholder="${profil['name'].length == 0} ? 'Name' : ${profil.name}"
                                data-th-class="${profil['name'].length == 0} ? 'profilInput' : 'profilInput profilPlaceholder' "
-                               oninput="this.value=this.value.replace(/[^a-zA-Z0-9ß@]/g,'');">
+                               data-th-onInput="this.value=this.value.replace(/[^a-zA-Z0-9ß@]/g,'');">
                     </td>
                     <td class="profilBorder" align="right">
                         <button id="PROFILNAME" class="profilButton blau finger"
@@ -143,7 +143,7 @@
                              <input type="text" data-th-name="profiltelefon" minlength="8" maxlength="16"
                                     data-th-placeholder="${profil['telefon'].length == 0} ? '49123456789' : ${profil.telefon}"
                                     data-th-class="${profil['telefon'].length == 0} ? 'profilInput' : 'profilInput profilPlaceholder' "
-                                    oninput="this.value=this.value.replace(/[^0-9]/g,'');" >
+                                    data-th-onInput="this.value=this.value.replace(/[^0-9]/g,'');" >
                          </td>
                          <td width="100" class="profilBorder" align="right">
                              <button id="PROFILTELEFON" class="profilButton blau finger"
@@ -206,7 +206,7 @@
 <!-- ********************************************************************** -->
 <div data-th-fragment="allgemeinfragment" data-th-if="${fragmentName == 'allgemeinfragment'}">
     <!-- Head(fragment:settingHeadFragment), uncludet von diese Seite Zeile: 15 -->
-    <div data-th-insert="fragments/settingcomponents :: settingHeadFragment"></div>
+    <div data-th-insert="/fragments/settingcomponents :: settingHeadFragment"></div>
 
     <!-- Allgemein Body -->
     <div class="profilBody">
@@ -226,7 +226,7 @@
 <!-- ********************************************************************** -->
 <div data-th-fragment="darstellungfragment" data-th-if="${fragmentName == 'darstellungfragment'}">
     <!-- Head(fragment:settingHeadFragment), uncludet von diese Seite Zeile: 15 -->
-    <div data-th-insert="fragments/settingcomponents :: settingHeadFragment"></div>
+    <div data-th-insert="/fragments/settingcomponents :: settingHeadFragment"></div>
 
     <!-- Darschtellung Body -->
     <div class="profilBody">
@@ -246,7 +246,7 @@
 <!-- ********************************************************************** -->
 <div data-th-fragment="sicherheitfragment" data-th-if="${fragmentName == 'sicherheitfragment'}">
     <!-- Head(fragment:settingHeadFragment), uncludet von diese Seite Zeile: 15 -->
-    <div data-th-insert="fragments/settingcomponents :: settingHeadFragment"></div>
+    <div data-th-insert="/fragments/settingcomponents :: settingHeadFragment"></div>
 
     <!-- Sicherheit Body -->
     <div class="profilBody">
@@ -266,7 +266,7 @@
 <!-- ********************************************************************** -->
 <div data-th-fragment="mitteilungfragment" data-th-if="${fragmentName == 'mitteilungfragment'}">
     <!-- Head(fragment:settingHeadFragment), uncludet von diese Seite Zeile: 15 -->
-    <div data-th-insert="fragments/settingcomponents :: settingHeadFragment"></div>
+    <div data-th-insert="/fragments/settingcomponents :: settingHeadFragment"></div>
 
     <!-- mitteilung Body -->
     <div class="profilBody">
@@ -286,7 +286,7 @@
 <!-- ********************************************************************** -->
 <div data-th-fragment="sprachefragment" data-th-if="${fragmentName == 'sprachefragment'}">
     <!-- Head(fragment:settingHeadFragment), uncludet von diese Seite Zeile: 15 -->
-    <div data-th-insert="fragments/settingcomponents :: settingHeadFragment"></div>
+    <div data-th-insert="/fragments/settingcomponents :: settingHeadFragment"></div>
 
     <!-- Sprache Body -->
     <div class="profilBody">
@@ -306,7 +306,7 @@
 <!-- ********************************************************************** -->
 <div data-th-fragment="stickerfragment" data-th-if="${fragmentName == 'stickerfragment'}">
     <!-- Head(fragment:settingHeadFragment), uncludet von diese Seite Zeile: 15 -->
-    <div data-th-insert="fragments/settingcomponents :: settingHeadFragment"></div>
+    <div data-th-insert="/fragments/settingcomponents :: settingHeadFragment"></div>
 
     <!-- Sticker Body -->
     <div class="profilBody">
@@ -326,7 +326,7 @@
 <!-- ********************************************************************** -->
 <div data-th-fragment="faqfragment" data-th-if="${fragmentName == 'faqfragment'}">
     <!-- Head(fragment:settingHeadFragment), uncludet von diese Seite Zeile: 15 -->
-    <div data-th-insert="fragments/settingcomponents :: settingHeadFragment"></div>
+    <div data-th-insert="/fragments/settingcomponents :: settingHeadFragment"></div>
 
     <!-- FAG Body -->
     <div class="profilBody">
@@ -345,7 +345,7 @@
 <!-- ********************************************************************** -->
 <div data-th-fragment="supportfragment" data-th-if="${fragmentName == 'supportfragment'}">
     <!-- Head(fragment:settingHeadFragment), uncludet von diese Seite Zeile: 15 -->
-    <div data-th-insert="fragments/settingcomponents :: settingHeadFragment"></div>
+    <div data-th-insert="/fragments/settingcomponents :: settingHeadFragment"></div>
 
     <!-- Support Body -->
     <div class="profilBody">

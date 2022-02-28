@@ -8,9 +8,6 @@ import Bote.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -64,7 +61,7 @@ public class FreundeController {
         model.addAttribute("alleuser", alleUser);
 
 
-        logger.info("Freunde-Controller: " + alleUser);
+        logger.info("Freunde-Controller: ");
         return (meineDaten == null ? "/login/maillogin" : "/messenger :: #MESSAGEFRAGMENT");
     }
 

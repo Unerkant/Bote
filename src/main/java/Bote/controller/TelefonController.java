@@ -15,15 +15,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.Iterator;
 
 @Controller
 public class TelefonController {
 
     public User meineDaten;
-
     public TelefonController() throws IOException, ParseException { }
     Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
@@ -46,9 +44,10 @@ public class TelefonController {
          *
          *  1. Länder Daten Laden und in einen Object speichern
          */
+
         JSONParser jsonParser = new JSONParser();
+        Object object = jsonParser.parse(new InputStreamReader(this.getClass().getResourceAsStream("/static/json/laender.json")));
         //Object object = jsonParser.parse(new FileReader(System.getProperty("user.dir") + "/src/main/resources/static/json/laender.json"));
-        Object object = jsonParser.parse(new FileReader(getClass().getResource("/static/json/laender.json").getFile()) );
         JSONObject obj = (JSONObject) object;
         /* a. json-object(Komplet array) an fragments: telefonlogin.html Seite senden */
         model.addAttribute("lender", object);
@@ -93,6 +92,7 @@ public class TelefonController {
             }
         }
 
+        //logger.info("TelefonController reader:");
         return (meineDaten == null ? "/login/telefonlogin" : "/messenger");
     }
 }

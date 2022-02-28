@@ -179,7 +179,7 @@
                 <legend align="center">Freunde Suchen</legend>
             <div id="NEUERCHATINPUT">
                 <input type="text" class="inputAll neuerChatInput" minlength="6" maxlength="50"
-                       pattern="[A-Za-z0-9.!#$%&'*+-/=?^_`{|}~]+$"
+                       data-th-onKeyup="this.value = this.value.toLowerCase()"
                        data-th-onInput="(!isNaN(this.value) && this.value.length > 16) ? this.value = this.value.slice(0, 16) : '' "
                        placeholder="mustermann@mail.de oder 491751234567" name="telemail" data-th-required="required" autofocus>
                 <div class="leer2">&#160;</div>

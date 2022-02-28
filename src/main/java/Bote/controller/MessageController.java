@@ -64,7 +64,7 @@ public class MessageController {
         model.addAttribute("meinefreunde", meineFreunde);
         model.addAttribute("meineId", meineId);
 
-        logger.info("MessageController/GetMapping / index: " + meineFreunde);
+        logger.info("MessageController/GetMapping / index / meine ID: " + meineId);
         // wenn in Datenbank keine Daten vorhanden sind: return zum Registrieren
         return (meineDaten == null ? "/login/maillogin" : "/messenger");
     }
@@ -151,7 +151,7 @@ public class MessageController {
 
         messageService.saveNewMessage(message);
 
-        logger.info("Send to: " + "/messages/receive/" + message.getMessagetoken()+"/"+ message);
+        logger.info("Send to: " + "/messages/receive/" + message.getMessagetoken());
         simpMessagingTemplate.convertAndSend("/messages/receive/" + message.getMessagetoken(), message);
     }
 
