@@ -12,6 +12,10 @@ import java.util.Optional;
 
 public interface PhoneRepository extends CrudRepository<Phone, Integer> {
 
+    /* Benutzt von PhoneController */
     List<Phone> findByToken(String token);
     Long deleteById(Long id);
+
+    /* Benutzt von SettingController/@PostMapping(value = "/accountloschen") */
+    String deleteByToken(String token);
 }

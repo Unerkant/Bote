@@ -8,6 +8,7 @@
     */
 $('.einstellung').click(function(){
      event.preventDefault();
+     /* die this-Daten sind von setting.html <div class="einstellung" id, titel, name & token>  */
      var itemId         = $(this).attr('id');
      var fragmentTitel  = $(this).attr('titel');
      var fragmentName   = $(this).attr('name');

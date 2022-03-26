@@ -4,6 +4,7 @@ import Bote.model.Message;
 import Bote.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,9 +28,13 @@ public class MessageService {
         return messageRepository.findByMessagetoken(token);
     }
 
-    /* Übeflüssig */
-    public List<Message> getAllMessages() {
+   /**
+    *   benuntzt vo SettingController/@PostMapping(value = "/accountloschen")
+    *
+    */
+    @Transactional
+    public String allMessagesLoschen(List<String> messagetoken) {
 
-        return messageRepository.findAll();
+      return messageRepository.deleteByMessagetokenIn(messagetoken);
     }
 }

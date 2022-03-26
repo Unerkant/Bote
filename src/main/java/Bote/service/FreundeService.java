@@ -4,8 +4,10 @@ import Bote.model.Freunde;
 import Bote.repository.FreundeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
    /**
@@ -31,7 +33,6 @@ public class FreundeService {
       return freundeRepository.findByMessagetoken(token);
    }
 
-
    /* Meinen NeuerChat Registrieren */
    public void saveMeinChat(Freunde freunde) {
 
@@ -53,11 +54,26 @@ public class FreundeService {
    }
 
 
-   /* Freund loschen */
+   /**
+    *    bentzt von FreundeController/ @PostMapping(value = "/freundedelete")
+    *    Freund loschen
+    */
    @Transactional
    public void freundLoschen(String token){
 
       freundeRepository.deleteByMessagetoken(token);
    }
 
-}
+   /**
+    *   benutzt von SettingController/@PostMapping(value = "/accountloschen")
+    *   messagetoken ist einen array [26022022183542, 14032022172344]
+    *   mit diesem array werden in Tabelle: Freunde gleich 4 einträgen gelöscht,
+    *   von mir und freund(wir besitzen die gleiche Message Token)
+    */
+   @Transactional
+   public String allFreundeLoschen(List<String> messagetoken){
+
+         return freundeRepository.deleteByMessagetokenIn(messagetoken);
+   }
+
+   }

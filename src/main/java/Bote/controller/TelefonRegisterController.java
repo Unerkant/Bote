@@ -135,6 +135,9 @@ public class TelefonRegisterController {
             logDaten.setToken(String.valueOf(saveToken));
 
             sessionService.saveLogDaten(logDaten);
+        }else {
+            /* Datum Update: Tabelle Session, spalte: letztenlogin */
+            sessionService.letzteloginUpdate(saveDatum, String.valueOf(altUser.getToken()));
         }
 
 

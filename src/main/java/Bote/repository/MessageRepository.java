@@ -10,7 +10,15 @@ import java.util.List;
  */
 public interface MessageRepository extends CrudRepository<Message, Long> {
 
-    List<Message> findAll();
     List<Message> findByMessagetoken(String messagetoken);
+
+   /**
+    *   benutzt von SettingController/@PostMapping(value = "/accountloschen")
+    *   messagetoken ist einen array, jeder einzelnen satz von array wird
+    *   einen nach den anderen abgearbeitet, z.b.s wen sind in array 10 messagenToken
+    *   dann werden von allen 20 User(ein massgetoken sind für 2 user) alle
+    *   message gelöscht...
+    */
+    String deleteByMessagetokenIn(List<String> messagetoken);
     
 }

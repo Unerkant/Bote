@@ -26,4 +26,16 @@ public interface SettingRepository extends CrudRepository<User, Integer> {
     @Transactional
     @Query(value = "UPDATE USER SET name = :name WHERE token = :token", nativeQuery=true)
     Integer updateName(String name, String token);
+
+    /* Mail Update */
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE USER SET email = :mail WHERE token = :token", nativeQuery=true)
+    Integer updateMail(String mail, String token);
+
+    /* Telefon Update */
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE USER SET telefon = :telefon WHERE token = :token", nativeQuery=true)
+    Integer updateTelefon(String telefon, String token);
 }

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+Bilder Links: <a href="https://fonts.google.com/icons?selected=Material+Icons&icon.query=search" target="_blank">Google icons</a>
+Bilder: 36X36.png
+
+
+<div>
+    <h3>Account Löschen (setting/profil), javascript: profil.js</h3>
+    1. Klick auf das function accountValid, settingcomponents.html Zeile: 264
+    <span class="Rot finger"  data-th-onClick="accountValid([[${profil.token}]],'loschen','platzhalter')">Account Löschen</span>
+    2. die funtion, accoundValid() Zeile: 267 nach den warnung Frage spring zu function
+        codeHolen()...die function holt den code von SettingController.java Zeile 182
+        und versendet an die alte e-mail-adresse und telefonummer(wenn beide eingeragen sind)
+        die code wird als return an die function codeHolen() zurück gesendet, schließlich
+        die code wird in einem input( settingcomponents/ Zeile: 84)
+        <div><input id="PROFILCODEHIDDEN" type="hidden" value=""></div>
+        als value gespeichert, zum weiteren vegleich...gleichzeitlich wird den
+        Block-Code div eingeblendet <div id="PROFILCODE" class="profilCode" align="center">
+        Zeile: 65, weiter geht zu function codePrufen()...
+    3. die function codePrufen()... Zeile: 170, liest die gesspeicherte code von input
+        aus und vergleicht mit eingetippten code... wen die code stimm überein dann werde
+        die function profilSave oder accountLoschen abgeruffen
+    4.  die function accountLoschen sendet den user token an die
+        SettingController/@PostMapping(value = "/accountloschen") Zeile: 220
+        in die function werden alle daten mit diesem token aus allen Tabellen unwiederufflich gelöscht
+        TABBELEN:
+            a. User     ( loschen nach token )
+            b. Session  ( loschen nach token )
+            c. Phone    ( loschen nach token )
+            d. Messages (loschen nach messagetoken, texte loschen von mich und freunden)
+            g. Freunde  ( loschen nach token, bei mir als: meinetoken und freunden als: freundetoken )
+</div>
+</body>
+</html>

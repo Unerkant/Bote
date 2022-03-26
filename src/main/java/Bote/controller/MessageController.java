@@ -63,8 +63,9 @@ public class MessageController {
         /* Freunden-Daten + meineId an messenger.html senden -> Freunde ausgeben(Linke Seite) Zeile: 67 + 71 */
         model.addAttribute("meinefreunde", meineFreunde);
         model.addAttribute("meineId", meineId);
+        model.addAttribute("meinedaten", meineDaten);
 
-        logger.info("MessageController/GetMapping / index / meine ID: " + meineId);
+        logger.info("MessageController/GetMapping / index: " + meineFreunde);
         // wenn in Datenbank keine Daten vorhanden sind: return zum Registrieren
         return (meineDaten == null ? "/login/maillogin" : "/messenger");
     }

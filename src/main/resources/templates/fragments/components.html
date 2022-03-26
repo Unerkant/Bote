@@ -81,7 +81,7 @@
                     <tr>
                         <td width="13.99999%" class="seccussTd">&#160;</td>
                         <td width="42.99999%">Registrier Datum</td>
-                        <td width="42.99999%" th:text="${registerDatum}"></td>
+                        <td width="42.99999%" th:text="${registerDatum.substring(0,10).replace('-','.')}"></td>
                     </tr>
                     <tr>
                         <td>&#160;</td>
@@ -114,8 +114,7 @@
                         <td th:utext="${registerCookie}"></td>
                     </tr>
                     <tr>
-                        <td>&#160;</td>
-                        <td colspan="2" >
+                        <td colspan="3" align="center">
                             <div class="leer2">&#160;</div>
                             <a th:href="@{/messenger}" class="successAhref">Weiter zu Messenger</a>
                         </td>
@@ -178,6 +177,68 @@
        </div>   <!-- ende lenderBody -->
    </div>
 </div>
+
+
+    <!-- ********************************************************** -->
+    <!--    Fragment Account löschen                                -->
+    <!--                                                            -->
+    <!--    Benutzt wird:                                           -->
+    <!--    1. von setting.html Zeile: 28                           -->
+    <!--    2. wird eingeblendet nach dem Account löschen           -->
+    <!--                                                            -->
+    <!-- ********************************************************** -->
+<div data-th-fragment="accountloschen" data-th-if="${frName == 'accountloschen'}" >
+    <div class="frAccountLoschen">
+    <table border="0" width="100%" cellpadding="0" cellspacing="0">
+        <caption>Gelöschte Daten von
+            <span class="Rot" data-th-text="${username == null ? userpseudonym : uservorname+' '+username}"></span>
+        </caption>
+        <!-- Name, Vorname, Bilder -->
+        <tr>
+            <td width="30" align="center">
+                <img class="blok" data-th-src="@{/img/donegrun.png}">
+            </td>
+            <td>
+                Alle Personenbezogene Daten gelöscht<br>
+                <small class="Gray">&#40; Name, Vorname und Bilder &#41;</small>
+            </td>
+            <td width="30" data-th-text="${usercount}"></td>
+        </tr>
+        <!-- Insgesammt Nachrichten -->
+        <tr>
+            <td width="30" align="center">
+                <img class="blok" data-th-src="@{/img/donegrun.png}">
+            </td>
+            <td>Die Anzahl der insgesamt verfassten Nachrichten gelöscht</td>
+            <td width="30" data-th-text="${messagecount}"></td>
+        </tr>
+        <!-- -->
+        <tr>
+            <td width="30" align="center">
+                <img class="blok" data-th-src="@{/img/donegrun.png}">
+            </td>
+            <td>Die Anzahl der insgesamte Freunde gelöscht</td>
+            <td width="30" data-th-text="${freundecount}"></td>
+        </tr>
+        <!-- Alle Telfonate -->
+        <tr>
+            <td width="30" align="center">
+                <img class="blok" data-th-src="@{/img/donegrun.png}">
+            </td>
+            <td>Die Anzahl der insgesamt Telefonate gelöscht</td>
+            <td width="30" data-th-text="${phonecount}"></td>
+        </tr>
+        <!-- Session und cookie -->
+        <tr>
+            <td width="30" align="center">
+                <img class="blok" data-th-src="@{/img/donegrun.png}">
+            </td>
+            <td>Alle Session und Cookie gelöscht</td>
+            <td width="30">&#160;</td>
+        </tr>
+    </table>
+    </div>
+</div><!-- Ende Fragment Account Loschen -->
 
 </body>
 </html>

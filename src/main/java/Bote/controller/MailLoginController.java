@@ -7,14 +7,11 @@ import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
 
@@ -27,20 +24,15 @@ public class MailLoginController {
     private String  tokenNummer;
     private int     aktivierungCode;
     private String  userCookie;
-    private String  name = "no-reply: ";
     private String  emailParam;
-    private String  subject = "leer";
-    private String  content = "Eine neue Nachricht";
     private String  pseu;
     private String  pseudonym;
-    private String  mailSubject;
+    private String  mailSenden;
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private UserService userService;
-    @Autowired
-    private JavaMailSender mailSender;
 
     @SneakyThrows
     @GetMapping(value = "/login/mailregister")
@@ -87,32 +79,16 @@ public class MailLoginController {
         pseudonym = pseu.toUpperCase(Locale.ROOT);
 
 
-
    /**
-    *   mailsender + Text + Aktivierung Code + Senden
-    *
-    *   mailSender vorbereitung
-    *   Text ausführung in HTML Format
-    *   Aktivierung Code in Text einbinden
-    *
-    *   Aktivierung Code an angegebene E-Mail-Adresse versenden
-    *   E-Mail: unbekanten@gmail.com (application.properties)
+    *   Mail Sender, ausgelagert in ClobalConfig.java Zeile: 120
+    *   zugesendet 1. mail & aktivierungscode
+    *   response- mailSenden: org.springframework.mail.javamail.JavaMailSenderImpl@3df04fa1
     */
-        MimeMessage mailsenden = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(mailsenden, true);
-        helper.setFrom("---");
-        helper.setTo(emailParam);
-
-        boolean html = true;
-        helper.setText( "<p>hier erhalten Sie ihre Messenger Aktivierung Code </p>"
-                +"<b>" + aktivierungCode + "</b>"
-                +"<p> Gültigkeit dauert nur für diese sitzung </p>"
-                +"<p>mit Freundlichen Grüßen</p>", true);
-        mailSubject = name + " Ihre Aktivierung Code " + aktivierungCode;
-        helper.setSubject(mailSubject);
-
-        mailSender.send(mailsenden);
-
+    mailSenden = GlobalConfig.mailSenden(emailParam, aktivierungCode);
+    if (mailSenden == null){
+        return "redirect:/login/maillogin";
+    }
+    //logger.info("Mail Senden Controller: " + mailSenden);
 
    /**
     *   Daten Weitergabe an die Seite mailregister.html
@@ -137,7 +113,7 @@ public class MailLoginController {
                 "\n" +
                 "Vielen Dank und mit freundlichen Grüßen!" +
                 "\n"+
-                "Ihr Messenger Team");
+                "Ihr Bote Team");
 
         logger.info("MailLoginController @PostMapping: " + emailParam + "/" + tokenNummer +"/"+ aktivierungCode );
         return "/login/mailregister";

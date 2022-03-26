@@ -13,13 +13,28 @@ public class SettingService {
     @Autowired
     private SettingRepository repository;
 
+
     /* Vorname Update */
     public Integer vornameUpdate(String vorname, String token){
+
         return repository.updateVorname(vorname, token);
     }
 
     /* Vorname Update */
     public Integer nameUpdate(String name, String token){
+
         return repository.updateName(name, token);
+    }
+
+    /* Mail Update */
+    public Integer mailUpdate(String name, String token){
+
+        return repository.updateMail(name, token);
+    }
+
+    /* Telefon Update */
+    public Integer telefonUpdate(String name, String token){
+
+        return repository.updateTelefon(name, token);
     }
 }

@@ -7,8 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/img/podcasts.png" rel="icon" sizes="32x32" type="image/png">
     <style type="text/css"><!-- @import"/css/style.css"; --></style>
+    <style type="text/css"><!-- @import"/css/jqueryJcrop.css"; --></style>
     <script type="text/javascript" th:src="@{/javascript/cookie.js}"></script>
     <script type="text/javascript" th:src="@{/javascript/jquery360.js}"></script>
+    <!--<script src="https://unpkg.com/jcrop"></script>-->
 
 </head>
 <body>
@@ -20,6 +22,21 @@
         </h3>
     </div>
 </noscript>
+
+<!-- Acconut Löschen: position absolute, display:none -->
+    <div id="ACCOUNTLOSCHEN" class="accountLoschen">
+    <div class="accountLoschenKasten">
+        <!-- Fragment: account löschen-->
+        <div id="ACCOUNTLOSCHENFRAGMENT" data-th-insert="/fragments/components :: accountloschen"></div>
+        <!-- Ende Fragment -->
+        <div class="accountLoschenText">
+            Eine Accountlöschung ist dauerhaft.<br> Mit der Löschung Ihres Bote-Accounts werden auch cookie, Ihr
+            Datenbank-Daten und andere mit Ihrem Account verbundene Informationen dauerhaft und unwiderruflich gelöscht.
+        </div>
+        <div align="center"><a href="/" class="ice">Weiter</a></div>
+    </div>
+    </div>
+<!-- Ende Account Löschen -->
 
 <div class="sliderBox">
 

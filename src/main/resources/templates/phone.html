@@ -28,7 +28,7 @@
     <div class="gridBox">
 
         <div class="phoneHead">
-            <table border="0" width="100%" cellpadding="0" cellspacing="0" data-th-if="${telefonaten.size != 0}">
+            <table border="0" width="100%" cellpadding="0" cellspacing="0" data-th-unless="${#lists.isEmpty(telefonaten)}">
                 <tr>
                     <td width="60" align="center" valign="center" th:onClick="anrufBearbeiten()">
                         <span class="blau finger">Bearb...</span>
@@ -40,7 +40,7 @@
                 </tr>
             </table>
             <!-- Wenn keine aufgezeichnete Telefonate vorhanden sind  -->
-            <div data-th-if="${telefonaten.size == 0}">
+            <div data-th-if="${#lists.isEmpty(telefonaten)}">
                 <p class="phoneAnrufNo">Keine Aufgezeichnete Telefonate vorhanden</p>
             </div>
         </div><!-- Ende phoneHead -->
@@ -50,7 +50,7 @@
 
             <!-- Schleife - Alle Telefonate ausgeben-->
 
-            <div class="phoneAnruf" data-th-if="${telefonaten.size != 0}" data-th-each="telefonat : ${telefonaten}">
+            <div class="phoneAnruf" data-th-unless="${#lists.isEmpty(telefonaten)}" data-th-each="telefonat : ${telefonaten}">
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" th:id="${telefonat['id']}">
                     <tr>
                         <td rowspan="2" width="1" align="center" valign="center" class="finger"
@@ -145,7 +145,7 @@
         <div class="phoneFooter">
 
             <div th:if="${#httpServletRequest.requestURI == '/phone'}"
-                    th:insert="fragments/footercomponents :: footerfragment"></div>
+                    th:insert="/fragments/footercomponents :: footerfragment"></div>
 
         </div><!-- Ende phoneFooter -->
 

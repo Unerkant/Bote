@@ -149,6 +149,9 @@ public class MailRegisterController {
             logDaten.setOther("");
             logDaten.setToken(String.valueOf(saveToken));
             sessionService.saveLogDaten(logDaten);
+        }else{
+            /* Datum Update: Tabelle Session, spalte: letztenlogin */
+            sessionService.letzteloginUpdate(saveDatum, String.valueOf(altUser.getToken()));
         }
 
             /* User Daten in mailsuccess ausgeben */
@@ -163,7 +166,7 @@ public class MailRegisterController {
         /* cookie "userid" setzen */
         GlobalConfig.setCookie(response, "userid", String.valueOf((altUser != null) ? altUser.getToken() : saveToken));
 
-        logger.info("MailRegisterController: " + saveToken);
+        logger.info("MailRegisterController: " + altUser);
         return "/login/mailsuccess";
     }
 

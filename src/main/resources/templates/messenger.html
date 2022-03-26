@@ -24,7 +24,6 @@
     </div>
 </noscript>
 
-
 <div class="sliderBox">
 
     <!-- ********************************** Linke Seite (Chat Freunde) ***************************** -->
@@ -42,6 +41,9 @@
                         </td>
                         <td>
                             <h3 align="center">Alle Chats</h3>
+                            <div align="center">
+                                <small class="Gray" data-th-text="${meinedaten.email}"></small>
+                            </div>
                         </td>
                         <td width="50" height="46" align="center">
                             <!--<a data-th-href="@{/neuerchat}" >-->
@@ -88,9 +90,11 @@
                                     </span>
                                 </td>
                             <!-- Name -->
-                                <td class="freundeName"
-                                    data-th-text="${freunde['freundename'].length == 0} ? ${freunde.freundepseudonym} :
-                                    ${freunde.freundevorname}+' '+${freunde.freundename} ">
+                                <td class="freundeName">
+                                    <span data-th-text="${freunde['freundename'].length == 0} ? ${freunde.freundepseudonym} :
+                                    ${freunde.freundevorname}+' '+${freunde.freundename} "></span>
+                                    <small class="twilight" data-th-text="${freunde['freundename'].length == 0} ?
+                                    '&#91;'+${freunde.freundemail} +' '+ ${freunde.freundetelefon}+'&#93;' : '' " ></small>
                                 </td>
                             <!-- Zeit -->
                                 <td width="60">
@@ -135,7 +139,7 @@
                 </div><!-- Ende Freunde Daten (schleife)-->
 
                 <!-- Keine Chat vorhanden -->
-                <div data-th-if="${meinefreunde.size == 0}">
+                <div data-th-if="${#lists.isEmpty(meinefreunde)}">
                     <p class="freundeNo">Keine Freunde?</p>
                 </div>
             </div><!-- Ende freundeBody -->
@@ -145,13 +149,13 @@
         <div id="FREUNDEFOOTER" class="freundeFooter">
 
             <!-- Footer Fragment ausgabe: messagecomponents.html Frgment: footerfragment -->
-            <div data-th-if="${meinefreunde.size != 0}">
+            <div data-th-unless="${#lists.isEmpty(meinefreunde)}"><!-- Original: meinefreunde.size != 0 -->
                 <div data-th-if="${#httpServletRequest.requestURI == '/messenger' || #httpServletRequest.requestURI == '/'}"
                      data-th-insert="/fragments/footercomponents :: footerfragment"></div>
             </div>
 
             <!--wird nur angezeigt, wenn keine Freunde vorhanden sind -->
-            <div data-th-if="${meinefreunde.size == 0}" data-th-insert="/fragments/footercomponents :: footerNo" ></div>
+            <div data-th-if="${#lists.isEmpty(meinefreunde)}" data-th-insert="/fragments/footercomponents :: footerNo" ></div>
 
         </div>
 
@@ -186,5 +190,6 @@
 
 <script type="text/javascript" th:src="@{/javascript/messenger.js}"></script>
 <script type="text/javascript" th:src="@{/javascript/freunde.js}"></script>
+
 </body>
 </html>

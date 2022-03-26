@@ -5,9 +5,9 @@
 
 
 <!-- ********************************************************************** -->
-<!--                               Head Fragment                            -->
+<!--                         Head Fragment                                  -->
 <!--                                                                        -->
-<!-- WIRD IN JEDER EINSTELLUNG: FRAGMENT INCLUDET                           -->
+<!-- WIRD IN JEDER EINSTELLUNG: DIESER FRAGMENT INCLUDET                    -->
 <!--                                                                        -->
 <!-- H2/Tabelle user:id, bild, datum, email, name, pseudonym, role,         -->
 <!-- telefon, token, vorname                                                -->
@@ -15,7 +15,7 @@
 <div data-th-if="${fragmentTitel}" data-th-fragment="settingHeadFragment">
 
     <!-- Head, wird includet in jedem unterem Fragment -->
-<div class="setting">
+<div>
     <div class="settingKop">
         <table border="0" width="100%" cellpadding="0" cellspacing="0">
             <tr>
@@ -29,7 +29,7 @@
             </tr>
         </table>
     </div><!-- Ende settinglKop -->
-</div><!-- Ende setting -->
+</div><!-- Ende ohne class -->
 
 </div><!-- Ende settingHeadFragment -->
 
@@ -39,46 +39,120 @@
     <!--                                                                        -->
     <!-- H2/Tabelle USER: id, token, datum, bild, pseudonym, name, vorname      -->
     <!-- email, telefon, role, orher                                            -->
+    <!--                                                                        -->
+    <!-- function-sendeDaten: eingenes token, was soll geändert & input value   -->
+    <!-- senden an SettingController: @PostMapping(value = "/profilSave")       -->
+    <!-- Abmelden: nur cookie gelöscht                                          -->
+    <!-- Account Löschen: Alle Daten(alle Tabellen) aus dem Datenbank & cookie  -->
+    <!--                                                                        -->
     <!-- ********************************************************************** -->
 <div data-th-fragment="profilfragment" data-th-if="${fragmentName == 'profilfragment'}">
+<div class="gridBox settingBox">
     <!-- Head(fragment:settingHeadFragment), uncludet von diese Seite Zeile: 15 -->
+    <div class="settingHead">
     <div data-th-insert="/fragments/settingcomponents :: settingHeadFragment"></div>
+    </div><!-- Ende settingHead-->
 
     <!-- Profil Body -->
      <div class="settingBody"  data-th-each=" profil: ${meinerDaten}">
-         <div class="leer1">&#160;</div>
+     <div class="settingTable">
+     <!--
+     *  Code-Block
+     *  Positoion absolute: Code-Block einblenden bei onKlick: E-mail, Telefon oder
+     *  Account Löschen...
+     -->
+         <!-- Code, ändern von e-mail, telefon oder account löschen -->
+         <div id="PROFILCODE" class="profilCode" align="center">
+         <div class="profilKasten">
+         <div class="profilMiddle">
+             <div id="CODEINFO" class="ok">
+                 Vielen Dank, bitte überprüfen Sie Ihr Email-Postfach oder SMS-Nachricht!<br>
+                 Wir haben Ihnen eine Bestätigungsmail und eine SMS-Nachrichten an die von
+                 Ihnen angegebene Email-Adresse und Telefonnummer gesendet.<small>(wenn beide vorhanden sind)</small>
+                 Bitte prüfen Sie auch Ihren SPAM-Ordner, falls Sie in den nächsten Minuten keine
+                 Bestätigung Code erhalten haben!<br><br>
+                 Vielen Dank und mit freundlichen Grüßen!<br>
+                 Ihr Bote Team
+             </div>
+             <div id="CODEFEHLER" class="fehler">
+                 Registrierungscode scheint falsch zu sein ... <br>
+                 versuchen Sie es erneut<br>
+                 richtige Code: <small id="RICHTIGECODE"></small>
+             </div>
+             <form id="PROFILFORM" class="profilForm">
+                 <!-- zugesendet von prfil.js, function codeHolen(.. -->
+                 <div><input id="PROFILCODEHIDDEN" type="hidden" value=""></div>    <!-- code -->
+                 <div><input id="PROFILNAMEHIDDEN" type="hidden" value=""></div>    <!-- mail, telefon oder loschen -->
+                 <div><input id="PROFILVALUEHIDDEN" type="hidden" value=""></div>   <!-- mail-adresse oder telefonnummer -->
+                 <div class="flexCenter">
+                     <div class="profilZahl itemCenter">
+                         <input id="PROFILCODE1" type="text" class="inputAll inputCode"
+                                onkeyup="this.value=this.value.replace(/[^0-9]/g,''); if(this.value.length == 1){ document.getElementById('PROFILCODE2').focus();}"
+                                minlength="1" maxlength="1" name="profilCodeEins" placeholder="-" required="required" autofocus>
+                     </div>
+                     <div class="profilZahl itemCenter">
+                         <input id="PROFILCODE2" type="text" class="inputAll inputCode"
+                                onkeyup="this.value=this.value.replace(/[^0-9]/g,''); if(this.value.length == 1){ document.getElementById('PROFILCODE3').focus();}"
+                                minlength="1" maxlength="1" name="profilCodeZwei" placeholder="-" required="required">
+                     </div>
+                     <div class="profilZahl itemCenter">
+                         <input id="PROFILCODE3" type="text" class="inputAll inputCode"
+                                onkeyup="this.value=this.value.replace(/[^0-9]/g,''); if(this.value.length == 1){ document.getElementById('PROFILCODE4').focus();}"
+                                minlength="1" maxlength="1" name="profilCodeDrei" placeholder="-" required="required">
+                     </div>
+                     <div class="profilZahl itemCenter">
+                         <input id="PROFILCODE4" type="text" class="inputAll inputCode"
+                                data-th-onKeyup="this.value=this.value.replace(/[^0-9]/g,''); if(this.value.length == 1){ codePrufen([[${profil.token}]],this.form) }"
+                                minlength="1" maxlength="1" name="profilCodeVier" placeholder="-" required="required">
+                     </div>
+                 </div>
+             </form>
+             <div class="profilAbbrechen"><span class="finger Rot" data-th-onClick="profilAbbrechen('PROFILCODE')">Abbrechen</span></div>
+         </div><!-- ende profilMiddle-->
+         </div><!--Ende profilKasten -->
+         </div><!-- Ende profilCode -->
 
      <!--***** Bild hinzfügen oder Ändern -->
+         <div class="leer1">&#160;</div>
          <div class="flexCenter profilInitial">
          <div class="flexCenter">
-             <span class="profilBild" data-th-if="${profil['bild'].length == 0}">
-                 <span data-th-text="${profil.pseudonym}"></span>
-             </span>
-             <span data-th-if="${profil['bild'].length > 0}">
-                <img class="profilBild" data-th-src="@{${'/profilbild/'+profil.bild+'.png'}}" >
-             </span>
+             <div class="flexCenter profilBild" data-th-if="${profil['bild'].length == 0}">
+                 <span class="Gray finger"  data-th-text="${profil.pseudonym}" data-th-onClick="uploadFile()"></span>
+                 <img class="profilBildCamera" width="36px" data-th-src="@{/img/camera.png}">
+                 <img id="BILDUPLOAD" class="profilBildUpload" src="">
+             </div>
+             <div class="flexCenter profilBild finger" data-th-if="${profil['bild'].length > 0}" data-th-onClick="uploadFile()">
+                 <img class="blok" data-th-src="@{${'/profilbild/'+profil.bild+'.png'}}" >
+             </div>
          </div>
+         </div><!-- Ende FlexCenter -->
+
+         <!-- verstekte createElement input feld type file, profil.js/function bildUpload()  -->
+         <div id="INPUTDIV" style="display: none;">
+             <input type="file" id="inputfile" multiple accept="image/*"  onChange="handleFiles(this.files)">
          </div>
 
-         <p align="center">
+         <!-- Text Bild ändern -->
+         <div align="center">
+         <p class="leer1">&#160;</p>
              <span data-th-if="${profil['bild'].length == 0}">
-                 <span>Ein Profilbild hinzufügen</span>
+                 <span id="HINZU">Ein Profilbild hinzufügen</span>
+                 <span id="UPABBR" class="uploadAbbr finger" data-th-onClick="profilAbbrechen('UPLOADABBRECHEN')">Abbrechen</span>
              </span>
              <span data-th-if="${profil['bild'].length > 0}">
-                 <span>Profilbild ändern:</span>
+                 Profilbild ändern:
              </span>
-         </p>
+         </div>
 
-     <!--***** Nachricht Ausgeben -->
+     <!--***** Nachricht Ausgeben & Freischalten Code -->
          <div class="leer5">
              <div id="SETTINGOK" class="ok"></div>
              <div id="SETTINGFEHLER" class="fehler"></div>
          </div>
 
-
      <!--***** Name und Vorname eingeben -->
          <div class="profilInitial">
-             <form class="marginNull" name="profilVorname">
+             <form class="marginNull" name="profilPseudonym">
              <table width="100%" border="0" cellspacing="0" cellpadding="0">
          <!-- Pseudonym: nicht Editierbar -->
                 <tr>
@@ -87,34 +161,42 @@
                     </td>
                     <td width="100">&#160;</td>
                 </tr>
+             </table>
+             </form>
          <!-- Vorname -->
+             <form class="marginNull" name="profilVorname">
+             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr style="border-top: 1px solid #999;">
                     <td class="profilBorder">
                         <input  type="text" data-th-name="profilvorname" minlength="2" maxlength="30"
                                 data-th-placeholder="${profil['vorname'].length == 0} ? 'Vorname' : ${profil.vorname}"
-                                data-th-class="${profil['vorname'].length == 0} ? 'profilInput' : 'profilInput profilPlaceholder' "
+                                data-th-class="${profil['vorname'].length == 0} ? 'profilInput Gray' : 'profilInput profilPlaceholder' "
                                 data-th-onInput="this.value=this.value.replace(/[^a-zA-Z0-9ß@]/g,'');" >
                     </td>
                     <td width="100" class="profilBorder" align="right">
                         <button id="PROFILVORNAME" class="profilButton blau finger"
-                        data-th-onClick="vornameSave([[${profil.token}]],'vorname',this.form)">Speichern</button>
+                        data-th-onClick="vornameValid([[${profil.token}]],'vorname',this.form)">Speichern</button>
                     </td>
                 </tr>
+             </table>
+             </form>
          <!-- Name  -->
+             <form class="marginNull" name="profilName">
+             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                     <td class="profilBorder">
                         <input type="text" data-th-name="profilname" minlength="2" maxlength="30"
                                data-th-placeholder="${profil['name'].length == 0} ? 'Name' : ${profil.name}"
-                               data-th-class="${profil['name'].length == 0} ? 'profilInput' : 'profilInput profilPlaceholder' "
+                               data-th-class="${profil['name'].length == 0} ? 'profilInput Gray' : 'profilInput profilPlaceholder' "
                                data-th-onInput="this.value=this.value.replace(/[^a-zA-Z0-9ß@]/g,'');">
                     </td>
                     <td class="profilBorder" align="right">
                         <button id="PROFILNAME" class="profilButton blau finger"
-                        data-th-onClick="nameSave([[${profil.token}]],'name',this.form)">Speichern</button>
+                        data-th-onClick="nameValid([[${profil.token}]],'name',this.form)">Speichern</button>
                     </td>
                 </tr>
             </table>
-             </form>
+            </form>
          </div><!-- Ende profilInitial, Name & Vorname -->
 
      <div class="leer3">&#160;</div>
@@ -128,35 +210,44 @@
                          <td>
                              <input type="text" data-th-name="profilmail" minlength="2" maxlength="30"
                                     data-th-placeholder="${profil['email'].length == 0} ? 'E-Mail' : ${profil.email}"
-                                    data-th-class="${profil['email'].length == 0} ? 'profilInput' : 'profilInput profilPlaceholder' " >
+                                    data-th-class="${profil['email'].length == 0} ? 'profilInput Gray' : 'profilInput profilPlaceholder' "
+                                    data-th-onkeyup="this.value = this.value.toLowerCase()">
                          </td>
                          <td width="100" align="right">
                              <button id="PROFILMAIL" class="profilButton blau finger"
-                                 data-th-onClick="mailSave([[${profil.token}]],'mail',this.form)">
+                                 data-th-onClick="mailValid([[${profil.token}]],'mail',this.form)">
                                  <span data-th-text="${profil['email'].length == 0} ? 'Speichern' : 'Ändern' "></span>
                              </button>
                          </td>
                      </tr>
+                 </table>
+             </form>
          <!-- Telefon ändern -->
+             <form class="marginNull" name="profilTelefon">
+                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                      <tr style="border-top: 1px solid #999;">
                          <td class="profilBorder">
                              <input type="text" data-th-name="profiltelefon" minlength="8" maxlength="16"
                                     data-th-placeholder="${profil['telefon'].length == 0} ? '49123456789' : ${profil.telefon}"
-                                    data-th-class="${profil['telefon'].length == 0} ? 'profilInput' : 'profilInput profilPlaceholder' "
+                                    data-th-class="${profil['telefon'].length == 0} ? 'profilInput Gray' : 'profilInput profilPlaceholder' "
                                     data-th-onInput="this.value=this.value.replace(/[^0-9]/g,'');" >
                          </td>
                          <td width="100" class="profilBorder" align="right">
                              <button id="PROFILTELEFON" class="profilButton blau finger"
-                                     data-th-onClick="telefonSave([[${profil.token}]],'telefon',this.form)">
+                                     data-th-onClick="telefonValid([[${profil.token}]],'telefon',this.form)">
                                      <span data-th-text="${profil['telefon'].length == 0} ? 'Speichern' : 'Ändern' "></span>
                              </button>
                          </td>
                      </tr>
+                 </table>
+             </form>
          <!-- Abmelden  -->
+             <form class="marginNull" name="profilTelefon">
+                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                      <tr>
                          <td class="profilBorder">
                              <p class="profilNoInput">
-                                 <span class="Rot finger"  data-th-onClick="abmeldenSave([[${profil.token}]],'abmelden', 'platzhalter')">Abmelden</span>
+                                 <span class="Rot finger"  data-th-onClick="abmeldenSave([[${profil.token}]],'abmelden','platzhalter')">Abmelden</span>
                              </p>
                          </td>
                          <td class="profilBorder" align="right">&#160;</td>
@@ -180,7 +271,7 @@
                      <tr>
                          <td align="center">
                              <p class="profilNoInput">
-                                 <span class="Rot finger"  data-th-onClick="accoundLoschen([[${profil.token}]],'loschen','platzhalter')">Accound Löschen</span>
+                                 <span class="Rot finger"  data-th-onClick="accountValid([[${profil.token}]],'loschen','platzhalter')">Account Löschen</span>
                              </p>
                          </td>
                          <td width="1">&#160;</td>
@@ -194,7 +285,12 @@
                  <b class="Rot">Bitte beachten Sie, dass Sie es nicht mehr wiederherstellen können.</b>
              </small>
          </div>
+     </div>
      </div><!-- Ende settingBody -->
+
+    <!-- Allgemein Footer -->
+    <div class="settingFooter"><small class="OldSilver">From Bote</small></div>
+</div><!-- Ende gridBox-->
 </div><!-- Ende Fragment:profil-->
 
 
@@ -205,16 +301,24 @@
 <!-- telefon, token, vorname                                                -->
 <!-- ********************************************************************** -->
 <div data-th-fragment="allgemeinfragment" data-th-if="${fragmentName == 'allgemeinfragment'}">
+<div class="gridBox settingBox">
     <!-- Head(fragment:settingHeadFragment), uncludet von diese Seite Zeile: 15 -->
+    <div class="settingHead">
     <div data-th-insert="/fragments/settingcomponents :: settingHeadFragment"></div>
-
+    </div><!-- Ende settingHead-->
+    
     <!-- Allgemein Body -->
-    <div class="profilBody">
+    <div class="settingBody">
+    <div class="settingTable">
     <div class="leer1">&#160;</div>
         <h2 align="center" data-th-text="${fragmentTitel}"></h2>
         <div data-th-text="${fragmentName}"></div>
-    </div><!-- Ende profilBody -->
+    </div><!-- Ende settingTable -->
+    </div><!-- Ende settingBody -->
 
+    <!-- Allgemein Footer -->
+    <div class="settingFooter">1</div>
+</div><!-- Ende gridBox-->
 </div><!-- Ende Fragment:Allgemein -->
 
 
@@ -229,11 +333,13 @@
     <div data-th-insert="/fragments/settingcomponents :: settingHeadFragment"></div>
 
     <!-- Darschtellung Body -->
-    <div class="profilBody">
+    <div class="settingBody">
+    <div class="settingTable">
     <div class="leer1">&#160;</div>
         <h2>Hallo Darstellung</h2>
         <div data-th-text="${fragmentName}"></div>
-    </div><!-- Ende profilBody -->
+    </div><!-- Ende settingTable -->
+    </div><!-- Ende settingBody -->
 
 </div><!-- Ende Fragment:Darstellung -->
 
@@ -249,11 +355,13 @@
     <div data-th-insert="/fragments/settingcomponents :: settingHeadFragment"></div>
 
     <!-- Sicherheit Body -->
-    <div class="profilBody">
+    <div class="settingBody">
+    <div class="settingTable">
     <div class="leer1">&#160;</div>
         <h2>Hallo Sicherheits</h2>
         <div data-th-text="${fragmentName}"></div>
-    </div><!-- Ende profilBody -->
+    </div><!-- Ende settingTable -->
+    </div><!-- Ende settingBody -->
 
 </div><!-- Ende Fragment:Sicherheit -->
 
@@ -269,11 +377,13 @@
     <div data-th-insert="/fragments/settingcomponents :: settingHeadFragment"></div>
 
     <!-- mitteilung Body -->
-    <div class="profilBody">
+    <div class="settingBody">
+    <div class="settingTable">
     <div class="leer1">&#160;</div>
         <h2>Hallo Miteilung</h2>
         <div data-th-text="${fragmentName}"></div>
-    </div><!-- Ende profilBody -->
+    </div><!-- Ende settingTable -->
+    </div><!-- Ende settingBody -->
 
 </div><!-- Ende Fragment:Mitteilung -->
 
@@ -289,11 +399,13 @@
     <div data-th-insert="/fragments/settingcomponents :: settingHeadFragment"></div>
 
     <!-- Sprache Body -->
-    <div class="profilBody">
+    <div class="settingBody">
+    <div class="settingTable">
     <div class="leer1">&#160;</div>
         <h2>Hallo Sprache</h2>
         <div data-th-text="${fragmentName}"></div>
-    </div><!-- Ende profilBody -->
+    </div><!-- Ende settingTable -->
+    </div><!-- Ende settingBody -->
 
 </div><!-- Ende Fragment:Sprache -->
 
@@ -309,11 +421,13 @@
     <div data-th-insert="/fragments/settingcomponents :: settingHeadFragment"></div>
 
     <!-- Sticker Body -->
-    <div class="profilBody">
+    <div class="settingBody">
+    <div class="settingTable">
     <div class="leer1">&#160;</div>
         <h2>Hallo Sticker</h2>
         <div data-th-text="${fragmentName}"></div>
-    </div><!-- Ende profilBody -->
+    </div><!-- Ende settingTable -->
+    </div><!-- Ende settingBody -->
 
 </div><!-- Ende Fragment:Sticker -->
 
@@ -329,11 +443,13 @@
     <div data-th-insert="/fragments/settingcomponents :: settingHeadFragment"></div>
 
     <!-- FAG Body -->
-    <div class="profilBody">
+    <div class="settingBody">
+    <div class="settingTable">
     <div class="leer1">&#160;</div>
         <h2>Hallo FAQ</h2>
         <div data-th-text="${fragmentName}"></div>
-    </div><!-- Ende profilBody -->
+    </div><!-- Ende settingTable -->
+    </div><!-- Ende settingBody -->
 
 </div><!-- Ende Fragment:FAG -->
 
@@ -348,11 +464,13 @@
     <div data-th-insert="/fragments/settingcomponents :: settingHeadFragment"></div>
 
     <!-- Support Body -->
-    <div class="profilBody">
+    <div class="settingBody">
+    <div class="settingTable">
     <div class="leer1">&#160;</div>
         <h2>Hallo Support</h2>
         <div data-th-text="${fragmentName}"></div>
-    </div><!-- Ende profilBoy -->
+    </div><!-- Ende settingTable -->
+    </div><!-- Ende settingBody -->
 
 </div><!-- Ende Fragment:Support -->
 
