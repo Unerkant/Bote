@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/img/podcasts.png" rel="icon" sizes="32x32" type="image/png">
     <style type="text/css"><!-- @import"/css/style.css"; --></style>
-    <style type="text/css"><!-- @import"/css/jqueryJcrop.css"; --></style>
+    <style type="text/css"><!-- @import"/css/croppie.css"; --></style>
     <script type="text/javascript" th:src="@{/javascript/cookie.js}"></script>
     <script type="text/javascript" th:src="@{/javascript/jquery360.js}"></script>
     <!--<script src="https://unpkg.com/jcrop"></script>-->
@@ -81,7 +81,7 @@
                 <td rowspan="2" width="40" align="center">
                     <span>QR</span>
                 </td>
-            <!-- Fail -->
+            <!-- hacken -->
                 <td rowspan="2" width="20">
                     <span>&#62;</span>
                 </td>
@@ -301,24 +301,40 @@
     
 
     <!-- ********************************* Rechte Seite/ Fragments Ausgabe ********************** -->
-    
 
     <div id="RECHTSBOX" class="rechtsBox boxSizing">
     <div id="RECHTSBOXBODY" class="rechtsBoxBody">
-
         <!--                                                    -->
         <!--    Alle Setting Fragments Ausgabe:                 -->
-        <!--    von settingcomponents.html                      -->
+        <!--    von profil.html                      -->
         <!--    variable zugesendet von SettingController.java  -->
         <!--    @PostMapping(value = "/einstellung")            -->
         <!--                                                    -->
-        <div id="FRAGMENTANZEIGEN" data-th-insert="/fragments/settingcomponents :: ${fragmentName}" ></div>
+        <div id="FRAGMENTANZEIGEN" data-th-switch="${fragmentHtml}">
+
+            <div data-th-case="'PROFIL'" data-th-insert="/fragments/setting/profil :: profilfragment"></div>
+            <div data-th-case="'ALLGEMEIN'" data-th-insert="/fragments/setting/allgemein :: allgemeinfragment"></div>
+            <div data-th-case="'DARSTELLUNG'" data-th-insert="/fragments/setting/darstellung :: darstellungfragment"></div>
+            <div data-th-case="'SICHERHEIT'" data-th-insert="/fragments/setting/sicherheit :: sicherheitfragment"></div>
+            <div data-th-case="'MITTEILUNG'" data-th-insert="/fragments/setting/mitteilung :: mitteilungfragment"></div>
+            <div data-th-case="'SPRACHE'" data-th-insert="/fragments/setting/sprache :: sprachefragment"></div>
+            <div data-th-case="'STICKER'" data-th-insert="/fragments/setting/sticker :: stickerfragment"></div>
+            <div data-th-case="'FAQ'" data-th-insert="/fragments/setting/faq :: faqfragment"></div>
+            <div data-th-case="'SUPPORT'" data-th-insert="/fragments/setting/support :: supportfragment"></div>
+            <div data-th-case="*" >
+                <div class="flexCenter" >
+                    <img width="128" class="itemMiddle" data-th-src="@{/img/geist.png}" alt="Geist">
+                </div>
+            </div>
+
+        </div>
 
     </div><!-- Ende rechtsBoxBody(fragment-Ausgabe) -->
     </div><!-- Ende rechtsBox(für slideBox)-->
 
 </div><!-- Ende sliderBox -->
 
+<script type="text/javascript" th:src="@{/javascript/croppie265.js}"></script>
 <script type="text/javascript" th:src="@{/javascript/setting.js}"></script>
 <script type="text/javascript" th:src="@{/javascript/profil.js}"></script>
 </body>

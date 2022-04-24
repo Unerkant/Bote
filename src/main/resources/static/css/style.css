@@ -18,6 +18,7 @@ a:link              { text-decoration: none; cursor: pointer; }
 /* background-image: url("../img/giter.png"); box-shadow: 0px 0px 5px 0px rgba: 0,0,0,0.9; */
 /* Box auf 100% kommen box-sizing: border-box; */
 
+.leer0              { height: 0.3em; border: 1px solid transparent; }
 .leer1              { height: 1.0em; border: 1px solid transparent; }
 .leer2              { height: 2.0em; border: 1px solid transparent; }
 .leer3              { height: 3.0em; border: 1px solid transparent; }
@@ -48,6 +49,7 @@ a:link              { text-decoration: none; cursor: pointer; }
 figure.settingBild  { width: 2.25em; border: 1px solid #FFF; border-radius: 5px; }
 img.blok			{ display: block; width: 100%; }
 img.rund            { width: 48px; height: 48px; border: 1px solid transparent; border-radius: 50%; }
+img.rund256         { width: 256px; height: 256px; border: 1px solid transparent; border-radius: 50%; }
 .gold70             { background-color: #FFCC66; }
 .grun70             { background-color: #66FF66; }
 .lila70             { background-color: #CC66FF; }
@@ -95,6 +97,7 @@ img.rund            { width: 48px; height: 48px; border: 1px solid transparent; 
 
 .itemCenter         { display: block; margin-left: auto; margin-right: auto; }
 .flexCenter         { display: flex; justify-content: center; align-items: center;}
+.itemMiddle         { position: absolute; top: 30%; translateY: -30%; }
             /* slider, horizontale-Ausrichtung */
 div.sliderBox           { display: flex; width: 100%; height: 100%; /* border: 1px solid red; */ }
 div.linksBox            { width: 300px; min-width: 300px; height: 100%;  /*border: 1px solid blue;*/ }
@@ -360,9 +363,18 @@ div.profilZahl          { width: 5.5em; padding: 5px; /* border: 1px solid black
 div.profilAbbrechen     { padding-top: 1.0em; }
     /* Bild style */
 div.profilInitial       { position: relative; background-color: #FFF; border: 1px solid #FFF; border-radius: 8px; padding: 0 1.0em;}
+
+div.cropp               { display: none; position: absolute; left: 0; top: 0; width: 100%; min-height: 350px;
+                          background-color: #FFF; z-index: 15; /* border: 1px solid black; */ }
+div.cropp-upload        { width: 100%; min-height: 350px; /* border: 1px solid red; */ }
+div.cropp-uploadBild    { width: 400px; height: 300px; border: 1px solid green; }
+button.cropp-button     { align: center; padding: 0.6em; font-size: inherit; letter-spacing: 1px; }
+
 div.profilBild          { width: 256px; height: 256px; border-radius: 50%; border: 1px solid #F2F2F2; font-size: 5.0em; z-index: 1;}
-img.profilBildCamera    { position: absolute; z-index: 10; }
-img.profilBildUpload    { position: absolute; z-index: 30; max-height: 256px; }
+img.profilBildCamera    { position: absolute; z-index: 5; }
+/* VORSICH: img.profilBildUpload, keine width angeben, ansonster verdekt er den img.profilBildCamera und den
+ span(settingcomponents/Zeile 120) mit dem class: Gray (pseudonym), es wird dann keinen onClick function möglich sein */
+img.profilBildUpload    { position: absolute; z-index: 10; max-height: 256px; height: 256px; border: 1px solid transparent; /*nicht verändern*/ }
 span.uploadAbbr         { display: none; color: #1608D3; }
 
     /* Ende Bild style */

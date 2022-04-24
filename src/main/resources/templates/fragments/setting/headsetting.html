@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<body>
+
+    <!-- ********************************************************************** -->
+    <!--                         Head Fragment                                  -->
+    <!--                                                                        -->
+    <!-- WIRD IN JEDER EINSTELLUNG: DIESER FRAGMENT INCLUDET                    -->
+    <!--                                                                        -->
+    <!-- H2/Tabelle user:id, bild, datum, email, name, pseudonym, role,         -->
+    <!-- telefon, token, vorname                                                -->
+    <!-- ********************************************************************** -->
+<div data-th-if="${fragmentTitel}" data-th-fragment="settingHeadFragment">
+
+    <!-- Head, wird includet in jedem unterem Fragment -->
+    <div>
+        <div class="settingKop">
+            <table border="0" width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td width="80">
+                        <span data-th-onClick="settingZuruck()" class="settingZuruck finger">&#60;&#160;Zurück</span>
+                    </td>
+                    <td align="center">
+                        <span data-th-text="${fragmentTitel}"></span>
+                    </td>
+                    <td width="80">&#160;</td>
+                </tr>
+            </table>
+        </div><!-- Ende settinglKop -->
+    </div><!-- Ende ohne class -->
+
+</div><!-- Ende settingHeadFragment -->
+
+</body>
+</html>

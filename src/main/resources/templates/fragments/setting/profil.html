@@ -1,38 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
-
 <body>
-
-
-<!-- ********************************************************************** -->
-<!--                         Head Fragment                                  -->
-<!--                                                                        -->
-<!-- WIRD IN JEDER EINSTELLUNG: DIESER FRAGMENT INCLUDET                    -->
-<!--                                                                        -->
-<!-- H2/Tabelle user:id, bild, datum, email, name, pseudonym, role,         -->
-<!-- telefon, token, vorname                                                -->
-<!-- ********************************************************************** -->
-<div data-th-if="${fragmentTitel}" data-th-fragment="settingHeadFragment">
-
-    <!-- Head, wird includet in jedem unterem Fragment -->
-<div>
-    <div class="settingKop">
-        <table border="0" width="100%" cellpadding="0" cellspacing="0">
-            <tr>
-                <td width="80">
-                    <span data-th-onClick="settingZuruck()" class="settingZuruck finger">&#60;&#160;Zurück</span>
-                </td>
-                <td align="center">
-                    <span data-th-text="${fragmentTitel}"></span>
-                </td>
-                <td width="80">&#160;</td>
-            </tr>
-        </table>
-    </div><!-- Ende settinglKop -->
-</div><!-- Ende ohne class -->
-
-</div><!-- Ende settingHeadFragment -->
-
 
     <!-- ********************************************************************** -->
     <!--                            Profil Fragment                             -->
@@ -50,7 +18,7 @@
 <div class="gridBox settingBox">
     <!-- Head(fragment:settingHeadFragment), uncludet von diese Seite Zeile: 15 -->
     <div class="settingHead">
-    <div data-th-insert="/fragments/settingcomponents :: settingHeadFragment"></div>
+    <div data-th-insert="/fragments/setting/headsetting :: settingHeadFragment"></div>
     </div><!-- Ende settingHead-->
 
     <!-- Profil Body -->
@@ -112,24 +80,42 @@
          </div><!--Ende profilKasten -->
          </div><!-- Ende profilCode -->
 
+
      <!--***** Bild hinzfügen oder Ändern -->
          <div class="leer1">&#160;</div>
          <div class="flexCenter profilInitial">
+
+         <!-- CROPPIE EXAMPLE - UPLOAD -->
+         <div id="CROPP" class="cropp">
+            <div id="CROPPUPLOAD" class="cropp-upload" align="center">
+                <div class="cropp-uploadBild" >
+                    <div id="CROPPUPLOADBILD"></div>
+                </div>
+                <div class="leer0"></div>
+                <div align="center">
+                    <button id="UPLOADSAVE" class="cropp-button">Speichern</button>
+                    <button class="cropp-button" data-th-onClick="profilAbbrechen('CROPPABBRECHEN')">Abbrechen</button>
+                </div>
+                <div class="leer0"></div>
+            </div>
+         </div><!-- Ende cropp-->
+
+         <!-- Standart anzeige Rundes Bildes -->
          <div class="flexCenter">
              <div class="flexCenter profilBild" data-th-if="${profil['bild'].length == 0}">
-                 <span class="Gray finger"  data-th-text="${profil.pseudonym}" data-th-onClick="uploadFile()"></span>
-                 <img class="profilBildCamera" width="36px" data-th-src="@{/img/camera.png}">
+                 <span class="Gray finger"  data-th-text="${profil.pseudonym}" data-th-onClick="uploadFile('BILDUPLOAD')"></span>
+                 <img class="profilBildCamera finger" width="36px" data-th-src="@{/img/camera.png}" data-th-onClick="uploadFile('BILDUPLOAD')">
                  <img id="BILDUPLOAD" class="profilBildUpload" src="">
              </div>
-             <div class="flexCenter profilBild finger" data-th-if="${profil['bild'].length > 0}" data-th-onClick="uploadFile()">
-                 <img class="blok" data-th-src="@{${'/profilbild/'+profil.bild+'.png'}}" >
+             <div class="flexCenter profilBild finger" data-th-if="${profil['bild'].length > 0}" data-th-onClick="uploadFile('BILDAKTUEL')">
+                 <img id="BILDAKTUEL" class="rund256" data-th-src="@{${'/profilbild/'+profil.bild+'.png'}}" >
              </div>
-         </div>
-         </div><!-- Ende FlexCenter -->
+         </div><!-- Ende flexCenter -->
+         </div><!-- Ende flexCenter profilInitial -->
 
          <!-- verstekte createElement input feld type file, profil.js/function bildUpload()  -->
          <div id="INPUTDIV" style="display: none;">
-             <input type="file" id="inputfile" multiple accept="image/*"  onChange="handleFiles(this.files)">
+             <input type="file" id="UPLOADFILE" > <!-- onChange="handleFiles(this.files)" -->
          </div>
 
          <!-- Text Bild ändern -->
@@ -140,9 +126,69 @@
                  <span id="UPABBR" class="uploadAbbr finger" data-th-onClick="profilAbbrechen('UPLOADABBRECHEN')">Abbrechen</span>
              </span>
              <span data-th-if="${profil['bild'].length > 0}">
-                 Profilbild ändern:
+                 <span>Profilbild ändern</span>
+                 <span>&#160;&#160;|&#160;&#160;</span>
+                 <span class="blau finger" data-th-onClick="profilbildLoschen([[${profil.bild}]])">Löschen</span>
              </span>
          </div>
+
+         <!--Bild-Upload javascript -->
+
+     <script th:inline="javascript">
+     /*<![CDATA[*/
+
+     $(document).ready(function(){
+
+        // Bilder Maß einstellen
+        $basic = $('#CROPPUPLOADBILD').croppie({
+            viewport: { width: 256, height: 256, type: 'circle' },
+            boundary: { width: 400, height: 300 },
+            showZoomer: false,
+            url: '/img/online.png'
+        });
+
+        // Bild Upload
+        $('#UPLOADFILE').on('change', function() {
+            var file = $(this).get(0).files;
+            var typs = uploadType(file);
+            if(typs == 'heic'){ return false; }
+
+            $('.cropp').toggle();
+	        var reader = new FileReader();
+            reader.onload = function (e) {
+                $basic.croppie('bind', {
+                    url: e.target.result
+                }).then(function(){
+                    //console.log('jQuery bind complete');
+                });
+            }
+            reader.readAsDataURL(this.files[0]);
+        });
+
+        // Upload-Bild Speichern
+        $('#UPLOADSAVE').on('click', function(){
+            $basic.croppie('result', {
+                type:   'canvas',
+                size:   'viewport'
+            }).then(function(resp){
+                $.ajax({
+                    url:        "/bildupload",
+                    type:       "POST",
+                    data:       {"imageurl": resp},
+                    success:    function(response){
+                                    $('.cropp').toggle();
+                                    $('#BILDUPLOAD').show().attr('src', resp);
+                                    $('#BILDUPLOAD').css({"width": "256px", borderRadius: "50%"});
+                                    $('#BILDAKTUEL').show().attr('src', resp);
+                                }
+                });
+            });
+        });
+
+     }); // ende ready
+
+     /*]]>*/
+     </script>
 
      <!--***** Nachricht Ausgeben & Freischalten Code -->
          <div class="leer5">
@@ -210,7 +256,7 @@
                          <td>
                              <input type="text" data-th-name="profilmail" minlength="2" maxlength="30"
                                     data-th-placeholder="${profil['email'].length == 0} ? 'E-Mail' : ${profil.email}"
-                                    data-th-class="${profil['email'].length == 0} ? 'profilInput Gray' : 'profilInput profilPlaceholder' "
+                                    data-th-class="${profil['email'].length == 0} ? 'profilInput LightGray' : 'profilInput profilPlaceholder' "
                                     data-th-onkeyup="this.value = this.value.toLowerCase()">
                          </td>
                          <td width="100" align="right">
@@ -229,7 +275,7 @@
                          <td class="profilBorder">
                              <input type="text" data-th-name="profiltelefon" minlength="8" maxlength="16"
                                     data-th-placeholder="${profil['telefon'].length == 0} ? '49123456789' : ${profil.telefon}"
-                                    data-th-class="${profil['telefon'].length == 0} ? 'profilInput Gray' : 'profilInput profilPlaceholder' "
+                                    data-th-class="${profil['telefon'].length == 0} ? 'profilInput LightGray' : 'profilInput profilPlaceholder' "
                                     data-th-onInput="this.value=this.value.replace(/[^0-9]/g,'');" >
                          </td>
                          <td width="100" class="profilBorder" align="right">
@@ -292,188 +338,6 @@
     <div class="settingFooter"><small class="OldSilver">From Bote</small></div>
 </div><!-- Ende gridBox-->
 </div><!-- Ende Fragment:profil-->
-
-
-<!-- ********************************************************************** -->
-<!--                          Allgemein Fragment                            -->
-<!--                                                                        -->
-<!-- H2/Tabelle user:id, bild, datum, email, name, pseudonym, role,         -->
-<!-- telefon, token, vorname                                                -->
-<!-- ********************************************************************** -->
-<div data-th-fragment="allgemeinfragment" data-th-if="${fragmentName == 'allgemeinfragment'}">
-<div class="gridBox settingBox">
-    <!-- Head(fragment:settingHeadFragment), uncludet von diese Seite Zeile: 15 -->
-    <div class="settingHead">
-    <div data-th-insert="/fragments/settingcomponents :: settingHeadFragment"></div>
-    </div><!-- Ende settingHead-->
-    
-    <!-- Allgemein Body -->
-    <div class="settingBody">
-    <div class="settingTable">
-    <div class="leer1">&#160;</div>
-        <h2 align="center" data-th-text="${fragmentTitel}"></h2>
-        <div data-th-text="${fragmentName}"></div>
-    </div><!-- Ende settingTable -->
-    </div><!-- Ende settingBody -->
-
-    <!-- Allgemein Footer -->
-    <div class="settingFooter">1</div>
-</div><!-- Ende gridBox-->
-</div><!-- Ende Fragment:Allgemein -->
-
-
-<!-- ********************************************************************** -->
-<!--                        Darstellung Fragment                            -->
-<!--                                                                        -->
-<!-- H2/Tabelle user:id, bild, datum, email, name, pseudonym, role,         -->
-<!-- telefon, token, vorname                                                -->
-<!-- ********************************************************************** -->
-<div data-th-fragment="darstellungfragment" data-th-if="${fragmentName == 'darstellungfragment'}">
-    <!-- Head(fragment:settingHeadFragment), uncludet von diese Seite Zeile: 15 -->
-    <div data-th-insert="/fragments/settingcomponents :: settingHeadFragment"></div>
-
-    <!-- Darschtellung Body -->
-    <div class="settingBody">
-    <div class="settingTable">
-    <div class="leer1">&#160;</div>
-        <h2>Hallo Darstellung</h2>
-        <div data-th-text="${fragmentName}"></div>
-    </div><!-- Ende settingTable -->
-    </div><!-- Ende settingBody -->
-
-</div><!-- Ende Fragment:Darstellung -->
-
-
-<!-- ********************************************************************** -->
-<!--                        Sicherheits Fragment                            -->
-<!--                                                                        -->
-<!-- H2/Tabelle user:id, bild, datum, email, name, pseudonym, role,         -->
-<!-- telefon, token, vorname                                                -->
-<!-- ********************************************************************** -->
-<div data-th-fragment="sicherheitfragment" data-th-if="${fragmentName == 'sicherheitfragment'}">
-    <!-- Head(fragment:settingHeadFragment), uncludet von diese Seite Zeile: 15 -->
-    <div data-th-insert="/fragments/settingcomponents :: settingHeadFragment"></div>
-
-    <!-- Sicherheit Body -->
-    <div class="settingBody">
-    <div class="settingTable">
-    <div class="leer1">&#160;</div>
-        <h2>Hallo Sicherheits</h2>
-        <div data-th-text="${fragmentName}"></div>
-    </div><!-- Ende settingTable -->
-    </div><!-- Ende settingBody -->
-
-</div><!-- Ende Fragment:Sicherheit -->
-
-
-<!-- ********************************************************************** -->
-<!--                   Miteilung & Töne Fragment                            -->
-<!--                                                                        -->
-<!-- H2/Tabelle user:id, bild, datum, email, name, pseudonym, role,         -->
-<!-- telefon, token, vorname                                                -->
-<!-- ********************************************************************** -->
-<div data-th-fragment="mitteilungfragment" data-th-if="${fragmentName == 'mitteilungfragment'}">
-    <!-- Head(fragment:settingHeadFragment), uncludet von diese Seite Zeile: 15 -->
-    <div data-th-insert="/fragments/settingcomponents :: settingHeadFragment"></div>
-
-    <!-- mitteilung Body -->
-    <div class="settingBody">
-    <div class="settingTable">
-    <div class="leer1">&#160;</div>
-        <h2>Hallo Miteilung</h2>
-        <div data-th-text="${fragmentName}"></div>
-    </div><!-- Ende settingTable -->
-    </div><!-- Ende settingBody -->
-
-</div><!-- Ende Fragment:Mitteilung -->
-
-
-<!-- ********************************************************************** -->
-<!--                            Sprache Fragment                            -->
-<!--                                                                        -->
-<!-- H2/Tabelle user:id, bild, datum, email, name, pseudonym, role,         -->
-<!-- telefon, token, vorname                                                -->
-<!-- ********************************************************************** -->
-<div data-th-fragment="sprachefragment" data-th-if="${fragmentName == 'sprachefragment'}">
-    <!-- Head(fragment:settingHeadFragment), uncludet von diese Seite Zeile: 15 -->
-    <div data-th-insert="/fragments/settingcomponents :: settingHeadFragment"></div>
-
-    <!-- Sprache Body -->
-    <div class="settingBody">
-    <div class="settingTable">
-    <div class="leer1">&#160;</div>
-        <h2>Hallo Sprache</h2>
-        <div data-th-text="${fragmentName}"></div>
-    </div><!-- Ende settingTable -->
-    </div><!-- Ende settingBody -->
-
-</div><!-- Ende Fragment:Sprache -->
-
-
-<!-- ********************************************************************** -->
-<!--                            Sticker Fragment                            -->
-<!--                                                                        -->
-<!-- H2/Tabelle user:id, bild, datum, email, name, pseudonym, role,         -->
-<!-- telefon, token, vorname                                                -->
-<!-- ********************************************************************** -->
-<div data-th-fragment="stickerfragment" data-th-if="${fragmentName == 'stickerfragment'}">
-    <!-- Head(fragment:settingHeadFragment), uncludet von diese Seite Zeile: 15 -->
-    <div data-th-insert="/fragments/settingcomponents :: settingHeadFragment"></div>
-
-    <!-- Sticker Body -->
-    <div class="settingBody">
-    <div class="settingTable">
-    <div class="leer1">&#160;</div>
-        <h2>Hallo Sticker</h2>
-        <div data-th-text="${fragmentName}"></div>
-    </div><!-- Ende settingTable -->
-    </div><!-- Ende settingBody -->
-
-</div><!-- Ende Fragment:Sticker -->
-
-
-<!-- ********************************************************************** -->
-<!--                                FAQ Fragment                            -->
-<!--                                                                        -->
-<!-- H2/Tabelle user:id, bild, datum, email, name, pseudonym, role,         -->
-<!-- telefon, token, vorname                                                -->
-<!-- ********************************************************************** -->
-<div data-th-fragment="faqfragment" data-th-if="${fragmentName == 'faqfragment'}">
-    <!-- Head(fragment:settingHeadFragment), uncludet von diese Seite Zeile: 15 -->
-    <div data-th-insert="/fragments/settingcomponents :: settingHeadFragment"></div>
-
-    <!-- FAG Body -->
-    <div class="settingBody">
-    <div class="settingTable">
-    <div class="leer1">&#160;</div>
-        <h2>Hallo FAQ</h2>
-        <div data-th-text="${fragmentName}"></div>
-    </div><!-- Ende settingTable -->
-    </div><!-- Ende settingBody -->
-
-</div><!-- Ende Fragment:FAG -->
-
-<!-- ********************************************************************** -->
-<!--                            Support Fragment                            -->
-<!--                                                                        -->
-<!-- H2/Tabelle user:id, bild, datum, email, name, pseudonym, role,         -->
-<!-- telefon, token, vorname                                                -->
-<!-- ********************************************************************** -->
-<div data-th-fragment="supportfragment" data-th-if="${fragmentName == 'supportfragment'}">
-    <!-- Head(fragment:settingHeadFragment), uncludet von diese Seite Zeile: 15 -->
-    <div data-th-insert="/fragments/settingcomponents :: settingHeadFragment"></div>
-
-    <!-- Support Body -->
-    <div class="settingBody">
-    <div class="settingTable">
-    <div class="leer1">&#160;</div>
-        <h2>Hallo Support</h2>
-        <div data-th-text="${fragmentName}"></div>
-    </div><!-- Ende settingTable -->
-    </div><!-- Ende settingBody -->
-
-</div><!-- Ende Fragment:Support -->
-
 
 </body>
 </html>

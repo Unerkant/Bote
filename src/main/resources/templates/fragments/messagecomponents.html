@@ -41,7 +41,7 @@
                  <p class="messageHeadName" data-th-text="${freundPseu}+'/'+${freundToken}"></p>
              </td>
              <td width="100" height="60" valign="middle" align="center"  rowspan="2">
-                 <img class="rund" data-th-src="@{${'/profilbild/online.png'}}">
+                 <img class="rund" data-th-src="@{${'/img/online.png'}}">
              </td>
          </tr>
          <tr>
@@ -165,7 +165,7 @@
                 <span data-th-text="${mainDaten['name'].length == 0} ? ${mainDaten['pseudonym']} : ${mainDaten['vorname']} +' '+ ${mainDaten['name']}"></span>
             </td>
             <td width="100" height="50" align="center" valign="middle">
-               <img class="rund"  data-th-src="@{${mainDaten.bild == null} ? ${'/profilbild/online.png'} : ${'/profilbild/'+mainDaten.bild} }">
+               <img class="rund"  data-th-src="@{${mainDaten['bild'].length == 0} ? ${'/img/online.png'} : ${'/profilbild/'+mainDaten.bild+'.png'} }">
             </td>
         </tr>
     </table>

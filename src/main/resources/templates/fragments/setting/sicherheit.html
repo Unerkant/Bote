@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<body>
+
+    <!-- ********************************************************************** -->
+    <!--                        Sicherheits Fragment                            -->
+    <!--                                                                        -->
+    <!-- H2/Tabelle user:id, bild, datum, email, name, pseudonym, role,         -->
+    <!-- telefon, token, vorname                                                -->
+    <!-- ********************************************************************** -->
+<div data-th-fragment="sicherheitfragment" data-th-if="${fragmentName == 'sicherheitfragment'}">
+    <div class="gridBox settingBox">
+    <!-- Head(fragment:settingHeadFragment), uncludet von sicherheit.html -->
+    <div class="settingHead">
+        <div data-th-insert="/fragments/setting/headsetting :: settingHeadFragment"></div>
+    </div><!-- Ende settingHead-->
+
+    <!-- Sicherheit Body -->
+    <div class="settingBody">
+        <div class="settingTable">
+            <div class="leer1">&#160;</div>
+            <h2>Hallo Sicherheits</h2>
+            <div data-th-text="${fragmentName}"></div>
+        </div><!-- Ende settingTable -->
+    </div><!-- Ende settingBody -->
+
+    <!-- Allgemein Footer -->
+    <div class="settingFooter">
+        <small class="OldSilver">From Bote</small>
+    </div>
+
+    </div><!-- Ende gridBox-->
+</div><!-- Ende Fragment:Sicherheit -->
+
+</body>
+</html>

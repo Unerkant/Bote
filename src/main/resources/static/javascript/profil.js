@@ -19,11 +19,25 @@
  /**
   * wird benutzt von #PROFILCODE
   * settingcomponents/ Zeile: 110
+  * PROFILCODE: // fehler & ok Fenster ausbllenden, input-code leer setzen
+  * #PROFILCODE: ausblenden
+  *
+  * #CROPPABBRECHNEN: Zeile 129
+  *
+  * #UPLOADABBRECHEN: Zeile 140
   */
  function profilAbbrechen(id){
     event.preventDefault();
     switch(id){
-        case'PROFILCODE':       $('#'+id).hide();
+        case'PROFILCODE':       $('#CODEINFO').hide();
+                                $('#CODEFEHLER').hide();
+                                $('#PROFILCODE1').val('');
+                                $('#PROFILCODE2').val('');
+                                $('#PROFILCODE3').val('');
+                                $('#PROFILCODE4').val('');
+                                $('#'+id).hide();
+                                break;
+        case'CROPPABBRECHEN':   $('.cropp').toggle();
                                 break;
         case'UPLOADABBRECHEN':  $('#BILDUPLOAD').hide();
                                 $('#UPABBR').hide();
@@ -34,78 +48,54 @@
 
  }
 
- /**
-  * Offnet nur das Fenster 'Dateien für Upload auswählen'
-  * settingcomponents/ Zeile 127
-  */
- function uploadFile(){
-    event.preventDefault();
-    $('#BILDUPLOAD').va
-    $('#inputfile').trigger('click');
-    //console.log('test');
- }
- /**
-  * FILE Input Auslesen
-  * settingcomponents/ profil Fragment Zeile 134
-  */
- function handleFiles(file){
-    event.preventDefault();
-    for(var i = 0; i < file.length; i++){
-        var names   = file[i].name;
-        var bytes   = file[i].size;
-        var types   = file[i].type;
-    }
-       $('#HINZU').hide();
-       $('#UPABBR').show();
-       var reader = new FileReader();
-       reader.readAsDataURL(file[0]);
-       reader.addEventListener("load", function(e) {
+  /**
+   * Offnet nur das Fenster 'Dateien für Upload auswählen'
+   * settingcomponents/ Zeile 138 & 142
+   */
+  function uploadFile(data){
+     event.preventDefault();
+     $('#UPLOADFILE').trigger('click');
+  }
 
-         //$('#BILDUPLOAD').show().attr('src', e.target.result);
-        /*
-         *  Bild verkleinern max auf 256px
-         *  Neue Bild Daten sind in imageURL gespeichert
-         *  und schliesslich in #BILDUPLOAD ausgegeben
-         *  settingcomponents/ Zeile 122
-         */
-        var image = new Image();
-        image.onload = function(imageEvent){
-            var maxsize = 256;
-            var w       = image.width;
-            var h       = image.height;
-            if (w > h) {
-                if (w > maxsize) { h*=maxsize/w; w=maxsize; }
-            } else {
-                if (h > maxsize) { w*=maxsize/h; h=maxsize; }
+  /**
+   * type: jpeg, png, gif oder heic
+   * wird benutzt in settingcomponents.html on change Zeile: 184
+   * ermiteln von type Bilder, bei findich einen HEIC - Fehler ausgeben
+   * weil nicht jeder heic-type werde untrschtützt
+   */
+  function uploadType(file){
+
+     for(var i = 0; i < file.length; i++){
+         //var names   = file[i].name;
+         //var bytes   = file[i].size;
+         var types   = file[i].type;
+     }
+     var heics = types.substr(types.lastIndexOf('/') + 1);
+     if(heics == 'heic'){
+         profilMessage('falschetype');
+     }
+     return heics;
+  }
+
+ /**
+  * Profil Bild Löschen
+  * Zeile: 163
+  */
+ function profilbildLoschen(bildname){
+    event.preventDefault();
+    var warnung = 'sind sie sicher dass Sie ihren Profil Bild Löschen möchten';
+     if(confirm(warnung) == true){
+        $.post('/profilbildloschen', {'bildname': bildname})
+        .done(function(out){
+            if(out == 1){
+                profilMessage('bildGeloscht');
+            }else{
+                profilMessage('nichtGeloscht');
             }
-            var canvas = document.createElement('canvas');
-            canvas.width  = w;
-            canvas.height = h;
-            canvas.getContext('2d').drawImage(image, 0, 0, w, h);
-            var imageURL = canvas.toDataURL("image/png");
-            $('#BILDUPLOAD').show().attr('src', imageURL);
-
-            $.post('/bildupload', {'imageurl': imageURL})
-            .done(function(data){
-                //alert(data.ret);
-                if(data.ret == 200){
-                    $('#UPABBR').hide();
-                    $('#HINZU').show();
-                    profilMessage('okBild');
-                }else{
-                    profilMessage('noBild');
-                }
-            });
-            //console.log('Canvas: ' + imageURL);
-        }// ende image
-        image.src = e.target.result; // Starten: image.onload
-
-        //Bild mit alten width & height
-        //var imgURL = e.target.result;
-
-       });// ende reader
-
-    //console.log(file);
+        });
+     }else{
+        return false;
+     }
  }
 
 
@@ -279,11 +269,10 @@
         $('#PROFILCODE4').val('');
         $('#PROFILCODE1').focus();
         $('#PROFILFORM').css('border','3px solid red');
-
+        $('#CODEINFO').fadeOut(300);
+        $('#CODEFEHLER').fadeIn(600);
         /* bei Falsche Code, Fehler-Info anzeigen */
-        if(versuche == 1){
-            $('#CODEINFO').fadeOut(300);
-            $('#CODEFEHLER').fadeIn(600);
+        if(versuche == 0){
             $('#RICHTIGECODE').html(itemCode);
         }
         /* nach 3 versuchen abbrechen */
@@ -399,6 +388,12 @@
         case'noBild':       $('#SETTINGFEHLER').fadeIn(600).delay(10000).fadeOut(600).queue();
                             $('#SETTINGFEHLER').html('Bild kann nicht gespeichert werden.');
                             break;
+        case'falschetype':  $('#SETTINGFEHLER').fadeIn(600).delay(10000).fadeOut(600).queue();
+                            $('#SETTINGFEHLER').html('bitte, HEIC Bilder in jpg oder png umwandeln');
+                            break;
+        case'nichtGeloscht':$('#SETTINGFEHLER').fadeIn(600).delay(10000).fadeOut(600).queue();
+                            $('#SETTINGFEHLER').html('Bild kann nicht Gelöscht werden.');
+                            break;
         case'kurzevorname': $('#SETTINGFEHLER').fadeIn(600).delay(10000).fadeOut(600).queue();
                             $('#SETTINGFEHLER').html('Vorname besteht nicht mindestens aus 2 Zeichen.');
                             break;
@@ -435,7 +430,11 @@
                             break;
 
         case'okBild':       $('#SETTINGOK').fadeIn(600).delay(10000).fadeOut(600);
-                            $('#SETTINGOK').html('Ihre Profi Bild wurde erfolgreich gespeichert');
+                            $('#SETTINGOK').html('Ihre Profil Bild wurde erfolgreich gespeichert');
+                            break;
+        case'bildGeloscht': $('#SETTINGOK').fadeIn(600).delay(10000).fadeOut(600);
+                            $('#SETTINGOK').html('Ihre Profil Bild wurde erfolgreich gelöscht');
+                            setTimeout(function(){location.href='/'}, 5000);
                             break;
         case'abmelden':     $('#SETTINGOK').fadeIn(600).delay(10000).fadeOut(600);
                             $('#SETTINGOK').html('Sie haben sich erfogreich abgemeldet.<br>'

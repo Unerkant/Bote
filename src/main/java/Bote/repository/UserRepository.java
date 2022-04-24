@@ -29,8 +29,9 @@ public interface UserRepository extends CrudRepository<User, Integer> {
 
 
    /**
-    *   bentzt von settingController/@PostMapping(value = "bildupload")
-    *   Profil Bild Name Update,
+    *   Benutzt von settingController/@PostMapping(value = "bildupload")
+    *   Benutzt von settingController/@PostMapping(value = "/profilbildloschen")
+    *   Profil Bild Name Update & Profil Bild Löschen(bei Löschen profilbild wird leer zugesendet)
     */
     @Modifying
     @Transactional

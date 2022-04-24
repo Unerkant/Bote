@@ -13,7 +13,7 @@ $('.einstellung').click(function(){
      var fragmentTitel  = $(this).attr('titel');
      var fragmentName   = $(this).attr('name');
      var myToken        = $(this).attr('token');
-   //alert(itemId +'/'+ fragmentTitel +'/'+ fragmentName +'/'+ myToken );
+     //alert(itemId +'/'+ fragmentTitel +'/'+ fragmentName +'/'+ myToken );
 
    /**
     *   Background - Active Fenster zurück setzen
@@ -34,7 +34,7 @@ $('.einstellung').click(function(){
    /**
     *   Daten Senden an SettingController.java
     */
- $.post('/einstellung', {'fragmentName': fragmentName, 'fragmentTitel': fragmentTitel, 'myToken': myToken})
+ $.post('/einstellung', {'fragmentName': fragmentName, 'fragmentTitel': fragmentTitel, 'myToken': myToken, 'itemId': itemId })
             .done(function(data){
                       //alert(data);
                       $('#FRAGMENTANZEIGEN').replaceWith(data);

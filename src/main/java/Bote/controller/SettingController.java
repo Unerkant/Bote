@@ -4,20 +4,26 @@ import Bote.configuration.GlobalConfig;
 import Bote.model.Freunde;
 import Bote.model.User;
 import Bote.service.*;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.imageio.ImageIO;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.xml.bind.DatatypeConverter;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,13 +32,6 @@ import java.util.stream.Collectors;
 
 @Controller
 public class SettingController {
-
-    private User            meineDaten;
-    private String          meinenToken;
-    private User            meinerDaten;
-    private String          fragmentName;
-    private String          fragmentTitel;
-    private String          volleFragmentTitel;
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
@@ -52,7 +51,7 @@ public class SettingController {
     *   Setting HTML Starten
     *   Linke Seite: Ausgabe von Bild & E-Mail-Adresse
     */
-
+    private User    meineDaten;
     @GetMapping(value = "/setting")
     public String setting(@CookieValue(value = "userid", required = false) String meineId,
                           Model model)
@@ -78,7 +77,22 @@ public class SettingController {
 
 
    /**
-    *   Bild Upload
+    *   Profil Bild aus dem Datei(profilbild) Laden
+    *   und anzeigen lassen
+    */
+    @GetMapping(value = "/profilbild/{imageName}", produces = MediaType.IMAGE_PNG_VALUE)
+    public @ResponseBody byte[] profilBild(@PathVariable(value = "imageName", required = true) String bildName)
+                                           throws IOException {
+
+        File bildFile = new File("./profilbild/" + bildName);
+        logger.info("settingController/profilbild: " + bildName);
+        return IOUtils.toByteArray(bildFile.toURI());
+
+    }
+
+   /**@
+    *   Profil Bild Upload
+    *   Bild-Name, wird das Gleiche gegeben wie user token
     */
     private Integer bild;
     @PostMapping(value = "bildupload")
@@ -87,21 +101,20 @@ public class SettingController {
                                           @RequestParam(value = "imageurl", defaultValue = "") String imageBase) {
 
         Map<String, Object> res = new HashMap<String, Object>();
-        //File imageFile = new File(String.valueOf(this.getClass().getResourceAsStream("/static/profilbild/"+uploadCookie+".png")));
-        //File imageFile = new File("/static/profilbild/"+uploadCookie+".png");
-        File imageFile = new File("/Users/paulrichter/ideaProject/Bote/src/main/resources/static/profilbild/"+uploadCookie+".png");
+        File imageFile = new File("./profilbild/"+uploadCookie+".png");
+        imageFile.mkdirs();
         try {
             byte[] decodedBytes = DatatypeConverter.parseBase64Binary(imageBase.replaceAll("data:image/.+;base64,", ""));
             BufferedImage buff = ImageIO.read(new ByteArrayInputStream(decodedBytes));
             ImageIO.write(buff, "png", imageFile);
             buff.flush();
-            res.put("ret", 200);
             // Bild Name in Datenbank Tabelle: user aktualisieren
             bild = userService.bildUpdate(uploadCookie, uploadCookie);
-            //logger.info("TRY: " + buff);
+            res.put("ret", 200);
+            //logger.info("TRY: " + decodedBytes);
         }catch (Exception e){
             res.put("ret", -1);
-            res.put("msg", "Verarbeitung aufgrund eines Bildverarbeitungsfehlers nicht möglich.");
+            //res.put("msg", "Verarbeitung aufgrund eines Bildverarbeitungsfehlers nicht möglich.");
             return res;
         }
 
@@ -109,25 +122,51 @@ public class SettingController {
         return res;
     }
 
+   /**
+    *   Profil Bild Löschen
+    *   nameBild - ist das gleiche wie user token
+    */
+    private Integer bildGeloscht;
+    @PostMapping(value = "/profilbildloschen")
+    @ResponseBody
+    public String profilbildLoschen(@RequestParam(value = "bildname", required = true) String nameBild
+                                    ) throws Exception{
+        bildGeloscht = userService.bildUpdate("", nameBild);
+        logger.info("Profil Bild Loöschen: " + bildGeloscht);
+        return String.valueOf(bildGeloscht);
+    }
 
    /**
     *   Setting: Steuerung von einzelnen bereiche
     *   attributeName: fragmentName (erkennungs variable)
-    *   in settingcomponents.html (wird bei jedem Fragment geprüft)
+    *   in profil.html (wird bei jedem Fragment geprüft)
     */
+    private String          meinenToken;
+    private User            meinerDaten;
+    private String          fragmentName;
+    private String          fragmentTitel;
+    private String          itemId;
+    private String          volleFragmentTitel;
     @PostMapping(value = "/einstellung")
     public String profilFragment(@CookieValue(value = "userid", required = false) String profilcookie,
                                  Model model,
-                                 HttpServletRequest request){
+                                 HttpServletRequest request,
+                                 HttpSession session){
 
         meinenToken     = request.getParameter("myToken");
         fragmentName    = request.getParameter("fragmentName");
         fragmentTitel   = request.getParameter("fragmentTitel");
+        itemId          = request.getParameter("itemId");
+
+        String links = "/fragments/setting/"+itemId;
 
         meinerDaten     = userService.findeUserToken(Long.valueOf(profilcookie));
 
         model.addAttribute("fragmentName", fragmentName);
         model.addAttribute("meinerDaten", meinerDaten);
+        model.addAttribute("fragmentHtml", itemId);
+        //session.setAttribute("fragmentHtml", itemId);
+
 
         switch (fragmentTitel){
             case "profil":      volleFragmentTitel = "Profil bearbeiten"; break;
@@ -141,10 +180,10 @@ public class SettingController {
             case "support":     volleFragmentTitel = "Frage & Support"; break;
             default:            volleFragmentTitel = "Allgemein";
         }
-        /* den vollen Titel text in Fragment Head ausgeben settingcomponents.html Zeile: 26  */
+        /* den vollen Titel text in Fragment Head ausgeben profil.html Zeile: 26  */
         model.addAttribute("fragmentTitel", volleFragmentTitel);
 
-        logger.info("POSTMAPPING/EINSTELLUNG: / " + fragmentTitel +"/"+ volleFragmentTitel );
+        logger.info("POSTMAPPING/EINSTELLUNG: / " + fragmentName +"/"+ itemId  );
         return (profilcookie == null ? "/login/maillogin" : "/setting :: #FRAGMENTANZEIGEN");
         //return "setting ::" + showprofil;
     }
@@ -153,7 +192,7 @@ public class SettingController {
    /**
     *   Profil Save
     *
-    *   in settingcomponents.html
+    *   in profil.html
     */
 
     private Integer     vornameUpdate;
@@ -242,24 +281,23 @@ public class SettingController {
 
         /* mail mit code an alte E-Mail-Adresse vesenden */
         if (alteMail != null && !alteMail.isBlank()){
-            /*mail = GlobalConfig.mailSenden(alteMail, code);
+            mail = GlobalConfig.mailSenden(alteMail, code);
             if (mail.equals("nomail")){
                 return "nomail";
-            }*/
+            }
         }
         /* sms mit code an die alte Telefonnummer versenden */
         if (alteTelefon != null && !alteTelefon.isBlank()){
-            /*telefon = GlobalConfig.smsSenden(alteTelefon, code);
+            telefon = GlobalConfig.smsSenden(alteTelefon, code);
             if (telefon.equals("nosms")){
                 return "nosms";
-            }*/
+            }
         }
-        /*
-         *  code an prfil.js/codeHolen()... senden
-         */
+
+       /*
+        *  code an prfil.js/codeHolen()... senden
+        */
         return String.valueOf(code);
-
-
     }
 
    /**

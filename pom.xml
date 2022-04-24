@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.example</groupId>
 	<artifactId>Bote</artifactId>
-	<version>1.0.3</version>
+	<version>1.0.4</version>
 	<name>Bote</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
@@ -72,6 +72,14 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency>
+
+		<!-- FILE UPLOAD(zugriff auf Datei = profilbild) -->
+		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.11.0</version>
 		</dependency>
 
 		<!-- JSON -->
