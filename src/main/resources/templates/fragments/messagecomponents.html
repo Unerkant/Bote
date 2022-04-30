@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html lang="de" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 
 <body>
 
@@ -27,8 +27,8 @@
 
     <div class="gridBox" data-th-if="${meinMessageToken.equals(freundMessageToken)}" ><!-- th:if="${messagetoken}" -->
 
-        <!-- Daten zugesendet von MessageController.java: @PostMapping(fragmentmessages)-->
-        <div class="messageHead">
+    <!-- Daten zugesendet von MessageController.java: @PostMapping(fragmentmessages)-->
+    <div class="messageHead">
          <table border="0" width="100%"  cellpadding="0" cellspacing="0">
          <tr>
              <td width="100" align="center" rowspan="2" >
@@ -52,12 +52,13 @@
          </table>
 
 
-<!-- STOMP FEHLER AUSGEBEN-->
+            <!-- STOMP FEHLER AUSGEBEN-->
             <div id="STOMPFEHLER"></div>
-        </div><!-- Ende messageHead -->
+
+    </div><!-- Ende messageHead -->
 
 <!-- MESSAGE ASUGABE -->
-        <div class="messageBody">
+    <div class="messageBody">
 
 <!-- 1. Message Ausgabe von Datenbank -->
         <!-- H2:Database Tabelle:MESSAGES id, datum, messagetoken, vorname, name, pseudonym, meinToken, text, role-->
@@ -93,14 +94,8 @@
         <!-- Deklariert in messenger.js Zeile: 105 -->
     </div>
 
+    </div><!-- Ende messageBody -->
 <!-- ENDE MESSAGE AUSGABE -->
-
-  <!--      <div class="nochKeineMessage" th:if="${gemeinsamemessage.size == 0}">
-            <p class="freundeFooterNo">Keine Nachrichten noch verfasst</p>
-        </div>
--->
-        </div><!-- Ende messageBody -->
-    <!-- Ende message Ausgabe -->
 
 
     <!-- FOOTER: Textarea und senden -->
@@ -144,155 +139,6 @@
 
 </div><!-- Ende, nur auf Leer prüfen  -->
 </div><!-- Ende .messageFragments & if: nameFragment -->
-
-
-<!-- ******************************* Neuer Chat Fragment(neuer freunde) *****************************+ -->
-
-
-<div data-th-fragment="neuerchatfragment" data-th-if="${nameFragment == 'neuerchatfragment'}">
-
-<div class="neuerChat gridBox">
-    <div class="neuerChatKop">
-    <table border="0" width="100%" cellpadding="0" cellspacing="0">
-        <tr data-th-each="mainDaten : ${myDaten}">
-            <td width="100">
-                <span class="neuerChatZuruck finger" data-th-onclick="neuerChatZuruck()">&#160; &#60; zuruck</span>
-                <span class="neuerChatSchliessen finger">&#160;
-                     <a href="/messenger">Schließen</a>
-                 </span>
-            </td>
-            <td class="neuerChatMyName" align="center">
-                <span data-th-text="${mainDaten['name'].length == 0} ? ${mainDaten['pseudonym']} : ${mainDaten['vorname']} +' '+ ${mainDaten['name']}"></span>
-            </td>
-            <td width="100" height="50" align="center" valign="middle">
-               <img class="rund"  data-th-src="@{${mainDaten['bild'].length == 0} ? ${'/img/online.png'} : ${'/profilbild/'+mainDaten.bild+'.png'} }">
-            </td>
-        </tr>
-    </table>
-    </div><!-- Ende neuerChatKop-->
-
-    <div class="neuerChatBody">
-        <div class="neuerChatBox">
-            <div class="leer3">&#160;</div>
-            <form class="marginNull" name="form">
-            <fieldset class="neuerChatFieldset">
-                <legend align="center">Freunde Suchen</legend>
-            <div id="NEUERCHATINPUT">
-                <input type="text" class="inputAll neuerChatInput" minlength="6" maxlength="50"
-                       data-th-onKeyup="this.value = this.value.toLowerCase()"
-                       data-th-onInput="(!isNaN(this.value) && this.value.length > 16) ? this.value = this.value.slice(0, 16) : '' "
-                       placeholder="mustermann@mail.de oder 491751234567" name="telemail" data-th-required="required" autofocus>
-                <div class="leer2">&#160;</div>
-                <div align="center">
-                <button class="buttonAll buttonBlau neuerChatButton" type="submit" data-th-onClick="neuerChatSuchen(this.form)">Suchen</button>
-                </div>
-            </div>
-
-        <!-- Fehler Ausgebn -->
-        <div id="NEUERCHATFEHLERAUSGABE" class="leer4"  style="border: 1px solid transparent; overflow: hidden;">
-            <!-- Fehler: bei Leeren Feld Quelle: freunde.js Zeile:58 -->
-            <div id="NEUERCHATFELDLEER" class="fehler">Feld darf nicht leer sein!</div>
-            <div id="KEINEGULTIGEMAIL" class="fehler">Keine Gültige E-Mail!</div>
-            <!-- Fehler: ausgabe von FreundeController.java PostMapping('bekantensuchen') -->
-            <div data-th-switch="${fehlerAusgaben}">
-                <p data-th-case=" 'eigenesTelefon' " data-th-id="${fehlerAusgaben}" class="fehler" >Eingenes Telefonnummer nicht erlaubt!!</p>
-                <p data-th-case=" 'freundTelefon' " data-th-id="${fehlerAusgaben}" class="fehler" >der telefonnummer ist schon als Freund vorhanden!</p>
-                <p data-th-case=" 'eigenesMail' " data-th-id="${fehlerAusgaben}" class="fehler" >Eingenes E-Mail nicht erlaubt!!</p>
-                <p data-th-case=" 'freundMail' " data-th-id="${fehlerAusgaben}" class="fehler" >die E-Mail ist schon als Freund vorhanden!</p>
-                <p data-th-case=" 'noDaten' " data-th-id="${fehlerAusgaben}" class="fehler" >Keine Übereinstimmung gefunden!</p>
-                <script th:inline="javascript">
-                /*<![CDATA[*/
-                    var out = [[${fehlerAusgaben}]];
-                    $('#'+out).slideDown(600).delay(15000).slideUp(600);
-                /*]]>*/
-                </script>
-            </div>
-        </div>
-        <!-- Ausgabe von Ergebnis -->
-
-        <div class="leer2">&#160;</div>
-        <div id="NEUERCHATGEFUNDEN" class="neuerChatGefunden">
-
-            <div data-th-if="datenGefunden" data-th-each=" gefunden : ${datenGefunden}">
-                <table border="0" width="100%" cellpadding="0" cellspacing="0" >
-                    <caption>Suchergebnisse für: <span data-th-text="${suchOption}"></span></caption>
-                    <tr>
-                        <td colspan="2">
-                            <hr class="linie">
-                            <div class="leer1">&#160;</div>
-                        </td>
-                    </tr>
-                    <tr class="neuerChatText">
-                        <td width="50%" data-th-text="${gefunden['name'].length == 0} ? ${gefunden.pseudonym} : ${gefunden.vorname} +' '+ ${gefunden.name}"></td>
-                        <td align="right" data-th-text="${gefunden['telefon'].length == 0} ? ${gefunden['email']} : ${gefunden.telefon}" ></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" align="center">
-                            <div class="leer2">&#160;</div>
-                            <button class="buttonAll buttonGrun neuerChatButton" data-th-onClick="bekantenSave([[${gefunden.token}]])">Einladen</button>
-                        </td>
-                    </tr>
-                </table>
-            </div><!-- schleife: datenGefunden -->
-            <script th:inline="javascript">
-                /*<![CDATA[*/
-                    var gefunden = [[${datenGefunden}]];
-                    if(gefunden){
-                            // folgende Fenster schliessen: messagecomponents.html Zeile: 180, 192 und 251
-                        $('#NEUERCHATINPUT').slideUp();
-                        $('#NEUERCHATFEHLERAUSGABE').slideUp();
-                        $('#CUSTO').slideUp();
-                    }
-                /*]]>*/
-                </script>
-        </div><!-- Ende neuerChatGefunden -->
-
-            </fieldset>
-            </form>
-            <div class="leer2">&#160;</div>
-
-
-
-
-        <!-- Anzeigen Alle User (nur für Information)   LÖSCHEN -->
-            <style>
-                #customer {border: 1px solid #D9D9D9; border-collapse:collapse; color: #999;}
-                #customer caption { letter-spacing: 5px; color: red; }
-                #customer th { background-color: #F2F2F2; }
-                #customer tr:nth-child(even){background-color: #FFF;}
-            </style>
-            <div id="CUSTO">
-                <table id="customer" width="100%" cellspacing="0" cellpadding="10">
-                    <caption><h3>Beispiele Adreese</h3></caption>
-                    <tr>
-                        <th width="30" height="40">ID</th>
-                        <th>Name</th>
-                        <th>E-Mail oder Telefon</th>
-                    </tr>
-                    <tr data-th-each=" all : ${alleuser}">
-                        <td height="25" align="center" data-th-text="${all.id}"></td>
-                        <td data-th-text="${all['name'].length == 0 } ? ${all.pseudonym} : ${all.vorname} +' '+ ${all.name} "></td>
-                        <td data-th-text="${all['email'].length == 0} ? ${all.telefon} : ${all.email}"></td>
-                    </tr>
-                </table>
-            </div>
-        <!-- Ende Alle User (nur für Information)   LÖSCHEN -->
-
-
-
-        </div><!-- Ende neuerChatBox -->
-    </div><!-- Ende nuerChatBody-->
-
-</div><!-- Ende neuerChat -->
-
-</div><!-- Ende neuerchatfragment -->
-
-    <!-- ************************************* Wenn keine Fragment Name vorhanden ist ******************************+*-->
-
-    <!-- Wenn Leer ist -->
-<div class="messageUnless"  th:unless="${nameFragment == ''}" > <!-- th:unless="${messageToken}" -->
-        <p class="freundeFooterNo">Keinen Chat noch ausgewählt</p>
-</div>
 
 </body>
 </html>

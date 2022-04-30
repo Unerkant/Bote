@@ -2,10 +2,9 @@ package Bote.controller;
 
 import Bote.configuration.GlobalConfig;
 import Bote.model.Session;
-import Bote.model.User;
+import Bote.model.Usern;
 import Bote.service.SessionService;
 import Bote.service.UserService;
-
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,23 +18,24 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
 @Controller
 public class TelefonRegisterController {
 
-    private User    meineDaten;
+    private Usern   meineDaten;
     private String  saveTelefon;
     private String  saveDatum;
     private String  saveName;
     private String  savePseudonym;
-    private Long    saveToken;
+    private String  saveToken;
     private int     mailCode;
     private String  ersteCode;
     private String  zweiteCode;
     private String  dritteCode;
     private String  vierteCode;
     private int     tippCode;
-    private User    altUser;
-    private User    newUser;
+    private Usern   altUser;
+    private Usern   newUser;
     private String  uniCode = "&#x22EF;";
 
     @Autowired
@@ -46,7 +46,7 @@ public class TelefonRegisterController {
 
     @SneakyThrows
     @GetMapping(value = "/login/telefonsuccess")
-    public String login(@CookieValue(value = "userid", required = false) Long userId){
+    public String login(@CookieValue(value = "userid", required = false) String userId){
 
         meineDaten = userService.findeUserToken(userId);
         return (meineDaten == null ? "/login/telefonsuccess" : "/messenger");
@@ -66,7 +66,7 @@ public class TelefonRegisterController {
         saveDatum       = request.getParameter("telDatum");
         saveName        = request.getParameter("telName");
         savePseudonym   = request.getParameter("telPseudonym");
-        saveToken       = Long.valueOf(request.getParameter("telToken"));
+        saveToken       = request.getParameter("telToken");
         mailCode        = Integer.parseInt(request.getParameter("telCode"));
 
         ersteCode = request.getParameter("telCodeEins");
@@ -112,7 +112,7 @@ public class TelefonRegisterController {
         saveTelefon = saveTelefon.trim().replaceAll("\\s+", "").replace("+","");
         altUser = userService.sucheTelefon(saveTelefon);
         if (altUser == null) {
-            newUser = new User();
+            newUser = new Usern();
             newUser.setToken(saveToken);
             newUser.setDatum(saveDatum);
             newUser.setBild("");

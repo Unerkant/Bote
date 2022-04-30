@@ -1,7 +1,8 @@
 package Bote.model;
 
-import javax.persistence.Column;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 /**
@@ -11,39 +12,44 @@ import javax.persistence.Id;
 public class CountEntry {
 
     @Id
-    @Column(nullable = false)
-    private String key;
+    @GeneratedValue
+    private long id;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private String datum;
 
     private String token;
 
-    @Column(nullable = false)
-    private String value;
-
+    private String total;
 
 
     public CountEntry() {
     }
 
-    public CountEntry(String key, String token, String value) {
-        this.key = key;
+    public CountEntry(long id, String datum, String token, String total) {
+        this.id = id;
+        this.datum = datum;
         this.token = token;
-        this.value = value;
+        this.total = total;
     }
 
-    public String getKey() {
-        return key;
+    public Long getId() {
+        return id;
     }
-    public void setKey(String key) {
-        this.key = key;
+    public void setId(Long id) {
+        this.id = id;
     }
+
+    public String getDatum() { return datum; }
+    public void setDatum(String datum) { this.datum = datum; }
 
     public String getToken() { return token; }
     public void setToken(String token) { this.token = token; }
 
-    public String getValue() {
-        return value;
+    public String getTotal() {
+        return total;
     }
-    public void setValue(String value) {
-        this.value = value;
+    public void setTotal(String total) {
+        this.total = total;
     }
 }

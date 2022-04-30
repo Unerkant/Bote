@@ -2,12 +2,11 @@ package Bote.controller;
 
 import Bote.model.Freunde;
 import Bote.model.Message;
-import Bote.model.User;
+import Bote.model.Usern;
 import Bote.service.FreundeService;
 import Bote.service.MessageService;
 import Bote.service.CountEntryService;
 import Bote.service.UserService;
-
 import lombok.SneakyThrows;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,11 +49,11 @@ public class MessageController {
     *   freunden gesucht und in messenger.html ausgegeben(Linke Teil)
     *
     */
-    private User            meineDaten;
+    private Usern           meineDaten;
     private List<Freunde>   meineFreunde;
 
     @GetMapping(value = {"/", "/messenger"})
-    public String index(@CookieValue(value = "userid", required = false) Long meineId, Model model)
+    public String index(@CookieValue(value = "userid", required = false) String meineId, Model model)
     {
         meineDaten      = userService.findeUserToken(meineId);
         meineFreunde    = freundeService.freundeSuchen(String.valueOf(meineId));
@@ -77,10 +75,10 @@ public class MessageController {
     *   von angeklickten freund(Links) wird Chat Verlauf angezeigt (Rechts)
     *   javascript-function in messenger.js = $('.freund').click(function(e){}
     */
-    private User            myDaten;
+    private Usern           myDaten;
     private String          meinPseu;
     private String          meinMessageToken;
-    private User            freundDaten;
+    private Usern           freundDaten;
     private String          freundToken;
     private String          freundMessageToken;
     private List<String>    alleFreundeMessageToken;
@@ -90,7 +88,7 @@ public class MessageController {
 
     @SneakyThrows
     @PostMapping(path = "/fragmentmessages")
-    public String fragmentMessages(@CookieValue(value = "userid", required = false) Long meinecookie,
+    public String fragmentMessages(@CookieValue(value = "userid", required = false) String meinecookie,
             HttpServletRequest request, Model model){
 
 
@@ -115,7 +113,7 @@ public class MessageController {
         myDaten = userService.findeUserToken(meinecookie);
         meinPseu = myDaten.getPseudonym();
 
-        freundDaten = userService.findeUserToken(Long.valueOf(freundToken));
+        freundDaten = userService.findeUserToken(freundToken);
         freundPseu = freundDaten.getPseudonym();
 
         gemeinsameMessage = messageService.gemeisameMessage(freundMessageToken);
@@ -146,13 +144,13 @@ public class MessageController {
     //@SendTo("/messages/receive")
     public void messageReceiving(Message message) throws Exception {
 
-        int newCounterValue = countEntryService.incrementMessageCounter();
-        logger.info("Nachrichten insgesamt versendet: " + newCounterValue);
-        logger.info("MessageController/SendTo: " + message);
+        // message count ins datenbank speichern
+        int newCounterValue = countEntryService.incrementMessageCounter(message.getMeintoken());
 
+        // message save
         messageService.saveNewMessage(message);
 
-        logger.info("Send to: " + "/messages/receive/" + message.getMessagetoken());
+        logger.info("Send to::  message token: " + message.getMessagetoken() + " /  Nachrichten insgesamt versendet:" + newCounterValue);
         simpMessagingTemplate.convertAndSend("/messages/receive/" + message.getMessagetoken(), message);
     }
 

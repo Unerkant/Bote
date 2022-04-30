@@ -1,7 +1,7 @@
 package Bote.service;
 
+import Bote.configuration.GlobalConfig;
 import Bote.model.CountEntry;
-import Bote.model.User;
 import Bote.repository.CountEntryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,22 +12,48 @@ import org.springframework.stereotype.Service;
 @Service
 public class CountEntryService {
 
-    public static String MESSAGE_COUNTER = "MESSAGE_COUNTER";
+    private String datum;
 
     @Autowired
     private CountEntryRepository countEntryRepository;
 
-    User token = new User();
+    /**
+     * Zählt alle message von einem User, sortiert nach dem token
+     * benötigt in MessageController.jave Zeile: 150
+     *
+     */
+    public int incrementMessageCounter( String meintoken) {
 
-    public int incrementMessageCounter() {
-        CountEntry settingEntry = countEntryRepository.findById(MESSAGE_COUNTER).orElse(new CountEntry(MESSAGE_COUNTER, "0", String.valueOf(token.getToken())));
+        datum           = GlobalConfig.aktuellTag();
 
-        int counterValue = Integer.parseInt(settingEntry.getValue());
+        // Wenn keine Daten Vorhanden sind dann eintragen
+        CountEntry settingEntry = countEntryRepository
+                .findByToken(meintoken)
+                .orElse(new CountEntry(1, datum,  meintoken, "0"));
+
+        // Letzten count aus dem Datenbank holen
+        int counterValue = Integer.parseInt(settingEntry.getTotal());
         counterValue++;
 
-        settingEntry.setValue("" + counterValue);
+        // Datum in Datenbank aktualisieren einmal pro Tag
+        String letzteDatum = settingEntry.getDatum();
+        if ( Integer.parseInt(datum) > Integer.parseInt(letzteDatum) ) {
+            settingEntry.setDatum(datum);
+        }
+
+        // Daten Aktualisieren/Speichern
+        settingEntry.setTotal("" + counterValue);
         countEntryRepository.save(settingEntry);
 
         return counterValue;
+    }
+
+    /**
+     * bernutzt von SettingController.java Zeile: 363
+     * Loschen message count, nach token
+     */
+    public String countEntryLoschen(String token){
+
+        return countEntryRepository.deleteByToken(token);
     }
 }

@@ -1,14 +1,13 @@
 package Bote.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import javax.persistence.*;
 
 @Entity
 public class Session {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private long id;
 
     @Column(nullable = false)

@@ -2,7 +2,7 @@ package Bote.controller;
 
 import Bote.configuration.GlobalConfig;
 import Bote.model.Session;
-import Bote.model.User;
+import Bote.model.Usern;
 import Bote.service.SessionService;
 import Bote.service.UserService;
 import lombok.SneakyThrows;
@@ -20,18 +20,18 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class MailRegisterController {
 
-    private User    meineDaten;
+    private Usern   meineDaten;
     private String  saveDatum;
     private String  saveMail;
     private String  savePseudonym;
-    private Long    saveToken;
+    private String  saveToken;
     private int     mailCode;
     private String  ersteCode;
     private String  zweiteCode;
     private String  dritteCode;
     private String  vierteCode;
     private int     tippCode;
-    private User    altUser;
+    private Usern   altUser;
     private String  uniCode = "&#x22EF;";
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -44,7 +44,7 @@ public class MailRegisterController {
 
     @SneakyThrows
     @GetMapping(value = "/login/mailsuccess")
-    public String login(@CookieValue(value = "userid", required = false) Long userId){
+    public String login(@CookieValue(value = "userid", required = false) String userId){
 
         meineDaten = userService.findeUserToken(userId);
         return (meineDaten == null ? "/login/mailsuccess" : "/messenger");
@@ -68,7 +68,7 @@ public class MailRegisterController {
         saveDatum = request.getParameter("regDatum");
         saveMail = request.getParameter("regMail");
         savePseudonym = request.getParameter("regPseudonym");
-        saveToken = Long.valueOf(request.getParameter("regToken"));
+        saveToken = request.getParameter("regToken");
         mailCode = Integer.parseInt(request.getParameter("regCode"));
 
         ersteCode = request.getParameter("codeEins");
@@ -127,7 +127,7 @@ public class MailRegisterController {
         if (altUser == null){
 
             /* H2 Datenbank Tabelle:User */
-            User newUser = new User();
+            Usern newUser = new Usern();
             newUser.setToken(saveToken);
             newUser.setDatum(saveDatum);
             newUser.setBild("");
@@ -138,7 +138,6 @@ public class MailRegisterController {
             newUser.setTelefon("");
             newUser.setRole("default");
             newUser.setOther("");
-
             userService.saveNewUser(newUser);
 
             /* H2 datenbank Tabelle:Session */

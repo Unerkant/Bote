@@ -1,6 +1,6 @@
 package Bote.controller;
 
-import Bote.model.User;
+import Bote.model.Usern;
 import Bote.service.UserService;
 import lombok.SneakyThrows;
 import org.json.simple.JSONArray;
@@ -14,14 +14,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
-
 import java.io.*;
 import java.util.Iterator;
 
 @Controller
 public class TelefonController {
 
-    public User meineDaten;
+    public Usern meineDaten;
     public TelefonController() throws IOException, ParseException { }
     Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
@@ -30,7 +29,7 @@ public class TelefonController {
 
     @SneakyThrows
     @GetMapping(value = "/login/telefonlogin")
-    public String login(@CookieValue(value = "userid", required = false) Long userId,
+    public String login(@CookieValue(value = "userid", required = false) String userId,
                         Model model){
 
        // prüfen auf Meine Daten in Datenbank

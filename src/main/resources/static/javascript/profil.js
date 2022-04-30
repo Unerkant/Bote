@@ -87,7 +87,7 @@
      if(confirm(warnung) == true){
         $.post('/profilbildloschen', {'bildname': bildname})
         .done(function(out){
-            if(out == 1){
+            if(out == 2){
                 profilMessage('bildGeloscht');
             }else{
                 profilMessage('nichtGeloscht');
@@ -359,10 +359,15 @@
 
  /**
   * Accound Löschen
-  * den Token werde von function: codePrufen, Zeile: 217(hier oben) zugesendet
-  *
-  * nach erfolgreichen Account Löschen wird einen Fragment angezeigt
-  * components/<div data-th-fragment="accountloschen"> Zeile: 191
+  * Kurze Beschribung:
+  * 1. profil.html Zeile: 320 einen click auf accountValid(profil.token, loschen, platzhalter)"
+  * 2. accoundValid(), hier oben Zeile: 327, nach demm Bestätigung weiter zu
+  * 3. codeHolen() hier oben Zeile: 215, weiter zu codePrufen() Zeile: 240
+  * 4. codePrufen wird form ausgelesen ...var itemUpdate= form[1].value; //itemUpdate = loschen
+  * 5. codePrufen Zeile: 286, itemUpdate prüfen/ func. accoutLoschen(token) wird gestertet
+  * 6. accountloschen Sendet token an SettingController.java Zeile: 334
+  * 7. nach erfolgreichen Account Löschen wird einen Fragment angezeigt
+  * 8. components/<div data-th-fragment="accountloschen"> Zeile: 191
   */
  function accountLoschen(token){
     event.preventDefault();
@@ -434,7 +439,7 @@
                             break;
         case'bildGeloscht': $('#SETTINGOK').fadeIn(600).delay(10000).fadeOut(600);
                             $('#SETTINGOK').html('Ihre Profil Bild wurde erfolgreich gelöscht');
-                            setTimeout(function(){location.href='/'}, 5000);
+                            setTimeout(function(){location.href='/setting'}, 5000);
                             break;
         case'abmelden':     $('#SETTINGOK').fadeIn(600).delay(10000).fadeOut(600);
                             $('#SETTINGOK').html('Sie haben sich erfogreich abgemeldet.<br>'

@@ -204,6 +204,16 @@
             </td>
             <td width="30" data-th-text="${usercount}"></td>
         </tr>
+        <!-- Profil Bild -->
+        <tr>
+            <td width="30" align="center">
+                <img class="blok" data-th-src="@{/img/donegrun.png}">
+            </td>
+            <td>
+                Dein Profil Bild ist gelöscht
+            </td>
+            <td width="30" data-th-text="${profilbildcount}"></td>
+        </tr>
         <!-- Insgesammt Nachrichten -->
         <tr>
             <td width="30" align="center">
@@ -234,7 +244,7 @@
                 <img class="blok" data-th-src="@{/img/donegrun.png}">
             </td>
             <td>Alle Session und Cookie gelöscht</td>
-            <td width="30">&#160;</td>
+            <td width="30" data-th-text="${cookiecount}"></td>
         </tr>
     </table>
     </div>

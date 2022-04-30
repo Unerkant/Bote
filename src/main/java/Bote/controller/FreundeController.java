@@ -2,7 +2,7 @@ package Bote.controller;
 
 import Bote.configuration.GlobalConfig;
 import Bote.model.Freunde;
-import Bote.model.User;
+import Bote.model.Usern;
 import Bote.service.FreundeService;
 import Bote.service.UserService;
 import org.slf4j.Logger;
@@ -13,13 +13,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 import java.util.stream.Collectors;
-
 
    /**
     *  Den 1.10.2021
@@ -28,7 +26,7 @@ import java.util.stream.Collectors;
 @Controller
 public class FreundeController {
 
-    private User    meineDaten;
+    private Usern    meineDaten;
     public FreundeController()  throws IOException, ParseException { }
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -46,7 +44,7 @@ public class FreundeController {
     *   'nameFragment' zugesendet von freunde.js Zeile: 39, function neuerChat(){...}
     */
     @PostMapping(value = "/neuerchat")
-    public String neuerchat(@CookieValue(value = "userid", required = false) Long neuerChatCookie,
+    public String neuerchat(@CookieValue(value = "userid", required = false) String neuerChatCookie,
                             @RequestParam(value = "namefragment", required = false) String nameFragment,
                             Model model){
         /* myDaten: anzeige von head Fragments */
@@ -73,16 +71,16 @@ public class FreundeController {
     *   Alle Daten an messagecomponets.html/neuerchatfragment schicken Zeile: 150
     */
 
-    private User            myDaten;
+    private Usern           myDaten;
     private List<String>    alleFreundeEmail;
     private List<String>    alleFreundeTelefon;
     private String          myTelefon;
     private String          myMail;
     private String          fehlerAusgabe;
-    private User            datenGefunden;
+    private Usern           datenGefunden;
 
     @PostMapping(value = "/bekantensuchen")
-    public String bekantenSuchen(@CookieValue(value = "userid", required = false) Long bekantenCookie,
+    public String bekantenSuchen(@CookieValue(value = "userid", required = false) String bekantenCookie,
                                  @RequestParam(value = "mailodertel", required = false) String mailOderTel,
                                  @RequestParam(value = "chatfragment", required = false) String fragmentName,
                                  @RequestParam(value = "zahl", required = false) String istZahl,
@@ -153,14 +151,16 @@ public class FreundeController {
             }
         }
 
-        // Ausgabe in messagecomponents.ntml Zeile: 216 (div#NEUERCHATGEFUNDEN)
+        // Ausgabe in neuerchatcomponents.ntml Zeile: 68 (div#NEUERCHATGEFUNDEN)
         model.addAttribute("nameFragment", fragmentName);
         model.addAttribute("fehlerAusgaben", fehlerAusgabe);
         model.addAttribute("datenGefunden", datenGefunden);
         model.addAttribute("suchOption", mailOderTel);
+        datenGefunden = null;
 
-
-        /* NUR FÜR INFORMATION: alle User anzeigen */
+        /*           später zum Löschen               */
+        /* NUR FÜR INFORMATION: alle User anzeigen    */
+        /* neuerchatcomponents.html Zeile: 120 #CUSTO */
         List alleUser = userService.findeAlle();
         model.addAttribute("alleuser", alleUser);
 
@@ -176,8 +176,8 @@ public class FreundeController {
     private String      unsereRegistrierDatum;
     private String      unsereMessageToken;
 
-    private User        meinereDaten;
-    private Long        meinereTokenSave;
+    private Usern       meinereDaten;
+    private String      meinereTokenSave;
     private String      meinereBildSave;
     private String      meinerePseuSave;
     private String      meinereNameSave;
@@ -185,8 +185,8 @@ public class FreundeController {
     private String      meinereMailSave;
     private String      meinereTelSave;
 
-    private User        bekanteDaten;
-    private Long        bekanteTokenSave;
+    private Usern       bekanteDaten;
+    private String      bekanteTokenSave;
     private String      bekanteBildSave;
     private String      bekantePseuSave;
     private String      bekanteNameSave;
@@ -200,8 +200,8 @@ public class FreundeController {
     private List<Freunde>   meinefreunde;
 
     @PostMapping(value = "/bekantensave")
-    public String bekantenSave(@CookieValue(value = "userid", required = false) Long mySaveCookie,
-                               @RequestParam(value = "bekantentoken", required = false) Long bekantenToken,
+    public String bekantenSave(@CookieValue(value = "userid", required = false) String mySaveCookie,
+                               @RequestParam(value = "bekantentoken", required = false) String bekantenToken,
                                HttpServletRequest request, Model model){
 
         unsereRegistrierDatum   = GlobalConfig.deDatum();

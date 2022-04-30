@@ -151,7 +151,9 @@
         $('#UPLOADFILE').on('change', function() {
             var file = $(this).get(0).files;
             var typs = uploadType(file);
-            if(typs == 'heic'){ return false; }
+            if(typs == 'heic'){
+               // return false;
+            }
 
             $('.cropp').toggle();
 	        var reader = new FileReader();
@@ -180,6 +182,8 @@
                                     $('#BILDUPLOAD').show().attr('src', resp);
                                     $('#BILDUPLOAD').css({"width": "256px", borderRadius: "50%"});
                                     $('#BILDAKTUEL').show().attr('src', resp);
+                                    // Nachricht ausgeben
+                                    profilMessage('okBild');
                                 }
                 });
             });

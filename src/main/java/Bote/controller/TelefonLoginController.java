@@ -1,7 +1,7 @@
 package Bote.controller;
 
 import Bote.configuration.GlobalConfig;
-import Bote.model.User;
+import Bote.model.Usern;
 import Bote.service.UserService;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
@@ -19,7 +19,7 @@ import java.util.Locale;
 @Controller
 public class TelefonLoginController {
 
-    private User    meineDaten;
+    private Usern   meineDaten;
     private String  aktuelleDatum;
     private String  identToken;
     private int     aktivierCode;
@@ -36,7 +36,7 @@ public class TelefonLoginController {
 
     @SneakyThrows
     @GetMapping(value = "/login/telefonregister")
-    public String login(@CookieValue(value = "userid", required = false) Long userId){
+    public String login(@CookieValue(value = "userid", required = false) String userId){
 
         meineDaten = userService.findeUserToken(userId);
         return (meineDaten == null ? "/login/telefonregister" : "/messenger");

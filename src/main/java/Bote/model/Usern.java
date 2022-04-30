@@ -1,7 +1,6 @@
 package Bote.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import javax.persistence.*;
 
 /**
@@ -9,45 +8,40 @@ import javax.persistence.*;
  */
 
 @Entity
-public class User {
+public class Usern {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private long id;
 
-    private long token;
+    private String token;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private String datum;
 
-    @Column(nullable = true)
     private String bild;
 
-    @Column(nullable = false)
     private  String pseudonym;
 
-    @Column(nullable = false)
     private String name;
 
     private String vorname;
 
     private String email;
 
-    @Column(nullable = false)
     private  String telefon;
 
     private String role;
-    @Column(nullable = false)
 
     private  String other;
 
 
 
-    public User(){
+    public Usern(){
         //Leer
     }
 
-    public User(long id, long token, String datum, String bild, String pseudonym, String name, String vorname,
+    public Usern(long id, String token, String datum, String bild, String pseudonym, String name, String vorname,
                 String email, String telefon, String role, String other ){
         this.id = id;
         this.token = token;
@@ -66,8 +60,8 @@ public class User {
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }
 
-    public long getToken() { return token; }
-    public void setToken(long token) { this.token = token; }
+    public String getToken() { return token; }
+    public void setToken(String token) { this.token = token; }
 
     public String getDatum() { return datum; }
     public void setDatum(String datum) { this.datum = datum; }

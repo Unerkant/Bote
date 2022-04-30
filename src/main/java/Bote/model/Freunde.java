@@ -1,7 +1,6 @@
 package Bote.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import javax.persistence.*;
 
    /**
@@ -12,7 +11,7 @@ import javax.persistence.*;
 public class Freunde {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private long id;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

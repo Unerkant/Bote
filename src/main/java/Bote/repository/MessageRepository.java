@@ -2,7 +2,6 @@ package Bote.repository;
 
 import Bote.model.Message;
 import org.springframework.data.repository.CrudRepository;
-
 import java.util.List;
 
 /**

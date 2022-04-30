@@ -1,13 +1,7 @@
 package Bote.model;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonFormat;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import java.util.Date;
+import javax.persistence.*;
 
 /**
  * Created by Paul Richter on Mon 19/07/2021
@@ -18,7 +12,7 @@ public class Message {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private long id;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private String datum;
@@ -37,7 +31,7 @@ public class Message {
         // empty
     }
 
-    public Message(Long id, String datum, String meintoken, String messagetoken, String pseudonym, String vorname, String name, String text, String role ) {
+    public Message(long id, String datum, String meintoken, String messagetoken, String pseudonym, String vorname, String name, String text, String role ) {
         this.id = id;
         this.datum = datum;
         this.meintoken = meintoken;
@@ -50,10 +44,10 @@ public class Message {
     }
 
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
-    public void setId(Long id) { this.id = id; }
+    public void setId(long id) { this.id = id; }
 
     public String getDatum() { return datum; }
     public void setDatum(String datum) { this.datum = datum; }

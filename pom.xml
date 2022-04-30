@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.example</groupId>
 	<artifactId>Bote</artifactId>
-	<version>1.0.4</version>
+	<version>1.0.5</version>
 	<name>Bote</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
@@ -24,7 +24,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
-			<version>2.5.3</version>
+			<version>2.6.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -40,7 +40,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
-			<version>2.5.3</version>
+			<version>2.6.5</version>
 		</dependency>
 
 		<!-- thymeleaf, messaging, websocked -->
@@ -51,19 +51,20 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-messaging</artifactId>
-			<version>5.3.8</version>
+			<version>5.3.17</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-websocket</artifactId>
-			<version>5.3.8</version>
+			<version>5.3.17</version>
 		</dependency>
 
 		<!-- Database H2 -->
+		<!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<version>1.4.200</version>
+			<version>2.1.212</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -86,7 +87,7 @@
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
-			<version>20150729</version>
+			<version>20220320</version>
 		</dependency>
 		<dependency>
 			<groupId>com.googlecode.json-simple</groupId>
@@ -96,14 +97,14 @@
 		<dependency>
 			<groupId>net.minidev</groupId>
 			<artifactId>json-smart</artifactId>
-			<version>2.3</version>
+			<version>2.4.8</version>
 		</dependency>
 
 		<!-- Project Lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.18.20</version>
+			<version>1.18.22</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -111,7 +112,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
-			<version>2.6.4</version>
+			<version>2.6.5</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.mail</groupId>

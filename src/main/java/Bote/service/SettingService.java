@@ -13,6 +13,26 @@ public class SettingService {
     @Autowired
     private SettingRepository repository;
 
+    /**
+     *   Benutzt von settingController/@PostMapping(value = "bildupload")
+     *   Benutzt von settingController/@PostMapping(value = "/profilbildloschen")
+     *   Profil Bild Name Update & Profil Bild Löschen(bei Löschen profilbild wird leer zugesendet)
+     */
+    public Integer freundeBildUpdate(String name, String token){
+
+        return repository.freundeUpdateBild(name, token);
+    }
+
+    /**
+     *   Benutzt von settingController/@PostMapping(value = "bildupload")
+     *   Benutzt von settingController/@PostMapping(value = "/profilbildloschen")
+     *   Profil Bild Name Update & Profil Bild Löschen(bei Löschen profilbild wird leer zugesendet)
+     */
+    public Integer usernBildUpdate(String name, String token){
+
+        return repository.usernUpdateBild(name, token);
+    }
+
 
     /* Vorname Update */
     public Integer vornameUpdate(String vorname, String token){

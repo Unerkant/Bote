@@ -1,17 +1,15 @@
 package Bote.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
 public class Phone {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private long id;
 
     private String bild;
@@ -32,11 +30,6 @@ public class Phone {
     private String dauert;
 
     private String role;
-
-
-
-
-
 
 
     public Phone(){
@@ -87,12 +80,6 @@ public class Phone {
 
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
-
-
-
-
-
-
 
 
     @Override

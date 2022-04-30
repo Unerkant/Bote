@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
-
 import javax.annotation.PostConstruct;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.Cookie;
@@ -31,7 +30,8 @@ public class GlobalConfig {
     *   1. Deutsches Format (für die Allgemeine anzeige)
     *   2. US-Format (in Datenbank speichern)
     *   3. User Identifizierungsnummer (14-stellige ID-Nummern aus dem aktuellen Datum)
-    *   4. wird von MailController.java & TelefonController.java & FreundeController.java benutzt
+    *   4. wird von MailController.java & TelefonController.java & FreundeController.java benutzt....
+    *   5. aktuelleTag wird von CountEntryService.java benutzt
     */
     public static String deDatum(){
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
@@ -50,6 +50,13 @@ public class GlobalConfig {
         Date token = new Date();
         return format.format(token);
     }
+
+    public static String aktuellTag(){
+        SimpleDateFormat format = new SimpleDateFormat("ddMMyyyy");
+        Date tag = new Date();
+        return format.format(tag);
+    }
+
 
 
    /**
@@ -110,17 +117,14 @@ public class GlobalConfig {
     *   wird in SettingController.java benutzt
     * @return
     */
-   public static String deleteCookie(HttpServletResponse response){
+   public static int deleteCookie(HttpServletResponse response){
        // create a cookie
-       Cookie cookie = new Cookie("userid", null);
+       Cookie cookie = new Cookie("userid", "");
        cookie.setMaxAge(0);
-       //cookie.setSecure(true);
-       //cookie.setHttpOnly(true);      // Lesen mit javascript ist unmöglich ( geschützt)
-       cookie.setPath("/");
 
         //add cookie to response
        response.addCookie(cookie);
-       return null;
+       return 1;
    }
 
 

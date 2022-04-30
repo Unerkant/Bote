@@ -57,12 +57,13 @@
 
             <!--
             *   DIE JSON-ARRAY(meinefreunde) Werden Von denn MessageController.java ZUGESENDET
+            *   @GetMapping(value = {"/", "/messenger"}) Zeile: 58
             *   von diesem Array werden alle Freunde aufgelistet in messenger.html (linke Teil)
             -->
             <div class="freundeBody" >
 
     <!-- Daten werden mit javascript ins fragment eingebetet: freund.js function bekantenSave(bekantenToken) -->
-    <div id="NEUERCHAT"  data-th-insert="/fragments/bekanteneinladung :: ${werdeEingeladen}"></div>
+    <div id="NEUERCHAT"  data-th-insert="/fragments/bekanteneinladung :: werdeeingeladen"></div>
 
                 <!-- H2:database Tabelle freunde: id, datum, freundetoken, freundepseudonym, meinentoken, meinpseudonym, messagetoken, role -->
                 <div id="FREUNDEDATEN" class="freundeDaten" data-th-each=" freunde : ${meinefreunde} "
@@ -127,6 +128,7 @@
                         </div>
                     </div><!-- Ende freund-->
                     <script th:inline="javascript">
+                        // Quelle: zufallColor.js
                         // function für den backgrond-color, hier span Zeile: 84
                          /*<![CDATA[*/
                             var id = [[${freunde.id}]]
@@ -147,15 +149,10 @@
         <div id="FREUNDEFOOTER" class="freundeFooter">
 
             <!-- Footer Fragment ausgabe: messagecomponents.html Frgment: footerfragment -->
-            <div data-th-unless="${#lists.isEmpty(meinefreunde)}"><!-- Original: meinefreunde.size != 0 -->
-                <div data-th-if="${#httpServletRequest.requestURI == '/messenger' || #httpServletRequest.requestURI == '/'}"
+            <div data-th-if="${#httpServletRequest.requestURI == '/messenger' || #httpServletRequest.requestURI == '/'}"
                      data-th-insert="/fragments/footercomponents :: footerfragment"></div>
-            </div>
 
-            <!--wird nur angezeigt, wenn keine Freunde vorhanden sind -->
-            <div data-th-if="${#lists.isEmpty(meinefreunde)}" data-th-insert="/fragments/footercomponents :: footerNo" ></div>
-
-        </div>
+        </div><!-- Ende freundefooter -->
 
         </div><!-- ende gridBox-->
     </div><!-- Ende freundeBox -->
@@ -170,16 +167,25 @@
     <!--                                                                    -->
     <!-- Insgesamt werden 2 Fragments  Angezeigt:                           -->
     <!-- 1. data-th-fragment="messagefragment" aus den                      -->
-    <!--    messagecomponents.html Zeile:11 &                               -->
-    <!-- variable ${nameFragment} aus dem MessageController.java Zeile: 96  -->
+    <!--    messagecomponents.html                                          -->
+    <!-- variable ${nameFragment} aus dem MessageController.java Zeile: 125 -->
     <!--                                                                    -->
     <!-- 2. data-th-fragment="neuerchatfragment" aus den                    -->
-    <!--    messagecomponents.html Zeile:11 &                               -->
-    <!-- variable ${nameFragment} aus dem FreundeController.java Zeile: 57  -->
+    <!--    neuerchatcomponents.html                                        -->
+    <!-- variable ${nameFragment} aus dem FreundeController.java            -->
+    <!-- Zeile: 57 & 156                                                    -->
     <!--                                                                    -->
     <!-- ****************************************************************** -->
 
-    <div id="MESSAGEFRAGMENT"  data-th-insert="/fragments/messagecomponents :: ${nameFragment}"></div>
+        <div id="MESSAGEFRAGMENT" data-th-switch="${nameFragment}">
+            <div data-th-case="'messagefragment'"  data-th-insert="/fragments/messagecomponents :: messagefragment"></div>
+            <div data-th-case="'neuerchatfragment'"  data-th-insert="/fragments/neuerchatcomponents :: neuerchatfragment"></div>
+            <div data-th-case="*">
+                <div class="flexCenter" >
+                    <img width="128" class="itemMiddle" data-th-src="@{/img/what.png}" alt="Geist">
+                </div>
+            </div>
+        </div>
 
 
     </div><!-- Ende #MESSAGEBOX/class: rechtsBox-->

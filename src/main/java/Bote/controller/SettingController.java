@@ -2,7 +2,7 @@ package Bote.controller;
 
 import Bote.configuration.GlobalConfig;
 import Bote.model.Freunde;
-import Bote.model.User;
+import Bote.model.Usern;
 import Bote.service.*;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -12,10 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import javax.imageio.ImageIO;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -24,6 +21,9 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,25 +46,27 @@ public class SettingController {
     private UserService userService;
     @Autowired
     private SettingService settingService;
+    @Autowired
+    private CountEntryService entryService;
 
-   /**
-    *   Setting HTML Starten
-    *   Linke Seite: Ausgabe von Bild & E-Mail-Adresse
-    */
-    private User    meineDaten;
+    /**
+     *   Setting HTML Starten
+     *   Linke Seite: Ausgabe von Bild & E-Mail-Adresse
+     */
+    private Usern    meineDaten;
     @GetMapping(value = "/setting")
     public String setting(@CookieValue(value = "userid", required = false) String meineId,
                           Model model)
     {
-       /*
-        *   Daten für setting.html/profil(Linke Seite)
-        *   try: verhindert den Totalen ERROR: Whitelabel Error Page
-        *   Fehler: vermutlich meineDaten- sind leer
-        *   NumberFormatException: Cannot parse null string
-        *
-        */
+        /*
+         *   Daten für setting.html/profil(Linke Seite)
+         *   try: verhindert den Totalen ERROR: Whitelabel Error Page
+         *   Fehler: vermutlich meineDaten- sind leer
+         *   NumberFormatException: Cannot parse null string
+         *
+         */
         try {
-            meineDaten = userService.findeUserToken(Long.valueOf(meineId));
+            meineDaten = userService.findeUserToken(meineId);
             model.addAttribute("meinedaten", meineDaten);
             model.addAttribute("myToken", meineId);
         }catch (Exception e){
@@ -76,13 +78,13 @@ public class SettingController {
     }
 
 
-   /**
-    *   Profil Bild aus dem Datei(profilbild) Laden
-    *   und anzeigen lassen
-    */
+    /**
+     *   Profil Bild aus dem Datei(profilbild) Laden
+     *   und anzeigen lassen
+     */
     @GetMapping(value = "/profilbild/{imageName}", produces = MediaType.IMAGE_PNG_VALUE)
     public @ResponseBody byte[] profilBild(@PathVariable(value = "imageName", required = true) String bildName)
-                                           throws IOException {
+            throws IOException {
 
         File bildFile = new File("./profilbild/" + bildName);
         logger.info("settingController/profilbild: " + bildName);
@@ -90,11 +92,12 @@ public class SettingController {
 
     }
 
-   /**@
-    *   Profil Bild Upload
-    *   Bild-Name, wird das Gleiche gegeben wie user token
-    */
-    private Integer bild;
+    /**@
+     *   Profil Bild Upload
+     *   Bild-Name, wird das Gleiche gegeben wie user token
+     */
+    private Integer bildBeiUsern;
+    private Integer bildBeiFreunde;
     @PostMapping(value = "bildupload")
     @ResponseBody
     public Map<String, Object> bildUpload(@CookieValue(value = "userid", required = false) String uploadCookie,
@@ -108,8 +111,9 @@ public class SettingController {
             BufferedImage buff = ImageIO.read(new ByteArrayInputStream(decodedBytes));
             ImageIO.write(buff, "png", imageFile);
             buff.flush();
-            // Bild Name in Datenbank Tabelle: user aktualisieren
-            bild = userService.bildUpdate(uploadCookie, uploadCookie);
+            // Bild Name in Datenbank Tabelle: user & freunde aktualisieren
+            bildBeiUsern    = settingService.usernBildUpdate(uploadCookie, uploadCookie);
+            bildBeiFreunde  = settingService.freundeBildUpdate(uploadCookie, uploadCookie);
             res.put("ret", 200);
             //logger.info("TRY: " + decodedBytes);
         }catch (Exception e){
@@ -118,31 +122,37 @@ public class SettingController {
             return res;
         }
 
-        logger.info("Bild Upload Image: " + bild);
+        logger.info("Bild Upload Image: " + bildBeiUsern +"/"+ bildBeiFreunde);
         return res;
     }
 
-   /**
-    *   Profil Bild Löschen
-    *   nameBild - ist das gleiche wie user token
-    */
+    /**
+     *   Profil Bild Löschen
+     *   ACHTUNG: nur in Datenbank der Name von Bild
+     *   nameBild - ist das gleiche wie user token
+     */
+    private Integer usernBildGeloscht;
+    private Integer freundeBildGeloscht;
     private Integer bildGeloscht;
     @PostMapping(value = "/profilbildloschen")
     @ResponseBody
     public String profilbildLoschen(@RequestParam(value = "bildname", required = true) String nameBild
-                                    ) throws Exception{
-        bildGeloscht = userService.bildUpdate("", nameBild);
+    ) throws Exception{
+        usernBildGeloscht = settingService.usernBildUpdate("", nameBild);
+        freundeBildGeloscht = settingService.freundeBildUpdate("", nameBild);
+        bildGeloscht = usernBildGeloscht + freundeBildGeloscht;
+
         logger.info("Profil Bild Loöschen: " + bildGeloscht);
         return String.valueOf(bildGeloscht);
     }
 
-   /**
-    *   Setting: Steuerung von einzelnen bereiche
-    *   attributeName: fragmentName (erkennungs variable)
-    *   in profil.html (wird bei jedem Fragment geprüft)
-    */
+    /**
+     *   Setting: Steuerung von einzelnen bereiche
+     *   attributeName: fragmentName (erkennungs variable)
+     *   in profil.html (wird bei jedem Fragment geprüft)
+     */
     private String          meinenToken;
-    private User            meinerDaten;
+    private Usern           meinerDaten;
     private String          fragmentName;
     private String          fragmentTitel;
     private String          itemId;
@@ -160,7 +170,7 @@ public class SettingController {
 
         String links = "/fragments/setting/"+itemId;
 
-        meinerDaten     = userService.findeUserToken(Long.valueOf(profilcookie));
+        meinerDaten     = userService.findeUserToken(profilcookie);
 
         model.addAttribute("fragmentName", fragmentName);
         model.addAttribute("meinerDaten", meinerDaten);
@@ -189,11 +199,11 @@ public class SettingController {
     }
 
 
-   /**
-    *   Profil Save
-    *
-    *   in profil.html
-    */
+    /**
+     *   Profil Save
+     *
+     *   in profil.html
+     */
 
     private Integer     vornameUpdate;
     private Integer     nameUpdate;
@@ -209,35 +219,35 @@ public class SettingController {
     {
         switch (nameSave){
             case"vorname":      vornameUpdate = settingService.vornameUpdate(valueSave, tokenSave);
-                                if (vornameUpdate.equals(1)){
-                                    output = "vorname";
-                                }else{
-                                    output = "profilerror";
-                                }
-                                break;
+                if (vornameUpdate.equals(1)){
+                    output = "vorname";
+                }else{
+                    output = "profilerror";
+                }
+                break;
             case"name":         nameUpdate = settingService.nameUpdate(valueSave, tokenSave);
-                                if (nameUpdate.equals(1)){
-                                    output = "name";
-                                }else{
-                                    output = "profilerror";
-                                }
-                                break;
+                if (nameUpdate.equals(1)){
+                    output = "name";
+                }else{
+                    output = "profilerror";
+                }
+                break;
             case"mail":         mailUpdate = settingService.mailUpdate(valueSave, tokenSave);
-                                if (mailUpdate.equals(1)){
-                                    output = "mail";
-                                }else {
-                                    output = "profilerror";
-                                }
-                                break;
+                if (mailUpdate.equals(1)){
+                    output = "mail";
+                }else {
+                    output = "profilerror";
+                }
+                break;
             case"telefon":      telefonUpdate = settingService.telefonUpdate(valueSave, tokenSave);
-                                if (telefonUpdate.equals(1)){
-                                    output = "telefon";
-                                }else {
-                                    output = "profilerror";
-                                }
-                                break;
+                if (telefonUpdate.equals(1)){
+                    output = "telefon";
+                }else {
+                    output = "profilerror";
+                }
+                break;
             default:            output = "profilerror";
-                                break;
+                break;
         }
 
         logger.info("POSTMAPPING/ Profil Save: " +tokenSave +"/"+nameSave +"/"+valueSave);
@@ -245,20 +255,20 @@ public class SettingController {
         return (profilcookie == null ? "/login/maillogin" : output);
     }
 
-   /**
-    * Code generieren und zurück senden.
-    * bei änderungen das E-Mail, Telefon oder Accound Löschen
-    * ein e-mail mit freischaltcode an die ALTE E-Mail-adresse senden
-    * die freischaltcode wird zusäzlich als return an die profil.js
-    * fonction codeHolen(.. auch zugesendet(zum vergleichen)
-    *
-    * Zugesendete Daten(von profil.js/ codeHolen()...)
-    * codetoken = meinen Token
-    * codename  = was soll versendet, mail oder telefon
-    * codevalue = an wem soll versendet: mail-adresse oder telefonnummer(SMS)
-    * codevalue: ZURZEIT NICHT GENUTZT, WIRD VERSENDET AN ALTE MAIL-ADRESSE ODER TELEFONNUMMER
-    */
-    private User    myData;
+    /**
+     * Code generieren und zurück senden.
+     * bei änderungen das E-Mail, Telefon oder Accound Löschen
+     * ein e-mail mit freischaltcode an die ALTE E-Mail-adresse senden
+     * die freischaltcode wird zusäzlich als return an die profil.js
+     * fonction codeHolen(.. auch zugesendet(zum vergleichen)
+     *
+     * Zugesendete Daten(von profil.js/ codeHolen()...)
+     * codetoken = meinen Token
+     * codename  = was soll versendet, mail oder telefon
+     * codevalue = an wem soll versendet: mail-adresse oder telefonnummer(SMS)
+     * codevalue: ZURZEIT NICHT GENUTZT, WIRD VERSENDET AN ALTE MAIL-ADRESSE ODER TELEFONNUMMER
+     */
+    private Usern   myData;
     private String  alteMail;
     private String  alteTelefon;
     private int     code;
@@ -272,7 +282,7 @@ public class SettingController {
                             Model model)
     {
 
-        myData      = userService.findeUserToken(Long.valueOf(codetoken));
+        myData      = userService.findeUserToken(codetoken);
         alteMail    = myData.getEmail();
         alteTelefon = myData.getTelefon();
 
@@ -294,17 +304,17 @@ public class SettingController {
             }
         }
 
-       /*
-        *  code an prfil.js/codeHolen()... senden
-        */
+        /*
+         *  code an prfil.js/codeHolen()... senden
+         */
         return String.valueOf(code);
     }
 
-   /**
-    *   Account Abmelden
-    *   werden nur cookie gelöscht(in profil.js) und hier
-    *   die Tabelle Session in Spalte 'letztenoutlog' datum aktualisiert
-    */
+    /**
+     *   Account Abmelden
+     *   werden nur cookie gelöscht(in profil.js) und hier
+     *   die Tabelle Session in Spalte 'letztenoutlog' datum aktualisiert
+     */
     private Integer outlog;
     private String  datum;
     @PostMapping(value = "/accountabmelden")
@@ -317,28 +327,33 @@ public class SettingController {
     }
 
 
-   /**
-    *   Account Loschen
-    */
-    private User            userDaten;
+    /**
+     *   Account Loschen
+     */
+    private Usern           userDaten;
     private String          userPseudonym;
     private String          userName;
     private String          userVorname;
     private List<String>    alleMeineMessageToken;
+    private String          nameBild;
+    private Path            fileName;
+    private int             profilBildGeloscht;
     private String          phoneGeloscht;
-    private String          sessionGeloscht;
+    private int             countAlleMessage;
+    private String          countEntryGeloscht;
     private String          freundeGeloscht;
     private String          messagesGeloscht;
     private String          userGeloscht;
-    private String          cookieGeloscht;
+    private String          sessionGeloscht;
+    private int             cookieGeloscht;
+    private int             sessionPluCookie;
     @PostMapping(value = "/accountloschen")
-    //@ResponseBody
     public String accountLoschen(@CookieValue(value = "userid", required = false) String cookie,
                                  @RequestParam(value = "token", required = false) String token,
                                  HttpServletResponse response, Model model)
     {
         // Meine Daten ermiteln
-        userDaten       = userService.findeUserToken(Long.valueOf(token));
+        userDaten       = userService.findeUserToken(token);
         userPseudonym   = userDaten.getPseudonym();
         userName        = userDaten.getName();
         userVorname     = userDaten.getVorname();
@@ -347,35 +362,54 @@ public class SettingController {
                 .stream()
                 .map(Freunde::getMessagetoken).collect(Collectors.toList());
 
-    /* 1 */    /* 100% Phone Tabbelle leeren, return int: bei leer 0 */
+        /* 0 */     /* Bild aus dem profilBild Löschen */
+        nameBild = "./profilbild/"+token+".png";
+        fileName = Paths.get(nameBild);
+        try {
+            Files.delete(fileName);
+            profilBildGeloscht = 1;
+        } catch (IOException e) {
+            //e.printStackTrace();
+            profilBildGeloscht = 0;
+        }
+
+        /* 1 */    /* 100% PHONE Tabbelle leeren, return int: bei leer 0 */
         phoneGeloscht = phoneService.allUserTelfonatLoschen(token);
 
-    /* 2 */     /* 100% Session Tabelle leeren, return int: bei leer 0 */
-        sessionGeloscht = sessionService.allUserSessionLoschen(token);
+        /* 2 */     /* 100% COUNTENTRY Tabelle leeren, return int: bei leer 0 */
+        countAlleMessage    = entryService.incrementMessageCounter(token);
+        countEntryGeloscht = entryService.countEntryLoschen(token);
 
-    /* 3 */     /* 100% Freunde Tabelle leeren, return int: bei leer 0  */
+        /* 3 */     /* 100% FREUNDE Tabelle leeren, return int: bei leer 0  */
         freundeGeloscht = freundeService.allFreundeLoschen(alleMeineMessageToken);
 
-    /* 4 */     /* 100% Messages Tabelle leeren, return int: bei leer 0 */
+        /* 4 */     /* 100% MESSAGES Tabelle leeren, return int: bei leer 0 */
         messagesGeloscht = messageService.allMessagesLoschen(alleMeineMessageToken);
 
-    /* 5 */     /* 100% User Tabelle leeren, return int: bei leer 0 */
-        userGeloscht = userService.userLoschen(Long.valueOf(token));
+        /* 5 */     /* 100% USERN Tabelle leeren, return int: bei leer 0 */
+        userGeloscht = userService.userLoschen(token);
 
-    /* 6 */     /* 100% cookie löschen */
+        /* 6 */     /* 100% SESSION Tabelle leeren, return int: bei leer 0 */
+        sessionGeloscht = sessionService.allUserSessionLoschen(token);
+
+        /* 7 */     /* 100% cookie löschen */
         cookieGeloscht = GlobalConfig.deleteCookie(response);
+        sessionPluCookie = Integer.parseInt(sessionGeloscht) + cookieGeloscht;
 
         model.addAttribute("frName", "accountloschen");
         model.addAttribute("userpseudonym", userPseudonym);
         model.addAttribute("username", userName);
         model.addAttribute("uservorname", userVorname);
         model.addAttribute("usercount", userGeloscht);
-        model.addAttribute("messagecount", messagesGeloscht);
+        model.addAttribute("profilbildcount", profilBildGeloscht);
+        model.addAttribute("messagecount", countAlleMessage);
         model.addAttribute("freundecount", freundeGeloscht);
         model.addAttribute("sessioncount", sessionGeloscht);
         model.addAttribute("phonecount", phoneGeloscht);
+        model.addAttribute("cookiecount", sessionPluCookie);
+
         logger.info("Account Loschen: " + alleMeineMessageToken +"/"+ phoneGeloscht +"/"+ sessionGeloscht + "/"
-                + freundeGeloscht +"/"+ messagesGeloscht +"/"+ userGeloscht +"/"+ cookieGeloscht);
+                + freundeGeloscht +"/"+ messagesGeloscht +"/"+ userGeloscht +"/"+ cookieGeloscht+"/"+ countAlleMessage);
         return "/setting :: #ACCOUNTLOSCHENFRAGMENT";
     }
 }

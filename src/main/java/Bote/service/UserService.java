@@ -1,11 +1,10 @@
 package Bote.service;
 
-import Bote.model.User;
+import Bote.model.Usern;
 import Bote.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 /**
@@ -18,25 +17,25 @@ public class UserService {
     private UserRepository userRepository;
 
     /* Finde Alle Users */
-    public List<User> findeAlle(){
+    public List<Usern> findeAlle(){
 
         return userRepository.findAll();
     }
 
     /* functioniert 100% */
-    public User findeUserToken(Long token){
+    public Usern findeUserToken(String token){
 
         return userRepository.findByToken(token);
     }
 
     /* neue user ins H2 Datenbank speichern: func. 100% */
-    public void saveNewUser(User user) {
+    public void saveNewUser(Usern user) {
 
         userRepository.save(user);
     }
 
     /* nach registrierte E-Mail suchen: func. 100% */
-    public User sucheMail(String email) {
+    public Usern sucheMail(String email) {
 
         return userRepository.findByEmail(email);
     }
@@ -44,28 +43,18 @@ public class UserService {
    /**
     *   vorhandenen Telefonnummer suchen
     */
-    public User sucheTelefon(String telefon){
+    public Usern sucheTelefon(String telefon){
 
         return userRepository.findByTelefon(telefon);
     }
 
    /**
-    *   Benutzt von settingController/@PostMapping(value = "bildupload")
-    *   Benutzt von settingController/@PostMapping(value = "/profilbildloschen")
-    *   Profil Bild Name Update & Profil Bild Löschen(bei Löschen profilbild wird leer zugesendet)
-    */
-    public Integer bildUpdate(String name, String token){
-
-        return userRepository.updateBild(name, token);
-    }
-
-
-   /**
     *   Benutzt von SettingController/@PostMapping(value = "/accountloschen")
     *   Account Löschen
+    * @param token
     */
     @Transactional
-    public String userLoschen(Long token){
+    public String userLoschen(String token){
 
         return userRepository.deleteByToken(token);
     }

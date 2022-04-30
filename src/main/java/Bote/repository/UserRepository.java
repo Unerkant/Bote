@@ -1,12 +1,8 @@
 package Bote.repository;
 
-import Bote.model.User;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
+import Bote.model.Usern;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
     /**
@@ -14,28 +10,17 @@ import java.util.List;
     */
 
 @Repository
-public interface UserRepository extends CrudRepository<User, Integer> {
+public interface UserRepository extends CrudRepository<Usern, Integer> {
 
-    User findByToken(Long token);
-    User findByEmail(String email);
-    User findByTelefon(String telefon);
-    List<User> findAll();
+    Usern findByToken(String token);
+    Usern findByEmail(String email);
+    Usern findByTelefon(String telefon);
+    List<Usern> findAll();
 
    /**
     *   benutzt von SettingController/ @PostMapping(value = "/accountloschen")
     *   Account Löschen
     */
-    String deleteByToken(Long token);
-
-
-   /**
-    *   Benutzt von settingController/@PostMapping(value = "bildupload")
-    *   Benutzt von settingController/@PostMapping(value = "/profilbildloschen")
-    *   Profil Bild Name Update & Profil Bild Löschen(bei Löschen profilbild wird leer zugesendet)
-    */
-    @Modifying
-    @Transactional
-    @Query(value = "UPDATE USER SET bild = :profilbild WHERE token = :token", nativeQuery=true)
-    Integer updateBild(String profilbild, String token);
+    String deleteByToken(String token);
 
 }

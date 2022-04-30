@@ -70,8 +70,8 @@
         //alert(form[0]+'/'+form[1]+'/'+form[2]);
         $.post('/bekantensuchen', {'mailodertel': mailOderTel, 'chatfragment': chatfragment, 'zahl': istZahl})
         .done(function(output){
-            //alert(output);
-            // #MESSAGEFRAGMENT befindet sich in messenger.html Zeile: 157
+             //alert(output);
+            // #MESSAGEFRAGMENT befindet sich in messenger.html Zeile: 184
             $('#MESSAGEFRAGMENT').replaceWith(output);
         });
     }
@@ -81,6 +81,7 @@
     *   Neuer Chat Einladen Speichenr in die Tabelle Freunde
     *   Daten zugesendet von messagecomponents.html Zeile: 232
     *   data-th-onClick="bekantenSave([[${gefunden.token}]])"
+    *   FreundeController.html Zeile: 202
     */
     function bekantenSave(bekantenToken){
         event.preventDefault();
