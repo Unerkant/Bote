@@ -1,19 +1,19 @@
 package Bote.configuration;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
-import javax.annotation.PostConstruct;
-import javax.mail.internet.MimeMessage;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.ThreadLocalRandom;
@@ -25,7 +25,7 @@ public class GlobalConfig {
     String appName;
 
    /**
-    *                                   aktuelle datum ermitteln.
+    *   aktuelle datum ermitteln.
     *   ============================================================
     *   1. Deutsches Format (für die Allgemeine anzeige)
     *   2. US-Format (in Datenbank speichern)
@@ -60,7 +60,7 @@ public class GlobalConfig {
 
 
    /**
-    *               Zufall Code für die Registrierung.
+    *   Zufall Code für die Registrierung.
     *   ==========================================================
     *   die Aktivierung Code wird 4-stellige Zahlen erstellt
     *   wird von MailController.java & TelefonController.java benutzt
@@ -78,7 +78,7 @@ public class GlobalConfig {
 
 
    /**
-    *                         cookie setzen
+    *   cookie setzen
     *   ========================================================
     *   cookie.setSecure, funktioniert nicht
     *   Benutzt: MailRegisterController.java Zeile 155
@@ -93,7 +93,7 @@ public class GlobalConfig {
     }
 
    /**
-    *                       cookie abfrage
+    *   cookie abfrage
     *   ========================================================
     *
     *   cookie suche, nach bestimmten Namen
@@ -112,7 +112,7 @@ public class GlobalConfig {
     }
 
    /**
-    *                       Cookie Löschen
+    *   Cookie Löschen
     *   ==========================================================
     *   wird in SettingController.java benutzt
     * @return
@@ -130,52 +130,52 @@ public class GlobalConfig {
 
 
    /**
-    *                         mailsender
+    *   Strato mailsender
     *   ===========================================================
-    *   + Text + Aktivierung Code + Senden
-    *   Benuzt von: MailLoginController.java
+    *   Mail-Sender ist von eigenes Produktion, programiert von Paul-Junior
+    *   Quell-Code liegt auf dem Strato-Server...
+    *   per Request zugesendet:
+    *       a. appId:       Bote
+    *       b. keyValue:    73b7f892-baa0-4b8b-b9af-2b72e1abf7ef
+    *       c. E-Mail:      von Text-Field ausgelesen
     *
-    *   mailSender vorbereitung
-    *   Text ausführung in HTML Format
-    *   Aktivierung Code in Text einbinden
+    *   Benuzt von: MailLoginController.java Zeile 87
+    *               +
+    *   ApiMailController/ @PostMapping(value = "/mailApi")
     *
     *   Aktivierung Code an angegebene E-Mail-Adresse versenden
-    *   E-Mail: unbekanten@gmail.com (application.properties)
     *
     *   @param emailParam
     *   @param aktivierungCode
     */
-    private static JavaMailSender mailSender;
-    @Autowired
-    private JavaMailSender javamailSender;
-    @PostConstruct
-    public void init(){
-        this.mailSender = javamailSender;
-    }
+    public static String mailSenden(String emailParam, int aktivierungCode){
 
-    //@SneakyThrows
-    public static String mailSenden(String emailParam, int aktivierungCode) {
-        String  title = "no-reply: ";
-        String  subject = "leer";
-        String  content = "Eine neue Nachricht";
+        String url = "http://h2981507.stratoserver.net:8090/sendEmail";
+        String json = "{ \"appKey\":{\"appId\":\"Bote\", \"keyValue\":\"73b7f892-baa0-4b8b-b9af-2b72e1abf7ef\"}," +
+                "\"emailAddress\":\""+emailParam+"\",\"subject\":\"Deine Code zur Anmeldung\", " +
+                "\"message\":\"hier erhalten Sie ihre Messenger Aktivierung Code\\n" +
+                " " +aktivierungCode+ " " +
+                "\\n Gültigkeit dauert nur für diese sitzung \\n \\n mit Freundlichen Grüßen \\n Ihr Team Bote \" }";
+
+        // send a JSON data
+        HttpResponse<String> response = null;
         try {
-            MimeMessage mailsenden = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(mailsenden, true);
-            helper.setFrom("---");
-            helper.setTo(emailParam);
+            HttpRequest request = HttpRequest
+                    .newBuilder()
+                    .uri(URI.create(url))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(json))
+                    .build();
 
-            boolean html = true;
-            helper.setText("<p>hier erhalten Sie ihre Messenger Aktivierung Code </p>"
-                    + "<b>" + aktivierungCode + "</b>"
-                    + "<p> Gültigkeit dauert nur für diese sitzung </p>"
-                    + "<p>mit Freundlichen Grüßen</p>", true);
-            String mailSubject = title + " Ihre Aktivierung Code " + aktivierungCode;
-            helper.setSubject(mailSubject);
-
-            mailSender.send(mailsenden);
-            return String.valueOf(mailSender.toString());
-        }catch (Exception e){
+            HttpClient client = HttpClient.newHttpClient();
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            return String.valueOf(response.statusCode());
+        }catch (IOException ex){
+            //ex.printStackTrace();
             return "nomail";
+        }catch (InterruptedException ie){
+           //ie.printStackTrace();
+           return "nomail";
         }
     }
 

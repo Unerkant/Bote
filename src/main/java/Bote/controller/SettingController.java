@@ -4,6 +4,7 @@ import Bote.configuration.GlobalConfig;
 import Bote.model.Freunde;
 import Bote.model.Usern;
 import Bote.service.*;
+import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -274,6 +275,7 @@ public class SettingController {
     private int     code;
     private String  mail;
     private String  telefon;
+    @SneakyThrows
     @PostMapping(value = "/codeHolen")
     @ResponseBody
     public String codeHolen(@RequestParam(value = "codetoken", required = false) String codetoken,
