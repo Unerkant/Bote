@@ -129,56 +129,6 @@ public class GlobalConfig {
 
 
 
-   /**
-    *   Strato mailsender
-    *   ===========================================================
-    *   Mail-Sender ist von eigenes Produktion, programiert von Paul-Junior
-    *   Quell-Code liegt auf dem Strato-Server...
-    *   per Request zugesendet:
-    *       a. appId:       Bote
-    *       b. keyValue:    73b7f892-baa0-4b8b-b9af-2b72e1abf7ef
-    *       c. E-Mail:      von Text-Field ausgelesen
-    *
-    *   Benuzt von: MailLoginController.java Zeile 87
-    *               +
-    *   ApiMailController/ @PostMapping(value = "/mailApi")
-    *
-    *   Aktivierung Code an angegebene E-Mail-Adresse versenden
-    *
-    *   @param emailParam
-    *   @param aktivierungCode
-    */
-    public static String mailSenden(String emailParam, int aktivierungCode){
-
-        String url = "http://h2981507.stratoserver.net:8090/sendEmail";
-        String json = "{ \"appKey\":{\"appId\":\"Bote\", \"keyValue\":\"73b7f892-baa0-4b8b-b9af-2b72e1abf7ef\"}," +
-                "\"emailAddress\":\""+emailParam+"\",\"subject\":\"Deine Code zur Anmeldung\", " +
-                "\"message\":\"hier erhalten Sie ihre Messenger Aktivierung Code\\n" +
-                " " +aktivierungCode+ " " +
-                "\\n Gültigkeit dauert nur für diese sitzung \\n \\n mit Freundlichen Grüßen \\n Ihr Team Bote \" }";
-
-        // send a JSON data
-        HttpResponse<String> response = null;
-        try {
-            HttpRequest request = HttpRequest
-                    .newBuilder()
-                    .uri(URI.create(url))
-                    .header("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString(json))
-                    .build();
-
-            HttpClient client = HttpClient.newHttpClient();
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            return String.valueOf(response.statusCode());
-        }catch (IOException ex){
-            //ex.printStackTrace();
-            return "nomail";
-        }catch (InterruptedException ie){
-           //ie.printStackTrace();
-           return "nomail";
-        }
-    }
-
 
    /**
     *                      Senden SMS

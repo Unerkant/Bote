@@ -56,8 +56,7 @@ public class MailRegisterController {
                                   Model model, RedirectAttributes redAttr)
     {
 
-       /*
-        * -----------------------------------------------------------
+       /**
         *   Daten sammeln
         * -----------------------------------------------------------
         *
@@ -78,8 +77,7 @@ public class MailRegisterController {
 
         tippCode = Integer.parseInt(ersteCode + zweiteCode + dritteCode + vierteCode);
 
-       /*
-        * -----------------------------------------------------------
+       /**
         *   Fehler in mailregister.html ausgeben
         * -----------------------------------------------------------
         *
@@ -103,8 +101,7 @@ public class MailRegisterController {
             return "redirect:/login/mailregister";
         }
 
-       /*
-        * -----------------------------------------------------------
+       /**
         *   Daten in H2 Datenbank speichern
         * -----------------------------------------------------------
         *
