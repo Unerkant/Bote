@@ -5,6 +5,7 @@ import Bote.model.Session;
 import Bote.model.Usern;
 import Bote.service.SessionService;
 import Bote.service.UserService;
+
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +23,7 @@ import java.util.Locale;
  * Den 24.08.2022
  */
 @Controller
-public class ApiController {
+public class ApiMailController {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -31,7 +32,7 @@ public class ApiController {
     @Autowired
     private SessionService sessionService;
 
-    private int     globalAktivierungscode;
+    private int     mailAktivierungsCode;
     private String  newUserMail;
     private Integer codeZugesendet;
     private String  mailZugesendet;
@@ -57,20 +58,20 @@ public class ApiController {
     public ResponseEntity<String> apiEmail(@RequestBody String mailZugesendet){
 
         /* Aktivierung Code holen & E-Mail mit code versenden */
-        globalAktivierungscode = GlobalConfig.aktivierungCode();
+        mailAktivierungsCode = GlobalConfig.aktivierungCode();
         JSONObject ob = new JSONObject(mailZugesendet);
         newUserMail = (String) ob.get("neuUserMail");
-        //String apiMailsenden = GlobalConfig.mailSenden(newUserMail, globalAktivierungscode);
+
+        String apiMailsenden = GlobalConfig.mailSenden(newUserMail, mailAktivierungsCode);
         //String apiMailsenden = "ok";
 
-      /*  if (apiMailsenden.equals("nomail")){
-            System.out.println("Api Mail Controller IF: " + apiMailsenden);
+        if (apiMailsenden.equals("nomail")){
+            //System.out.println("Api Mail Controller IF: " + apiMailsenden);
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         } else {
-            System.out.println("Api Mail Controller ELSE: " + apiMailsenden);
+            //System.out.println("Api Mail Controller ELSE: " + apiMailsenden);
             return new ResponseEntity(HttpStatus.OK);
-        }*/
-        return new ResponseEntity<>(HttpStatus.OK);
+        }
     }
 
 
@@ -102,11 +103,11 @@ public class ApiController {
          *  Aktivierung Code zurück zu BoteFx senden wenn eine Falsche Code eingegeben ist,
          *  dient nur für Versuch Zwecken
          */
-        String jsonTester = "{\"testerCode\":"+globalAktivierungscode+"}";
+        String jsonTester = "{\"testerCode\":"+mailAktivierungsCode+"}";
         /* Ende Später Löschen */
 
         /* Aktivierung Code Prüfen */
-        if (codeZugesendet == globalAktivierungscode){
+        if (codeZugesendet == mailAktivierungsCode){
 
             /* nach E-Mail durchsuchen, ob vorhanden ist */
             alterUser = userService.sucheMail(mailZugesendet);
@@ -154,13 +155,15 @@ public class ApiController {
                             "\"tokenOutput\":\""+    ( alterUser != null ? alterUser.getToken()      : neuerToken )+"\", " +
                             "\"vornameOutput\":\""+  ( alterUser != null ? alterUser.getVorname()    : "" )+"\" }";
 
-            System.out.println("IF User Daten(response): " + userResponse );
+            //System.out.println("IF User Daten(response): " + userResponse );
             return ResponseEntity.status(HttpStatus.OK).body(userResponse);
         } else {
-            System.out.println("ELSE HttpStatus: " + jsonTester  );
+            //System.out.println("ELSE HttpStatus: " + jsonTester  );
             /**
              * return 404
              * Aktivierung Code stimmt nicht Überein
+             *
+             * body(jsonTester) später Löschen
              */
             //return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(jsonTester);

@@ -5,12 +5,12 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.6.1</version>
+		<version>2.7.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
 	<artifactId>Bote</artifactId>
-	<version>1.0.7</version>
+	<version>1.0.8</version>
 	<name>Bote</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
@@ -24,7 +24,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
-			<version>2.6.5</version>
+			<version>2.7.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -65,11 +65,13 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>8.0.30</version>
 		</dependency>
+		<!-- mit diesem Driver kann keine jar Datei erstellen
 		<dependency>
 			<groupId>net.sourceforge.javydreamercsw</groupId>
 			<artifactId>MySQL-Driver</artifactId>
 			<version>0.1</version>
 		</dependency>
+		-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>

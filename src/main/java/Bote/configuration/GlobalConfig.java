@@ -129,10 +129,65 @@ public class GlobalConfig {
 
 
 
+   /**
+    *   Strato mailsender
+    *   ===========================================================
+    *   Mail-Sender ist von eigenes Produktion, programiert von Paul-Junior
+    *   Quell-Code liegt auf dem Strato-Server...
+    *   per Request zugesendet:
+    *       a. appId:           Bote
+    *       b. keyValue:        73b7f892-baa0-4b8b-b9af-2b72e1abf7ef
+    *       c. emailAddress:    von Text-Field ausgelesen
+    *
+    *   Benutzt von: MailLoginController.java Zeile 87
+    *               +
+    *   ApiMailController/ @PostMapping(value = "/mailApi")
+    *
+    *   Aktivierung Code an angegebene E-Mail-Adresse versenden
+    *
+    *   @param neuUserMail
+    *   @param aktivierungCode
+    */
+    public static String mailSenden(String neuUserMail, int aktivierungCode){
+
+        //String url = "http://h2981507.stratoserver.net:8090/sendEmail";
+        String url = "http://h2983397.stratoserver.net:8090/sendEmail";
+        String json = "{ \"appKey\":{\"appId\":\"Bote\", \"keyValue\":\"73b7f892-baa0-4b8b-b9af-2b72e1abf7ef\"}," +
+                "\"emailAddress\":\""+neuUserMail+"\",\"subject\":\"Deine Code zur Anmeldung\", " +
+                "\"message\":\"hier erhalten Sie ihre Messenger Aktivierung Code\\n" +
+                " " +aktivierungCode+ " " +
+                "\\n Gültigkeit dauert nur für diese sitzung \\n \\n mit Freundlichen Grüßen \\n Ihr Team Bote \" }";
+
+        // send a JSON data
+        HttpResponse<String> response = null;
+        try {
+            HttpRequest request = HttpRequest
+                    .newBuilder()
+                    .uri(URI.create(url))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(json))
+                    .build();
+            HttpClient client = HttpClient.newHttpClient();
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            return String.valueOf(response.statusCode());
+
+        }catch (IOException ex){
+            //ex.printStackTrace();
+            return "nomail";
+        }catch (InterruptedException ie){
+           //ie.printStackTrace();
+           return "nomail";
+        }
+    }
+
 
    /**
     *                      Senden SMS
     *  ==========================================================
+    *       ACHTUNG: KEINE CREDITS BEI TEXTLOCAL
+    *       https://control.txtlocal.co.uk
+    *
     *  Link von Integration API:(muss nicht angemeldet sein)
     *  https://www.textlocal.com/integrations/api/
     *
