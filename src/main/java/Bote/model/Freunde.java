@@ -2,8 +2,9 @@ package Bote.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.persistence.*;
+import java.util.Date;
 
-   /**
+/**
     *    Den 1.11.2021
     */
 
@@ -14,7 +15,7 @@ public class Freunde {
     @GeneratedValue
     private long id;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy.MM.dd HH:mm:ss")
     private String datum;
 
     private String meinentoken;
@@ -37,6 +38,27 @@ public class Freunde {
 
     private String role;
 
+    @Transient // Bedeutet wird nicht für die Datenbank verwendet
+    private String letzteNachricht;
+
+    @Transient // Bedeutet wird nicht für die Datenbank verwendet
+    private String datumLetzteNachricht;
+
+    public String getLetzteNachricht() {
+        return letzteNachricht;
+    }
+
+    public void setLetzteNachricht(String letzteNachricht) {
+        this.letzteNachricht = letzteNachricht;
+    }
+
+    public String getDatumLetzteNachricht() {
+        return datumLetzteNachricht;
+    }
+
+    public void setDatumLetzteNachricht(String datumLetzteNachricht) {
+        this.datumLetzteNachricht = datumLetzteNachricht;
+    }
 
     public Freunde(){
         //Leer

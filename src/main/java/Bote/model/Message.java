@@ -14,7 +14,7 @@ public class Message {
     @GeneratedValue
     private long id;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy.MM.dd HH:mm:ss")
     private String datum;
     private String meintoken;
     private String messagetoken;

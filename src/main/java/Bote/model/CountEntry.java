@@ -15,7 +15,7 @@ public class CountEntry {
     @GeneratedValue
     private long id;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy.MM.dd HH:mm:ss")
     private String datum;
 
     private String token;

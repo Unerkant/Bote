@@ -87,7 +87,7 @@ public class SettingController {
     public @ResponseBody byte[] profilBild(@PathVariable(value = "imageName", required = true) String bildName)
             throws IOException {
 
-        File bildFile = new File("./profilbild/" + bildName);
+        File bildFile = new File("profilbild/" + bildName);
         logger.info("settingController/profilbild: " + bildName);
         return IOUtils.toByteArray(bildFile.toURI());
 
@@ -365,7 +365,7 @@ public class SettingController {
                 .map(Freunde::getMessagetoken).collect(Collectors.toList());
 
         /* 0 */     /* Bild aus dem profilBild Löschen */
-        nameBild = "./profilbild/"+token+".png";
+        nameBild = "profilbild/"+token+".png";
         fileName = Paths.get(nameBild);
         try {
             Files.delete(fileName);

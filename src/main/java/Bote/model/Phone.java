@@ -14,7 +14,7 @@ public class Phone {
 
     private String bild;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy.MM.dd HH:mm:ss")
     private String datum;
 
     private String token;

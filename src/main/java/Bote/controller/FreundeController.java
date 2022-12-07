@@ -2,8 +2,10 @@ package Bote.controller;
 
 import Bote.configuration.GlobalConfig;
 import Bote.model.Freunde;
+import Bote.model.Message;
 import Bote.model.Usern;
 import Bote.service.FreundeService;
+import Bote.service.MessageService;
 import Bote.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +36,8 @@ public class FreundeController {
     private FreundeService freundeService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private MessageService messageService;
 
    /**
     *   NUR DIE SUCHFUNCTION EINBLENDEN MIT HEAD(Meine Daten)
@@ -280,7 +284,7 @@ public class FreundeController {
    /**
     *   Einladung genehmigung
     *   Datenbank: Tabelle Freunde Spalte: role, werden 2x
-    *   einträge (werdeEingeladen/wartenAufOk) gelöscht von Freunde & mich WHERE messageToken
+    *   einträge (werdeEingeladen/wartenAufOk) gelöscht von Freunde & meine WHERE messageToken
     */
    @PostMapping(value = "/einladungUpdate")
    public String einladungUpdate(@CookieValue(value = "userid", required = false) String einladungCookie,
@@ -300,13 +304,20 @@ public class FreundeController {
    *   Freund Löschen(Chat Löschen)
    *   Datenbank Tabelle: Freunde, wird gelöscht 2 einträge
    *   WHERE messagetoken
+   *   ab dem 4.12.2022 bei dem gelöschten Freund werden gleich alle messages aus dem
+   *   Tabelle 'messages' unwiderruflich gelöscht
+   *   keine sicherung von Freunde + message sind nicht vorgesehen
    */
    @PostMapping(value = "/freundedelete")
    public String freundLoschen(@CookieValue(value = "userid", required = false) String freundeDeleteCookie,
                                @RequestParam(value = "messToken", required = false) String messToken){
 
-       freundeService.freundLoschen(messToken);
-       logger.info("PostMapping Freund Loschen: "  + messToken );
+       //freundeService.freundLoschen(messToken);
+       // oben war alte bis 3.12.2022, unten neue mit return, + neue message Löschen
+       List<Freunde> geloschteFriend = freundeService.freundLoschen(messToken);
+       List<Message> geloschteMessage = messageService.freundMessageLoschen(messToken);
+
+       logger.info("PostMapping Freund Loschen: "  + geloschteFriend +" / " + geloschteMessage );
        return ("/messenger :: #OK"+messToken);
    }
 

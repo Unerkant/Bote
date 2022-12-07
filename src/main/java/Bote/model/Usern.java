@@ -16,7 +16,7 @@ public class Usern {
 
     private String token;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy.MM.dd HH:mm:ss")
     private String datum;
 
     private String bild;

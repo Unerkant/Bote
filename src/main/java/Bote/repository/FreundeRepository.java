@@ -1,6 +1,7 @@
 package Bote.repository;
 
 import Bote.model.Freunde;
+
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -11,12 +12,22 @@ import java.util.List;
    /**
     *   Den 1.10.2021
     */
+
 @Repository
 public interface FreundeRepository extends CrudRepository<Freunde, Integer> {
 
+   /**
+    * Allgemeine Abfragen
+    * deleteByMessagetoken wird benutzt:
+    *   a. freundeService Zeile: 90
+    *
+    * @param meinentoken
+    * @return
+    */
     List<Freunde> findByMeinentoken(String meinentoken);
     List<Freunde> findByMessagetoken(String messagetoken);
     List<Freunde> deleteByMessagetoken(String messagetoken);
+
 
    /**
     *  benutzt von SettingController/@PostMapping(value = "/accountloschen")
@@ -25,14 +36,13 @@ public interface FreundeRepository extends CrudRepository<Freunde, Integer> {
     */
     String deleteByMessagetokenIn(List<String> messagetoken);
 
-    /* Update: Löschen von 2x einträgen von Spalte role */
+
+    /**
+     *  Update: Löschen von 2x einträgen von Spalte role
+     */
     @Modifying
     @Transactional
     @Query(value = "UPDATE FREUNDE SET role = :role WHERE messagetoken = :messagetoken", nativeQuery=true)
     Integer updateRole(String role, String messagetoken);
 
-       //Freunde deleteAllByMessagetoken(List<String> messagetoken);
-
-
-       //void deleteAll(List<String> freund);
    }
