@@ -13,26 +13,16 @@ public class Usern {
     @Id
     @GeneratedValue
     private long id;
-
     private String token;
-
     @JsonFormat(pattern = "yyyy.MM.dd HH:mm:ss")
     private String datum;
-
     private String bild;
-
     private  String pseudonym;
-
     private String name;
-
     private String vorname;
-
     private String email;
-
     private  String telefon;
-
     private String role;
-
     private  String other;
 
 

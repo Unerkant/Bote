@@ -26,6 +26,7 @@ public interface FreundeRepository extends CrudRepository<Freunde, Integer> {
     */
     List<Freunde> findByMeinentoken(String meinentoken);
     List<Freunde> findByMessagetoken(String messagetoken);
+    List<Freunde> findByFreundemail(String freundemail);
     List<Freunde> deleteByMessagetoken(String messagetoken);
 
 

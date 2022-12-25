@@ -7,6 +7,7 @@ import Bote.service.FreundeService;
 import Bote.service.MessageService;
 import Bote.service.CountEntryService;
 import Bote.service.UserService;
+
 import lombok.SneakyThrows;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;

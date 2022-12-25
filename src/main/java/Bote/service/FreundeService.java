@@ -20,6 +20,7 @@ public class FreundeService {
    @Autowired
    private MessageService messageService;
 
+
    /**
     *  Nach Meinen Freuden suchen
     */
@@ -28,6 +29,7 @@ public class FreundeService {
       freundeRepository.findByMeinentoken(meinentoken).forEach(freund::add);
       return freund;
    }
+
 
    /**
     * diese Methode wird von ApiFreundeController benutzt,
@@ -51,6 +53,21 @@ public class FreundeService {
 
       return freundeRepository.findByMessagetoken(token);
    }
+
+
+   /**
+    * functionier 100% - zurzeit nicht benutzt
+    *
+    * war gedacht für den ApiUserController/einladenApi,
+    * nicht 2-mal einladen
+    *
+    * @param mail
+    * @return
+    */
+   public List<Freunde> findeMail(String mail){
+      return freundeRepository.findByFreundemail(mail);
+   }
+
 
    /**
     *  Meinen NeuerChat Registrieren
@@ -81,7 +98,9 @@ public class FreundeService {
 
    /**
     *    Freund Löschen
+    *
     *    1. benutzt von FreundeController/ @PostMapping(value = "/freundedelete")
+    *       Quelle: button/messenger.html Zeile: 79 (FreundRemove()) -> freunde.js Zeile: 138
     *    2. benutzt von ApiFreundeController Zeile: 80
     *
     */
@@ -104,4 +123,4 @@ public class FreundeService {
          return freundeRepository.deleteByMessagetokenIn(messagetoken);
    }
 
-   }
+}

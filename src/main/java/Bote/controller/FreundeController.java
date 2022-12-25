@@ -302,7 +302,11 @@ public class FreundeController {
 
   /**
    *   Freund Löschen(Chat Löschen)
-   *   Datenbank Tabelle: Freunde, wird gelöscht 2 einträge
+   *   Benutzt:
+   *   1. von freunde.js Zeile 138 (button/messenger.html Zeile: 80)
+   *   2. ApiFreundeController Zeile: 90
+   *
+   *   Datenbank Tabelle: Freunde wird gelöscht 2 einträge
    *   WHERE messagetoken
    *   ab dem 4.12.2022 bei dem gelöschten Freund werden gleich alle messages aus dem
    *   Tabelle 'messages' unwiderruflich gelöscht

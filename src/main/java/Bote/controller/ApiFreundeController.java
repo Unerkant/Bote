@@ -7,6 +7,7 @@ import Bote.service.MessageService;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -56,6 +57,7 @@ public class ApiFreundeController {
 
         return ResponseEntity.status(HttpStatus.OK).body(myFreunde);
     }
+
 
 
     /**
