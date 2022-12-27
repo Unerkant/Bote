@@ -134,29 +134,42 @@ public class GlobalConfig {
     *   ===========================================================
     *   Mail-Sender ist von eigenes Produktion, programiert von Paul-Junior
     *   Quell-Code liegt auf dem Strato-Server...
-    *   per Request zugesendet:
+    *   per Request an Strato-Server zugesendet:
     *       a. appId:           Bote
     *       b. keyValue:        73b7f892-baa0-4b8b-b9af-2b72e1abf7ef
     *       c. emailAddress:    von Text-Field ausgelesen
+    *       d. betreff:         E-Mail Betreff
+    *       e. textMessage      E-Mail text von message
     *
-    *   Benutzt von: MailLoginController.java Zeile 87
-    *               +
-    *   ApiMailController/ @PostMapping(value = "/mailApi")
+    *   ACHTUNG: die notwendigen 3 Parameter zu Methode senden
+    *       a. E-Mail-Adresse
+    *       b. betreff eine E-Mail
+    *       c. text message
     *
-    *   Aktivierung Code an angegebene E-Mail-Adresse versenden
+    *   Benutzt von:
+    *       1. MailLoginController.java Zeile 90
+    *       2. SettingController.java Zeile: 305
+    *       3. ApiMailController/ @PostMapping(value = "/mailApi") Zeile: 68
+    *
+    *   Einladung oder Aktivierungscode an angegebene E-Mail-Adresse versenden
+    *   (code wird in textMessage interagiert)
+    *
     *
     *   @param neuUserMail
-    *   @param aktivierungCode
+    *   @param betreff
+    *   @param textMessage
     */
-    public static String mailSenden(String neuUserMail, int aktivierungCode){
+    public static String mailSenden(String neuUserMail, String betreff, String textMessage){
+
+        String appid        = "Bote";
+        String keyvalue     = "73b7f892-baa0-4b8b-b9af-2b72e1abf7ef";
 
         //String url = "http://h2981507.stratoserver.net:8090/sendEmail";
         String url = "http://h2983397.stratoserver.net:8090/sendEmail";
-        String json = "{ \"appKey\":{\"appId\":\"Bote\", \"keyValue\":\"73b7f892-baa0-4b8b-b9af-2b72e1abf7ef\"}," +
-                "\"emailAddress\":\""+neuUserMail+"\",\"subject\":\"Deine Code zur Anmeldung\", " +
-                "\"message\":\"hier erhalten Sie ihre Messenger Aktivierung Code\\n" +
-                " " +aktivierungCode+ " " +
-                "\\n Gültigkeit dauert nur für diese sitzung \\n \\n mit Freundlichen Grüßen \\n Ihr Team Bote \" }";
+        String json = "{ \"appKey\":{\"appId\":\""+appid+"\", \"keyValue\":\""+keyvalue+"\"}," +
+                        "\"emailAddress\":\""+neuUserMail+"\"," +
+                        "\"subject\":\""+betreff+"\", " +
+                        "\"message\": \""+textMessage+"\" }";
 
         // send a JSON data
         HttpResponse<String> response = null;
@@ -204,7 +217,7 @@ public class GlobalConfig {
     *
     *  leider mit dem Deutsche-Handy-Nummert hatte nicht functioniert
     */
-    public static String smsSenden(String telefon, int aktivierCode){
+    public static String smsSenden(String telefon, String smsText){
         String  apiKey;
         String  message;
         String  sender;
@@ -214,7 +227,7 @@ public class GlobalConfig {
     try {
         // Construct data
         apiKey = "apikey=" + "NmI2NTc4MzM3ODQzNmU0ZTYxNTI1MzZmNTk0ODZlNGI=";
-        message = "&message=" + "die Aktivierung Code: " + aktivierCode;
+        message = "&message=" + smsText;
         sender = "&sender=" + "no-reply";
         numbers = "&numbers=" + telefon;
 

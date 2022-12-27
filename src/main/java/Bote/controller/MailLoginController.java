@@ -3,11 +3,11 @@ package Bote.controller;
 import Bote.configuration.GlobalConfig;
 import Bote.model.Usern;
 import Bote.service.UserService;
+
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -81,10 +81,14 @@ public class MailLoginController {
 
    /**
     *   Mail Sender, ausgelagert in ClobalConfig.java Zeile: 120
-    *   zugesendet 1. mail & aktivierungscode
+    *   zugesendet 1. mail + mail betreff + text message
     *   response- mailSenden: org.springframework.mail.javamail.JavaMailSenderImpl@3df04fa1
     */
-    mailSenden = GlobalConfig.mailSenden(emailParam, aktivierungCode);
+
+   String betreffParam      = "Deine Zugangscode zur Anmeldung";
+   String messageParam = "hier erhalten Sie ihre Messenger Aktivierung Code\\n" +aktivierungCode+
+           "\\n Gültigkeit dauert nur für diese sitzung \\n \\n mit Freundlichen Grüßen \\n Ihr Team Bote ";
+    mailSenden = GlobalConfig.mailSenden(emailParam, betreffParam, messageParam);
     if (mailSenden == null){
         return "redirect:/login/maillogin";
     }

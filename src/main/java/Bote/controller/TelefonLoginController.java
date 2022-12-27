@@ -71,7 +71,9 @@ public class TelefonLoginController {
         /* ********************************************************* */
         /* SMS Senden, ausgelagert in GlobalConfig.java              */
         /* ********************************************************* */
-        smsSenden = GlobalConfig.smsSenden(telefon, aktivierCode);
+        String smsText = "Deine Zugangscode zur Anmeldung bei Bote \\n \\n" + aktivierCode+
+                " \\n \\n mit Freundlichen Grüßen \\n Ihr Team Bote ";
+        smsSenden = GlobalConfig.smsSenden(telefon, smsText);
         if (smsSenden == "nosms"){
             redidAttr.addFlashAttribute("telefonfehler", "Error: ");
             return "redirect:/login/telefonlogin";

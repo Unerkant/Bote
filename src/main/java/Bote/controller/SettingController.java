@@ -4,6 +4,7 @@ import Bote.configuration.GlobalConfig;
 import Bote.model.Freunde;
 import Bote.model.Usern;
 import Bote.service.*;
+
 import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -50,6 +51,7 @@ public class SettingController {
     @Autowired
     private CountEntryService entryService;
 
+
     /**
      *   Setting HTML Starten
      *   Linke Seite: Ausgabe von Bild & E-Mail-Adresse
@@ -93,9 +95,10 @@ public class SettingController {
 
     }
 
-    /**@
+
+    /**
      *   Profil Bild Upload
-     *   Bild-Name, wird das Gleiche gegeben wie user token
+     *   Bild-Name wird das Gleiche gegeben wie user token
      */
     private Integer bildBeiUsern;
     private Integer bildBeiFreunde;
@@ -127,6 +130,7 @@ public class SettingController {
         return res;
     }
 
+
     /**
      *   Profil Bild Löschen
      *   ACHTUNG: nur in Datenbank der Name von Bild
@@ -146,6 +150,7 @@ public class SettingController {
         logger.info("Profil Bild Loöschen: " + bildGeloscht);
         return String.valueOf(bildGeloscht);
     }
+
 
     /**
      *   Setting: Steuerung von einzelnen bereiche
@@ -257,15 +262,15 @@ public class SettingController {
     }
 
     /**
-     * Code generieren und zurück senden.
+     * Code generieren und zurücksenden.
      * bei änderungen das E-Mail, Telefon oder Accound Löschen
-     * ein e-mail mit freischaltcode an die ALTE E-Mail-adresse senden
-     * die freischaltcode wird zusäzlich als return an die profil.js
-     * fonction codeHolen(.. auch zugesendet(zum vergleichen)
+     * ein E-Mail mit freischaltcode an die ALTE E-Mail-adresse senden
+     * die freischaltcode wird zusätzlich als return an die profil.js
+     * function codeHolen(.. auch zugesendet(zum Vergleichen)
      *
      * Zugesendete Daten(von profil.js/ codeHolen()...)
      * codetoken = meinen Token
-     * codename  = was soll versendet, mail oder telefon
+     * codename = was soll versendet, mail oder telefon
      * codevalue = an wem soll versendet: mail-adresse oder telefonnummer(SMS)
      * codevalue: ZURZEIT NICHT GENUTZT, WIRD VERSENDET AN ALTE MAIL-ADRESSE ODER TELEFONNUMMER
      */
@@ -289,28 +294,35 @@ public class SettingController {
         alteTelefon = myData.getTelefon();
 
         code = GlobalConfig.aktivierungCode();
-        logger.info("codeHolen: "+ codename+ "/" +codevalue+ "/" + alteMail +"/"+ alteTelefon + "/" + code);
+        logger.info("SettingController Zeile:300 "+ codename+ "/" +codevalue+ "/" + alteMail +"/"+ alteTelefon + "/" + code);
 
         /* mail mit code an alte E-Mail-Adresse vesenden */
         if (alteMail != null && !alteMail.isBlank()){
-            mail = GlobalConfig.mailSenden(alteMail, code);
+
+            String betreff      = "Deine Zugangscode zur Anmeldung";
+            String sendeMessage = "hier erhalten Sie ihre Messenger Aktivierung Code\\n" +code+
+                    "\\n Gültigkeit dauert nur für diese sitzung \\n \\n mit Freundlichen Grüßen \\n Ihr Team Bote ";
+            mail = GlobalConfig.mailSenden(alteMail, betreff, sendeMessage);
             if (mail.equals("nomail")){
                 return "nomail";
             }
         }
         /* sms mit code an die alte Telefonnummer versenden */
         if (alteTelefon != null && !alteTelefon.isBlank()){
-            telefon = GlobalConfig.smsSenden(alteTelefon, code);
+            String smsText = "Deine Zugangscode zur Anmeldung bei Bote \\n \\n" + code+
+                    " \\n \\n mit Freundlichen Grüßen \\n Ihr Team Bote ";
+            telefon = GlobalConfig.smsSenden(alteTelefon, smsText);
             if (telefon.equals("nosms")){
                 return "nosms";
             }
         }
 
         /*
-         *  code an prfil.js/codeHolen()... senden
+         *  code an profil.js/codeHolen()... senden
          */
         return String.valueOf(code);
     }
+
 
     /**
      *   Account Abmelden
@@ -410,8 +422,9 @@ public class SettingController {
         model.addAttribute("phonecount", phoneGeloscht);
         model.addAttribute("cookiecount", sessionPluCookie);
 
-        logger.info("Account Loschen: " + alleMeineMessageToken +"/"+ phoneGeloscht +"/"+ sessionGeloscht + "/"
+        logger.info("SettingController Zeile: 417, Account Loschen: " + alleMeineMessageToken +"/"+ phoneGeloscht +"/"+ sessionGeloscht + "/"
                 + freundeGeloscht +"/"+ messagesGeloscht +"/"+ userGeloscht +"/"+ cookieGeloscht+"/"+ countAlleMessage);
         return "/setting :: #ACCOUNTLOSCHENFRAGMENT";
     }
+
 }

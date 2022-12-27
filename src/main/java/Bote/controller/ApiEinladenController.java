@@ -83,16 +83,26 @@ public class ApiEinladenController {
         String bekanntenToken = null;
         Usern meinerDaten = userService.findeUserToken(myToken);
 
-        // Prüfen, ob schon Freund ist
-        List allFreunde = freundeService.freundeSuchen(myToken)
+        // Prüfen mail, ob schon Freund ist
+        List allMailFreunde = freundeService.freundeSuchen(myToken)
                 .stream()
                 .map(Freunde::getFreundemail).collect(Collectors.toList());
-        System.out.println("List: " + allFreunde);
-        Object[] arr = allFreunde.toArray();
+        //System.out.println("List: " + allFreunde);
+        Object[] arr = allMailFreunde.toArray();
        // System.out.println("array: " + arr.toString());
         if (Arrays.stream(arr).anyMatch(s -> s.equals(mailOderTelefon))){
             output = "schonFreund";
             return ResponseEntity.status(HttpStatus.OK).body(output);
+        }
+
+        // Prüfen Telefon, ob schon Freund ist
+        List allTelefonFreunde = freundeService.freundeSuchen(myToken)
+                .stream()
+                .map(Freunde::getFreundetelefon).collect(Collectors.toList());
+        Object[] arrTel = allTelefonFreunde.toArray();
+        if (Arrays.stream(arrTel).anyMatch(t -> t.equals(mailOderTelefon))){
+            output = "schonFreund";
+            return  ResponseEntity.status(HttpStatus.OK).body(output);
         }
 
         // mail/telefon suchen, prüfen auf eigenes mail/telefon, speichern in tabelle freunde
@@ -225,6 +235,58 @@ public class ApiEinladenController {
             //List<Freunde> geloscht = freundeService.freundLoschen(messageToken);
             return ResponseEntity.status(HttpStatus.OK).body(erlaubnis);
         }
+    }
+
+
+    /**
+     * Einladung zu Bote per E-Mail
+     *
+     * gesendet OK: 200
+     * keyValue falsch: 302
+     *
+     * @param mailadresse
+     * @return
+     */
+    @PostMapping(value = "/perMailEinladen")
+    public @ResponseBody ResponseEntity<String> einladenPerMail(@RequestBody String mailadresse){
+
+        JSONObject jsonObject = new JSONObject(mailadresse);
+        String mails = jsonObject.getString("sendMail");
+        String mailBetreff = "Einladung zu Bote";
+        String mailMessage = "Bote App Downloaden auf die Seite: \\n https://bote.com/ \\n" +
+                "oder \\n https://apps.apple.com/";
+        String gesendet = GlobalConfig.mailSenden(mails, mailBetreff, mailMessage);
+
+        // gesendet = 200 oder 302
+        return ResponseEntity.status(HttpStatus.OK).body(gesendet);
+    }
+
+
+    /**
+     * Einladung per SMS
+     *
+     * Daten zugesendet von BoteFx/Einladencontroller Zeile: 250
+     *  nur Telefonnummer zugesendet!
+     *
+     * @param telefonnummer
+     * @return
+     */
+    @PostMapping(value = "/perSmsEinladen")
+    public @ResponseBody ResponseEntity<Integer> einladenPerSms(@RequestBody String telefonnummer){
+
+        JSONObject jsObjct = new JSONObject(telefonnummer);
+        String telefon = jsObjct.getString("sendTelefon");
+        String smstext = "Bote App Downloaden auf die Seite: \\n https://bote.com/ \\n" +
+                "oder \\n https://apps.apple.com/";
+        String verschickt = GlobalConfig.smsSenden(telefon, smstext );
+        int status;
+        if (verschickt != "nos"){
+            status = 200;
+        } else {
+            status = 500;
+        }
+        //System.out.println("Telefon: " + verschickt);
+        return ResponseEntity.status(HttpStatus.OK).body(status);
     }
 
 }

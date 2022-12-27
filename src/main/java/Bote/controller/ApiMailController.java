@@ -62,7 +62,10 @@ public class ApiMailController {
         JSONObject ob = new JSONObject(mailZugesendet);
         newUserMail = (String) ob.get("neuUserMail");
 
-        String apiMailsenden = GlobalConfig.mailSenden(newUserMail, mailAktivierungsCode);
+        String betreffApi      = "Deine Zugangscode zur Anmeldung";
+        String sendeMessageApi = "hier erhalten Sie ihre Messenger Aktivierung Code\\n" +mailAktivierungsCode+
+                "\\n Gültigkeit dauert nur für diese sitzung \\n \\n mit Freundlichen Grüßen \\n Ihr Team Bote ";
+        String apiMailsenden = GlobalConfig.mailSenden(newUserMail, betreffApi, sendeMessageApi);
         //String apiMailsenden = "ok";
 
         if (apiMailsenden.equals("nomail")){
