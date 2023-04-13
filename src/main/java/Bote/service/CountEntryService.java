@@ -19,7 +19,7 @@ public class CountEntryService {
 
     /**
      * Zählt alle message von einem User, sortiert nach dem token
-     * benötigt in MessageController.jave Zeile: 150
+     * benötigt in MessageController.java Zeile: 150
      *
      */
     public int incrementMessageCounter( String meintoken) {
@@ -31,7 +31,7 @@ public class CountEntryService {
                 .findByToken(meintoken)
                 .orElse(new CountEntry(1, datum,  meintoken, "0"));
 
-        // Letzten count aus dem Datenbank holen
+        // Letzten count aus der Datenbank holen
         int counterValue = Integer.parseInt(settingEntry.getTotal());
         counterValue++;
 
@@ -49,8 +49,8 @@ public class CountEntryService {
     }
 
     /**
-     * bernutzt von SettingController.java Zeile: 363
-     * Loschen message count, nach token
+     * benutzt von SettingController.java Zeile: 363
+     * Löschen message count, nach token
      */
     public String countEntryLoschen(String token){
 

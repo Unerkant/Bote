@@ -17,10 +17,11 @@ public class MessageService {
     @Autowired
     private MessageRepository messageRepository;
 
-    public void saveNewMessage(Message message) {
 
+    public void saveNewMessage(Message message) {
         messageRepository.save(message);
     }
+
 
 
    /**
@@ -31,6 +32,7 @@ public class MessageService {
 
         return messageRepository.findByMessagetoken(token);
     }
+
 
 
    /**
@@ -46,6 +48,7 @@ public class MessageService {
     }
 
 
+
     /**
      * Alle Nachrichten von gelöschten Freund Löschen
      * benutzt: ApiFreundeController Zeile: 81,
@@ -58,6 +61,7 @@ public class MessageService {
     public List<Message> freundMessageLoschen(String freundmessageloschen){
        return messageRepository.deleteByMessagetoken(freundmessageloschen);
     }
+
 
 
     /**
@@ -77,6 +81,24 @@ public class MessageService {
                 freund.setDatumLetzteNachricht(letzteNachricht.getDatum());
             }
         }
+    }
+
+
+
+    /**
+     * Daten nach ID Löschen
+     *
+     * Erstellt für BoteFx/MessageController/messageLoschen(..
+     * so sieht List<Long> aus [205, 207, 202, 200]
+     *
+     * return an BoteFX/MessageController/messageLoschen(...als response Zeile: ab 1000
+     *
+     * @param messageId
+     * @return
+     */
+    public Integer listMessageLoschen(List<Long> messageId){
+       messageRepository.deleteAllById(messageId);
+       return messageId.size();
     }
 
 }

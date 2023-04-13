@@ -17,7 +17,7 @@ public interface SettingRepository extends CrudRepository<Usern, Integer> {
 
     /**
      *   Benutzt von settingController/@PostMapping(value = "bildupload")
-     *   Benutzt von settingController/@PostMapping(value = "/profilbildloschen")
+     *   benutzt von settingController/@PostMapping(value = "/profilbildloschen")
      *   Profil Bild Name Update & Profil Bild Löschen(bei Löschen profilbild wird leer zugesendet)
      */
     @Modifying
@@ -27,7 +27,7 @@ public interface SettingRepository extends CrudRepository<Usern, Integer> {
 
     /**
      *   Benutzt von settingController/@PostMapping(value = "bildupload")
-     *   Benutzt von settingController/@PostMapping(value = "/profilbildloschen")
+     *   benutzt von settingController/@PostMapping(value = "/profilbildloschen")
      *   Profil Bild Name Update & Profil Bild Löschen(bei Löschen profilbild wird leer zugesendet)
      */
     @Modifying

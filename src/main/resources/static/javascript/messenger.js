@@ -104,7 +104,7 @@
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         // Socket: output von MessageController
-        stompClient.subscribe('/messages/receive/' + messageId, function (message) {
+        stompClient.subscribe('/messages/receive/' + meineId, function (message) {
             //var message = JSON.parse(message.body);
             //alert(message.datum +'/'+ message.meintoken +'/'+ message.role +'/'+ message.messagetoken);
             //alert(message.text);
@@ -146,7 +146,7 @@
     /*  generalmessage.html / fragment: messagefragment                 */
     /* **************************************************************** */
 
-    function sendeMessage(meinePseudonym, meineToken, messageToken) {
+    function sendeMessage(meinePseudonym, freundeToken, meineToken, messageToken) {
 
         // Datum anlegen für die Message Jahr zwei stellig und ohne Sekunden
         var d = new Date();
@@ -169,7 +169,7 @@
 
         //<!-- Chat-Text sendem an MessageController.java  @MessageMapping/@SendTo -->
         //<!-- H2 Datenbank reihefolge: datum, messagetoken, name, pseudonym, role,text, vorname-->
-        stompClient.send("/app/messages", {}, JSON.stringify({ 'datum': datum, 'meintoken': meineToken, 'messagetoken': messageToken,
+        stompClient.send("/app/messages", {}, JSON.stringify({ 'datum': datum, 'freundetoken': freundeToken, 'meintoken': meineToken, 'messagetoken': messageToken,
                             'pseudonym': meinePseudonym, 'name': '', 'vorname':'', 'text': text, 'role': 'default' }));
 
         $("#MESSAGETEXT").val('');

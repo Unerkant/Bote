@@ -13,9 +13,9 @@ public class Message {
     @Id
     @GeneratedValue
     private long id;
-
     @JsonFormat(pattern = "yyyy.MM.dd HH:mm:ss")
     private String datum;
+    private String freundetoken;
     private String meintoken;
     private String messagetoken;
     private String pseudonym;
@@ -31,9 +31,10 @@ public class Message {
         // empty
     }
 
-    public Message(long id, String datum, String meintoken, String messagetoken, String pseudonym, String vorname, String name, String text, String role ) {
+    public Message(long id, String datum, String freundetoken, String meintoken, String messagetoken, String pseudonym, String vorname, String name, String text, String role ) {
         this.id = id;
         this.datum = datum;
+        this.freundetoken = freundetoken;
         this.meintoken = meintoken;
         this.messagetoken = messagetoken;
         this.pseudonym = pseudonym;
@@ -48,6 +49,9 @@ public class Message {
         return id;
     }
     public void setId(long id) { this.id = id; }
+
+    public String getFreundetoken() { return freundetoken; }
+    public void setFreundetoken(String freundetoken) { this.freundetoken = freundetoken; }
 
     public String getDatum() { return datum; }
     public void setDatum(String datum) { this.datum = datum; }
@@ -86,6 +90,7 @@ public class Message {
         return "Message{" +
                 "id='" + id + '\'' +
                 ", datum='" + datum + '\'' +
+                ", freundetoken ='" + freundetoken + '\'' +
                 ", meintoken='" + meintoken + '\'' +
                 ", messagetoken='" + messagetoken + '\'' +
                 ", pseudonym='" + pseudonym + '\'' +

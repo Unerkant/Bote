@@ -87,9 +87,7 @@ public class ApiEinladenController {
         List allMailFreunde = freundeService.freundeSuchen(myToken)
                 .stream()
                 .map(Freunde::getFreundemail).collect(Collectors.toList());
-        //System.out.println("List: " + allFreunde);
         Object[] arr = allMailFreunde.toArray();
-       // System.out.println("array: " + arr.toString());
         if (Arrays.stream(arr).anyMatch(s -> s.equals(mailOderTelefon))){
             output = "schonFreund";
             return ResponseEntity.status(HttpStatus.OK).body(output);
@@ -111,7 +109,7 @@ public class ApiEinladenController {
             if (bekanntenDaten != null){
 
                 /**
-                 * prüfen, ob es nicht eigene Daten(mail) sind.
+                 * prüfen, ob es nicht eigene mail ist.
                  * weans gleich Token, dann ist gleiche E-Mail,
                  * Erklärung: weil, mit der zugesendete mail wir holen alle Daten mit diesem mail ab
                  * dann ist das logisch da wird das gleiche mail sein... aber Token muss von bekannten sein...
@@ -133,7 +131,7 @@ public class ApiEinladenController {
             if (bekanntenDaten != null){
 
                 /**
-                 * prüfen, ob es nicht eigene Daten(telefon) sind.
+                 * prüfen, ob es nicht eigene telefon ist.
                  * weans gleich Token, dann ist gleiche Telefon,
                  * Erklärung: weil, mit der zugesendete telefon wir holen alle Daten mit diesem telefonnummer ab
                  * dann ist das logisch da wird das gleiche telefonnummer sein...
@@ -158,6 +156,7 @@ public class ApiEinladenController {
         // response als string
         return ResponseEntity.status(HttpStatus.OK).body(output);
     }
+
 
     /**
      * Neuer Chat-Freund ins Datenbank speichern
@@ -206,6 +205,7 @@ public class ApiEinladenController {
         freundeService.saveFreundChat(freundChatSave);
 
     }
+
 
     /**
      * Einladung prüfen
@@ -280,7 +280,7 @@ public class ApiEinladenController {
                 "oder \\n https://apps.apple.com/";
         String verschickt = GlobalConfig.smsSenden(telefon, smstext );
         int status;
-        if (verschickt != "nos"){
+        if (verschickt != "nosms"){
             status = 200;
         } else {
             status = 500;

@@ -1,0 +1,59 @@
+
+   /* Kurze Anleitung Bote-Web */
+
+   ACHTUNG: WAS MUSS noch GEMACHT/KORRIGIERT sein
+
+   1. MailLoginController Zeile:37 + 46
+            @SneakyThrows = muss unbedingt sein?
+
+   2.SettingController Zeile: 283
+            @SneakyThrows = prüfen ob notwendig ist!
+
+
+   ACHTUNG: Freunde & Message sind in einem messenger.html zusammen gefasst.
+            Freunde: freunde aus dem Datenbank holen & in eine variable speicher "meineFreunde" in
+            MessageController Zeile: 59
+            Meine Freunde an die html Senden: MessageController Zeile: 62
+                model.addAttribute("meinefreunde", meineFreunde);
+            Freunde in html ausgeben: messenger.html Zeile: 69, eine tymeleaf schleife sieht so aus:
+            <div id="FREUNDEDATEN" class="freundeDaten" data-th-each=" freunde : ${meinefreunde} "
+                                 data-th-if="${freunde['role'].length == 0}">
+
+
+   /* **************** Freunde Löschen ************************************ */
+   wenn eine Freund wird aus dem Chat gelöscht werden alle Daten mit zugesendete 'messageToken' aus dem
+   Datenbank/tabelle 'freunde' + 'messages' unwiderruflich gelöscht...
+   Quelle: FreundeController/@PostMapping(value = "/freundedelete") Zeile: ab 300
+
+   /* **************** ApiEinladenController (Freunde Einladen) ************** */
+
+    1. @PostMapping(value = "alleUserApi")
+         * Zugesendet von BoteFx/FreundeController/bekanntenEinladen Zeile: 320
+         * der token wird nicht benutzt, als ballast zugesendet
+         *
+         * response: alle User in Datenbank finden und an BoteFX senden
+
+    2.  @PostMapping(value = "/einladenApi")
+         * zugesendet von BoteFX/einladenController/einladenRequest Zeile: ab 150
+         * zugesendete parameter (3):
+         * 1. sendeTelMail: eine E-Mail-Adresse oder Telefonnummer
+         * 2. sendeKey: String 'mail' oder 'telefon', zu erkennen was ist zugesendet?
+         * 3. Meiner Token(bei Bote: cookie)
+       Zuerst wir geprüft ob die Mail oder Telefon schon als Freund gelistet sind,
+       dann in Datenbank nach E-Mail oder Telefon suchen, wenn da ist untersuchen ob nicht
+       eigenes ist, am schluss wird ins Tabelle Freund gespeichert...
+       als response wir einen text zurückgesendet mit fehler oder ok
+       an BoteFx/EinladenController Zeile: 185
+       wird ausgewertet und Fehler angezeigt oder weiter geleitet
+
+        // die Methode nue Freunde speichert mit ROLE eintrag
+           private void neuerChatSave(Usern meinData, Usern freundData){
+                // der role text
+               String      werdeEingeladen     = "werdeeingeladen";
+               String      wartenAufOk         = "wartenaufok";
+           }
+         die ROLE eintrag von 'werdeeingeladen' und 'warteaufok' wir benutzt in
+         BoteFX/FreuneCellController Zeile 170, für die Freundschaft annehmen oder ablehnen
+
+
+    /* *********** ApiMessage(Message Laden, Anzeigen, Löschen oder Bearbeiten) ************************* */

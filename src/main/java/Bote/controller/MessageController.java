@@ -150,9 +150,11 @@ public class MessageController {
 
         // message save
         messageService.saveNewMessage(message);
+        //logger.info("Send to::  Freund token: " + message.getFreundetoken() + " /  Nachrichten insgesamt versendet:" + newCounterValue);
+        simpMessagingTemplate.convertAndSend("/messages/receive/" + message.getFreundetoken(), message);
 
-        logger.info("Send to::  message token: " + message.getMessagetoken() + " /  Nachrichten insgesamt versendet:" + newCounterValue);
-        simpMessagingTemplate.convertAndSend("/messages/receive/" + message.getMessagetoken(), message);
+        //logger.info("Send to::  Mein token: " + message.getMeintoken() + " /  Nachrichten insgesamt versendet:" + newCounterValue);
+        simpMessagingTemplate.convertAndSend("/messages/receive/" + message.getMeintoken(), message);
     }
 
 }
