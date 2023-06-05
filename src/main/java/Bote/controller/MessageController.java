@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
    /**
     * Created by Paul Richter on Mon 19/07/2021
     */
@@ -41,33 +42,51 @@ public class MessageController {
     @Autowired
     private FreundeService freundeService;
 
+
+
    /**
-    *   Messenger HTML Starten
-    *   wird ausgeführt nur bei vorhandenen Daten in Datenbank: Tabelle user
-    *   unter die Adresse localhost:8080 oder localhost:8080/messenger
+    *   Message Ausgabe wird geleert, Rechte Seite...
+    *   messenger.html Zeile: 189 ()switch schleife
+    *   ..< div data-th-case="*" >..
     *
-    *   bei vorhandenen Cookie werden in H2:Datenbak Tabelle:FREUNDE nach
+    *   Post Request abgesendet von messenger.js Zeile: 169
+    *   Benutzt wird von messagecomponents.html Zeile: 36 + 39
+    *   ..< a href="#" th:onClick="messageZuruck()">Zurück < /a >..
+    *   ..< a href="#" th:onClick="messageSchliessen()" >Schließen < /a >..
+    */
+    @PostMapping(path = "/Leer")
+    public String leer(){
+        return "/messenger :: #MESSAGEFRAGMENT";
+    }
+
+
+
+   /**
+    *   Meine Freunde Anzeigen, linke Teil von messenger.html
+    *
+    *   bei vorhandenem Cookie werden in H2: Datenbak Tabelle: FREUNDE nach
     *   freunden gesucht und in messenger.html ausgegeben(Linke Teil)
     *
     */
     private Usern           meineDaten;
     private List<Freunde>   meineFreunde;
-
     @GetMapping(value = {"/", "/messenger"})
     public String index(@CookieValue(value = "userid", required = false) String meineId, Model model)
     {
-        meineDaten      = userService.findeUserToken(meineId);
-        meineFreunde    = freundeService.freundeSuchen(String.valueOf(meineId));
+        meineDaten      = userService.meineDatenHolen(meineId);
+        meineFreunde    = freundeService.freundeSuchenMitLetzterNachricht(String.valueOf(meineId));
 
         /* Freunden-Daten + meineId an messenger.html senden -> Freunde ausgeben(Linke Seite) Zeile: 67 + 71 */
         model.addAttribute("meinefreunde", meineFreunde);
         model.addAttribute("meineId", meineId);
         model.addAttribute("meinedaten", meineDaten);
 
-        logger.info("MessageController/GetMapping / index: " + meineFreunde);
+        //System.out.println("MessageController, meine Freunde: " + meineFreunde);
+
         // wenn in Datenbank keine Daten vorhanden sind: return zum Registrieren
         return (meineDaten == null ? "/login/maillogin" : "/messenger");
     }
+
 
 
    /**
@@ -86,7 +105,6 @@ public class MessageController {
     private String          freundPseu;
     private List<Message>   gemeinsameMessage;
     private String          nameFragment;
-
     @SneakyThrows
     @PostMapping(path = "/fragmentmessages")
     public String fragmentMessages(@CookieValue(value = "userid", required = false) String meinecookie,
@@ -111,10 +129,10 @@ public class MessageController {
             }
         }
 
-        myDaten = userService.findeUserToken(meinecookie);
+        myDaten = userService.meineDatenHolen(meinecookie);
         meinPseu = myDaten.getPseudonym();
 
-        freundDaten = userService.findeUserToken(freundToken);
+        freundDaten = userService.meineDatenHolen(freundToken);
         freundPseu = freundDaten.getPseudonym();
 
         gemeinsameMessage = messageService.gemeisameMessage(freundMessageToken);
@@ -129,10 +147,12 @@ public class MessageController {
         model.addAttribute("freundMessageToken", freundMessageToken);
         model.addAttribute("gemeinsamemessage", gemeinsameMessage);
 
-        logger.info("MessageController/PostMapping: "  + nameFragment );
+        /*logger.info("MessageController/PostMapping: "  + nameFragment );*/
+        System.out.println("Message Controller, message Anzeige: " + gemeinsameMessage);
 
        return "/messenger :: #MESSAGEFRAGMENT";
     }
+
 
 
    /**
@@ -140,7 +160,6 @@ public class MessageController {
     *   gestartet in messenger.js  stompClient.send("/app/messages" Zeile:156
     *   rückgabewert an messenger.js function connect().. Zeile:82
     */
-
     @MessageMapping("/messages")
     //@SendTo("/messages/receive")
     public void messageReceiving(Message message) throws Exception {

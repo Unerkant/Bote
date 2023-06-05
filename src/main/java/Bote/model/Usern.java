@@ -31,8 +31,10 @@ public class Usern {
         //Leer
     }
 
-    public Usern(long id, String token, String datum, String bild, String pseudonym, String name, String vorname,
-                String email, String telefon, String role, String other ){
+
+    public Usern(long id, String token, String datum, String bild, String pseudonym, String name,
+                 String vorname, String email, String telefon, String role, String other )
+    {
         this.id = id;
         this.token = token;
         this.datum = datum;
@@ -44,8 +46,8 @@ public class Usern {
         this.telefon = telefon;
         this.role = role;
         this.other = other;
-
     }
+
 
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }

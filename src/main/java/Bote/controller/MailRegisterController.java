@@ -3,6 +3,7 @@ package Bote.controller;
 import Bote.configuration.GlobalConfig;
 import Bote.model.Session;
 import Bote.model.Usern;
+import Bote.service.MethodenService;
 import Bote.service.SessionService;
 import Bote.service.UserService;
 import lombok.SneakyThrows;
@@ -20,6 +21,15 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class MailRegisterController {
 
+    Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    private MethodenService methodenService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private SessionService sessionService;
+
     private Usern   meineDaten;
     private String  saveDatum;
     private String  saveMail;
@@ -34,21 +44,15 @@ public class MailRegisterController {
     private Usern   altUser;
     private String  uniCode = "&#x22EF;";
 
-    Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private SessionService sessionService;
 
     @SneakyThrows
     @GetMapping(value = "/login/mailsuccess")
     public String login(@CookieValue(value = "userid", required = false) String userId){
 
-        meineDaten = userService.findeUserToken(userId);
+        meineDaten = userService.meineDatenHolen(userId);
         return (meineDaten == null ? "/login/mailsuccess" : "/messenger");
     }
+
 
 
     @PostMapping("/login/mailsuccess")
@@ -160,7 +164,7 @@ public class MailRegisterController {
             model.addAttribute("registerCookie", (altUser != null) ? altUser.getToken() : uniCode);
 
         /* cookie "userid" setzen */
-        GlobalConfig.setCookie(response, "userid", String.valueOf((altUser != null) ? altUser.getToken() : saveToken));
+        methodenService.setCookie(response, "userid", String.valueOf((altUser != null) ? altUser.getToken() : saveToken));
 
         logger.info("MailRegisterController: " + altUser);
         return "/login/mailsuccess";

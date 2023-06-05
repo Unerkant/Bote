@@ -29,23 +29,26 @@
 
     <!-- Daten zugesendet von MessageController.java: @PostMapping(fragmentmessages)-->
     <div class="messageHead">
-         <table border="0" width="100%"  cellpadding="0" cellspacing="0">
+         <table border="0" width="100%" height="50"  cellpadding="0" cellspacing="0">
          <tr>
              <td width="100" align="center" rowspan="2" >
-                 <span class="messageZuruck finger" data-th-onclick="messageZuruck()">&#160; &#60; zuruck</span>
-                 <span class="messageSchliessen finger">
-                     <a href="/messenger">Schließen</a>
+                 <span class="messageZuruck">
+                     <a href="#" th:onClick="messageZuruck()">Zurück</a>
+                 </span>
+                 <span class="messageSchliessen">
+                     <a href="#" th:onClick="messageSchliessen()">Schließen</a>
+                     <!--<a href="/messenger">Schließen</a>-->
                  </span>
              </td>
-             <td align="center">
+             <td height="30" align="center" valign="bottom">
                  <p class="messageHeadName" data-th-text="${freundPseu}+'/'+${freundToken}"></p>
              </td>
-             <td width="100" height="60" valign="middle" align="center"  rowspan="2">
-                 <img class="rund" data-th-src="@{${'/img/online.png'}}">
+             <td width="100" valign="middle" align="center"  rowspan="2">
+                 <img class="rund" style="width: 40px; height: 40px;" data-th-src="@{${'/img/online.png'}}">
              </td>
          </tr>
          <tr>
-             <td align="center" height="25px">
+             <td align="center" height="20">
                  <small class="messageHeadLetzteBesuch">zul. online heute um 20:20</small>
              </td>
          </tr>
@@ -91,7 +94,7 @@
 
 <!-- 2. Lief, Message Ausgabe -->
     <div id="CHATBOX">
-        <!-- Deklariert in messenger.js Zeile: 105 -->
+        <!-- Deklariert in messenger.js function connect(), Zeile: 159 -->
     </div>
 
     </div><!-- Ende messageBody -->
@@ -117,13 +120,13 @@
             </div><!-- Ende messageFoto -->
 
             <div class="messageText">
-                <textarea id="MESSAGETEXT" rows="1" maxlength="5000"  th:onInput="autoRow(this)"
-                onkeydown="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                placeholder="Message schreiben" class="messageTextarea" required autofocus></textarea>
+                <textarea id="MESSAGETEXT" rows="1" maxlength="5000"  data-th-onInput="autoRow(this)"
+                placeholder="Schreibe eine Nachricht..." class="messageTextarea" required autofocus></textarea>
             </div>
 
             <div class="messageSenden">
-                <img class="itemCenter finger" src="/img/senden.png" width="30" id="send" th:onClick="sendeMessage([[${meinPseudonym}]], [[${freundToken}]], [[${meinToken}]], [[${freundMessageToken}]]);">
+                <img class="itemCenter finger" src="/img/senden.png" width="30" id="send"
+                     th:onClick="sendeMessage([[${meinPseudonym}]], [[${freundToken}]], [[${meinToken}]], [[${freundMessageToken}]]);">
             </div>
 
         </div><!-- ende messageFooter -->

@@ -31,7 +31,9 @@ public class Message {
         // empty
     }
 
-    public Message(long id, String datum, String freundetoken, String meintoken, String messagetoken, String pseudonym, String vorname, String name, String text, String role ) {
+    public Message(long id, String datum, String freundetoken, String meintoken, String messagetoken,
+                   String pseudonym, String vorname, String name, String text, String role )
+    {
         this.id = id;
         this.datum = datum;
         this.freundetoken = freundetoken;
@@ -85,6 +87,7 @@ public class Message {
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
 
+
     @Override
     public String toString() {
         return "Message{" +
@@ -100,4 +103,5 @@ public class Message {
                 ", role='" + role + '\'' +
                 '}';
     }
+
 }

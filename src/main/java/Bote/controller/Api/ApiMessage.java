@@ -1,4 +1,4 @@
-package Bote.controller;
+package Bote.controller.Api;
 
 import Bote.model.Message;
 import Bote.service.MessageService;
@@ -59,9 +59,11 @@ public class ApiMessage {
     @PostMapping(value = "/messageLoschenApi")
     public @ResponseBody ResponseEntity<Integer> apiLoschenMessage(@RequestBody List<Long> sendIds){
 
-        Integer loschenCount =  25;//messageService.listMessageLoschen(sendIds);
-        return ResponseEntity.status(HttpStatus.OK).body(loschenCount);
+        Integer loschCount =  messageService.listMessageLoschen(sendIds);
+
+        return ResponseEntity.status(HttpStatus.OK).body(loschCount);
     }
+
 
 
     /**
@@ -73,7 +75,8 @@ public class ApiMessage {
     @PostMapping(value = "/messageUpdateApi")
     public @ResponseBody ResponseEntity<String> apiUpdateMessage(@RequestBody String sendMessage){
 
-        return (ResponseEntity<String>) ResponseEntity.status(HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(sendMessage);
+        //return (ResponseEntity<String>) ResponseEntity.status(HttpStatus.OK);
     }
 
 }

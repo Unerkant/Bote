@@ -1,8 +1,9 @@
-package Bote.controller;
+package Bote.controller.Api;
 
 import Bote.configuration.GlobalConfig;
 import Bote.model.Session;
 import Bote.model.Usern;
+import Bote.service.MethodenService;
 import Bote.service.SessionService;
 import Bote.service.UserService;
 
@@ -28,6 +29,8 @@ public class ApiMailController {
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
+    private MethodenService methodenService;
+    @Autowired
     private UserService userService;
     @Autowired
     private SessionService sessionService;
@@ -41,6 +44,7 @@ public class ApiMailController {
     private String  neuerPseudonym;
     private Usern   alterUser;
     private String  userResponse;
+
 
     /**
      * Aktivierung Code an E-Mail-Adresse senden
@@ -58,14 +62,14 @@ public class ApiMailController {
     public ResponseEntity<String> apiEmail(@RequestBody String mailZugesendet){
 
         /* Aktivierung Code holen & E-Mail mit code versenden */
-        mailAktivierungsCode = GlobalConfig.aktivierungCode();
+        mailAktivierungsCode = methodenService.aktivierungCode();
         JSONObject ob = new JSONObject(mailZugesendet);
         newUserMail = (String) ob.get("neuUserMail");
 
         String betreffApi      = "Deine Zugangscode zur Anmeldung";
         String sendeMessageApi = "hier erhalten Sie ihre Messenger Aktivierung Code\\n" +mailAktivierungsCode+
                 "\\n Gültigkeit dauert nur für diese sitzung \\n \\n mit Freundlichen Grüßen \\n Ihr Team Bote ";
-        String apiMailsenden = GlobalConfig.mailSenden(newUserMail, betreffApi, sendeMessageApi);
+        String apiMailsenden = methodenService.mailSenden(newUserMail, betreffApi, sendeMessageApi);
         //String apiMailsenden = "ok";
 
         if (apiMailsenden.equals("nomail")){
@@ -76,6 +80,7 @@ public class ApiMailController {
             return new ResponseEntity(HttpStatus.OK);
         }
     }
+
 
 
     /**
@@ -94,8 +99,8 @@ public class ApiMailController {
         JSONObject object = new JSONObject(jsonZugesendet);
         codeZugesendet = object.getInt("code");
         mailZugesendet = object.getString("mail");
-        neuerToken = GlobalConfig.IdentifikationToken();
-        neuerDatum = GlobalConfig.deDatum();
+        neuerToken = methodenService.IdentifikationToken();
+        neuerDatum = methodenService.deDatum();
         neuerPseudonym = mailZugesendet.substring(0, mailZugesendet.length() - mailZugesendet.length() + 2);
         neuerPseudonym = neuerPseudonym.toUpperCase(Locale.ROOT);
 

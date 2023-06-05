@@ -9,24 +9,20 @@ public class Session {
     @Id
     @GeneratedValue
     private long id;
-
     @Column(nullable = false)
     private String token;
-
     @JsonFormat(pattern = "yyyy.MM.dd HH:mm:ss")
     private String datum;
-
     @JsonFormat(pattern = "yyyy.MM.dd HH:mm:ss")
     private String letztenlogin;
-
     @JsonFormat(pattern = "yyyy.MM.dd HH:mm:ss")
     private String letztenoutlog;
-
     private String other;
-
     public Session(){}
 
-    public Session(long id, String token, String datum, String letztenlogin, String letztenoutlog, String other){
+
+    public Session(long id, String token, String datum, String letztenlogin, String letztenoutlog, String other)
+    {
         this.id =id;
         this.token = token;
         this.datum  = datum;
@@ -35,10 +31,10 @@ public class Session {
         this.other = other;
     }
 
+
     public long getId() {
         return id;
     }
-
     public void setId(long id) {
         this.id = id;
     }
@@ -46,7 +42,6 @@ public class Session {
     public String getToken() {
         return token;
     }
-
     public void setToken(String token) {
         this.token = token;
     }
@@ -54,7 +49,6 @@ public class Session {
     public String getDatum() {
         return datum;
     }
-
     public void setDatum(String datum) {
         this.datum = datum;
     }
@@ -62,7 +56,6 @@ public class Session {
     public String getLetztenlogin() {
         return letztenlogin;
     }
-
     public void setLetztenlogin(String letztenlogin) {
         this.letztenlogin = letztenlogin;
     }
@@ -70,7 +63,6 @@ public class Session {
     public String getLetztenoutlog() {
         return letztenoutlog;
     }
-
     public void setLetztenoutlog(String letztenoutlog) {
         this.letztenoutlog = letztenoutlog;
     }
@@ -78,10 +70,10 @@ public class Session {
     public String getOther() {
         return other;
     }
-
     public void setOther(String other) {
         this.other = other;
     }
+
 
     @Override
     public String toString() {

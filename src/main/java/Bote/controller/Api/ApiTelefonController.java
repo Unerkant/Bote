@@ -1,8 +1,9 @@
-package Bote.controller;
+package Bote.controller.Api;
 
 import Bote.configuration.GlobalConfig;
 import Bote.model.Session;
 import Bote.model.Usern;
+import Bote.service.MethodenService;
 import Bote.service.SessionService;
 import Bote.service.UserService;
 
@@ -26,6 +27,9 @@ import java.util.Locale;
 public class ApiTelefonController {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    private MethodenService methodenService;
     @Autowired
     private UserService userService;
     @Autowired
@@ -55,7 +59,7 @@ public class ApiTelefonController {
     @PostMapping(value = "/telefonApi")
     public ResponseEntity<String> apiTelefon(@RequestBody String telefonZugesendet){
 
-        telefonAktivierungsCode = GlobalConfig.aktivierungCode();
+        telefonAktivierungsCode = methodenService.aktivierungCode();
         JSONObject obj = new JSONObject(telefonZugesendet);
         newUserTelefon = (String) obj.get("neuUserTelefon");
 
@@ -86,8 +90,8 @@ public class ApiTelefonController {
         JSONObject object = new JSONObject(datenZugesendet);
         kodeZugesendet  = object.getInt("kode");
         telZugesendet   = object.getString("telefon");
-        neuToken = GlobalConfig.IdentifikationToken();
-        neuDatum = GlobalConfig.deDatum();
+        neuToken = methodenService.IdentifikationToken();
+        neuDatum = methodenService.deDatum();
         neuPseudonym = telZugesendet.substring(telZugesendet.length() -2);
         neuPseudonym = neuPseudonym.toUpperCase(Locale.ROOT);
 

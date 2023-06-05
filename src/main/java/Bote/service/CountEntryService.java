@@ -12,10 +12,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class CountEntryService {
 
-    private String datum;
-
+    @Autowired
+    private MethodenService methodenService;
     @Autowired
     private CountEntryRepository countEntryRepository;
+
+    private String datum;
+
+
 
     /**
      * Zählt alle message von einem User, sortiert nach dem token
@@ -24,9 +28,9 @@ public class CountEntryService {
      */
     public int incrementMessageCounter( String meintoken) {
 
-        datum           = GlobalConfig.aktuellTag();
+        datum = methodenService.aktuellTag();
 
-        // Wenn keine Daten Vorhanden sind dann eintragen
+        // Wenn keine Daten vorhanden sind dann eintragen
         CountEntry settingEntry = countEntryRepository
                 .findByToken(meintoken)
                 .orElse(new CountEntry(1, datum,  meintoken, "0"));
@@ -47,6 +51,8 @@ public class CountEntryService {
 
         return counterValue;
     }
+
+
 
     /**
      * benutzt von SettingController.java Zeile: 363

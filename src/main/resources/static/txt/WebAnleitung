@@ -1,14 +1,29 @@
 
    /* Kurze Anleitung Bote-Web */
 
-   ACHTUNG: WAS MUSS noch GEMACHT/KORRIGIERT sein
+    ALLGEMEINE EINSTELLUNGEN:
 
-   1. MailLoginController Zeile:37 + 46
-            @SneakyThrows = muss unbedingt sein?
+    COLOR:
+      * windows-blau:   #2B8CC4;
+      * Grau:           #858585
+      * Red:            #FF0000
+      * Green:          #00FF00
+      * transparent:    #FFFFFF00
+    1. Freunde Ausgabe untere Linie:
+        messenger.html  Zeile: 139 <td style="border-bottom: 1px solid #E6E6E6;"></td>
+    2. Freunde ausgabe: aktive background: messenger.js Zeile: 95 $(this).css({"background-color":"#CCEEFF"});
+        + hover effect: css Zeile 214, div.freundeDaten:hover  { background-color: #E6F5FF; }
+    3.
 
-   2.SettingController Zeile: 283
-            @SneakyThrows = prüfen ob notwendig ist!
 
+
+
+
+
+
+
+
+    ********************************** KURZE BESCHREIBUNG ****************************************
 
    ACHTUNG: Freunde & Message sind in einem messenger.html zusammen gefasst.
             Freunde: freunde aus dem Datenbank holen & in eine variable speicher "meineFreunde" in
@@ -57,3 +72,43 @@
 
 
     /* *********** ApiMessage(Message Laden, Anzeigen, Löschen oder Bearbeiten) ************************* */
+
+
+    /* ****************************** Textarea mit Enter Senden ************************* */
+
+    1. messagecomponents.html Zeile: 120 Textarea
+        a. <textarea id="MESSAGETEXT" rows="1" maxlength="5000"  data-th-onInput="autoRow(this)" ></textarea>
+        b. <img class="itemCenter finger" src="/img/senden.png" width="30" id="send"
+          th:onClick="sendeMessage([[${meinPseudonym}]], [[${freundToken}]], [[${meinToken}]], [[${freundMessageToken}]]);">
+
+    2. messanger.js Zeile: 57 autoRow function
+    3. messenger.js Zeile: ab 10, sind zuständig nur 2 functionen: window.addEventListener( "keydown",... + autoRow(this)
+
+    4. Kurze beschreibung: bei anclicken auf einem Freund wird die neue Chat gestartet, die neue messages senden oder
+        empfangen wird der messagecomponents.html aufgeruffen...  die textarea wird automatisch in focus gesetzt,
+        bei jeder click auf die tastatur wird in textarea neuer text verfasst, die textarea automatisch mit dem text
+        zu wachsen ist die function autoRow gedacht.... bei drücken auf Enter wird die message versendet, voraussetzing
+        die textarea muss nicht Leer sein...
+            a. wenn textarea leer ist und wir die Enter taste gedrückt dann kommt die function
+                window.addEventListener(.... ins spiel: .... bei jeder Enter-press wird in textarea einen leerzeichen
+                erzeugt, weil die textarea ist in focus, das bedeutet die textarea ist nicht leer und bei jeder nächsten
+                enter-press wir die function autoRow abgeruffen und textarea wächst automatisch nach oben...
+                das zu vermeiden ist in der function autoRow sperre eingesetzt (var autorow = false;), wen werden
+                einfach wieder buchstaben eingetippt dan wird die variable autorow auf true gesetzt...
+    5. die function: window.addEventListener( "keydown", (event) => {...
+            a. zuerst wir die textarea ausgelesen.
+            b. Enter taste wird gedrückt, textarea Leer...
+                if (event.key === 'Enter' && valmsg.trim() == "")
+                gleich wird die textarea auf leer geprüfft, erzeugte leerzeichen bei enter-druck
+                wird mit den 'trim' ausgeschitten, wen beide passen, enter + leere textarea dann nichts machen
+                und mit dem 'event.preventDefault();' weitere aktionen unterdrücken
+            c.  Enter taste wird gedrückt, textarea nicht leer...
+                der button in messagecomponents.html Zeile: 125
+                <img class="itemCenter finger" src="/img/senden.png" width="30" id="send"
+                th:onClick="sendeMessage([[${meinPseudonym}]], [[${freundToken}]], [[${meinToken}]], [[${freundMessageToken}]]);">
+                wird in den if else (messengar.js) ausgelöst $("#send").click();
+                schliesslich textarea geleert und weiter aktionen unterdrückt
+            d.  buchstaben taste wird gedrückt, in else die autoRow function wird frei gesetzt und die
+                textarea kan mit dem Text wachsen
+
+    /* ************************ Ende message senden **************************************************** */

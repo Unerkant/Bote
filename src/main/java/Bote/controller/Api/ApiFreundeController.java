@@ -1,4 +1,4 @@
-package Bote.controller;
+package Bote.controller.Api;
 
 import Bote.model.Freunde;
 import Bote.model.Message;

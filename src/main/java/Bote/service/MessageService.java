@@ -30,7 +30,7 @@ public class MessageService {
     */
     public List<Message> gemeisameMessage(String token){
 
-        return messageRepository.findByMessagetoken(token);
+        return messageRepository.findByMessagetokenOrderByIdAsc(token);
     }
 
 
@@ -97,8 +97,9 @@ public class MessageService {
      * @return
      */
     public Integer listMessageLoschen(List<Long> messageId){
-       messageRepository.deleteAllById(messageId);
-       return messageId.size();
+
+        messageRepository.deleteAllById(messageId);
+        return messageId.size();
     }
 
 }

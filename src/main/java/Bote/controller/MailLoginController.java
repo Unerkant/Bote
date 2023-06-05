@@ -2,6 +2,7 @@ package Bote.controller;
 
 import Bote.configuration.GlobalConfig;
 import Bote.model.Usern;
+import Bote.service.MethodenService;
 import Bote.service.UserService;
 
 import lombok.SneakyThrows;
@@ -19,6 +20,13 @@ import java.util.Locale;
 @Controller
 public class MailLoginController {
 
+    Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    private MethodenService methodenService;
+    @Autowired
+    private UserService userService;
+
     private Usern   meineDaten;
     private String  aktuelleDatum;
     private String  tokenNummer;
@@ -29,19 +37,17 @@ public class MailLoginController {
     private String  pseudonym;
     private String  mailSenden;
 
-    Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    @Autowired
-    private UserService userService;
 
     @SneakyThrows
     @GetMapping(value = "/login/mailregister")
     public String login(@CookieValue(value = "userid", required = false) String userId){
 
-        meineDaten = userService.findeUserToken(userId);
+        meineDaten = userService.meineDatenHolen(userId);
         logger.info("MailLoginController @GetMapping" + meineDaten);
         return (meineDaten == null ? "/login/mailregister" : "/messenger");
     }
+
+
 
     @SneakyThrows
     @PostMapping("/login/mailregister")
@@ -56,11 +62,11 @@ public class MailLoginController {
     *   user cookie (userid), wenn vorhanden ist
     *
     */
-        aktuelleDatum = GlobalConfig.deDatum();
-        tokenNummer = GlobalConfig.IdentifikationToken();
-        aktivierungCode = GlobalConfig.aktivierungCode();
+        aktuelleDatum =     methodenService.deDatum();
+        tokenNummer =       methodenService.IdentifikationToken();
+        aktivierungCode =   methodenService.aktivierungCode();
         /* Leere cookie: Ausgabe null */
-        userCookie = GlobalConfig.getCookie(request);
+        userCookie = methodenService.getCookie(request);
         //logger.info("MailController: " + aktuelleDatum + "/" +tokenNummer + "/" +aktivierungCode + "/" + userCookie);
 
 
@@ -80,7 +86,7 @@ public class MailLoginController {
 
 
    /**
-    *   Mail Sender, ausgelagert in ClobalConfig.java Zeile: 120
+    *   Mail Sender, ausgelagert in MethodeService.java Zeile: 120
     *   zugesendet 1. mail + mail betreff + text message
     *   response- mailSenden: org.springframework.mail.javamail.JavaMailSenderImpl@3df04fa1
     */
@@ -88,7 +94,7 @@ public class MailLoginController {
    String betreffParam      = "Deine Zugangscode zur Anmeldung";
    String messageParam = "hier erhalten Sie ihre Messenger Aktivierung Code\\n" +aktivierungCode+
            "\\n Gültigkeit dauert nur für diese sitzung \\n \\n mit Freundlichen Grüßen \\n Ihr Team Bote ";
-    mailSenden = GlobalConfig.mailSenden(emailParam, betreffParam, messageParam);
+    mailSenden = methodenService.mailSenden(emailParam, betreffParam, messageParam);
     if (mailSenden == null){
         return "redirect:/login/maillogin";
     }

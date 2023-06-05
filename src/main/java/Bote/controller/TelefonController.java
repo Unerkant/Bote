@@ -33,7 +33,7 @@ public class TelefonController {
                         Model model){
 
        // prüfen auf Meine Daten in Datenbank
-          meineDaten = userService.findeUserToken(userId);
+          meineDaten = userService.meineDatenHolen(userId);
 
         /**
          *   Wird benutzt nur bei Registrierung oder Einloggen

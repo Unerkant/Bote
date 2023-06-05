@@ -12,7 +12,13 @@ import java.util.List;
 @Repository
 public interface MessageRepository extends CrudRepository<Message, Long> {
 
-    List<Message> findByMessagetoken(String messagetoken);
+
+    /**
+     * Alle message, ausgabe nach messageToken Letzte am schluss
+     * @param messagetoken
+     * @return
+     */
+    List<Message> findByMessagetokenOrderByIdAsc(String messagetoken);
 
 
    /**
@@ -49,16 +55,18 @@ public interface MessageRepository extends CrudRepository<Message, Long> {
 
 
 
+
     /**
      * Daten nach id Löschen, als List Array
-     *
+     * <p>
      * Quelle: BoteFX/MesssageController / private void messageLoschen(List<Long> mesageIds, List<StackPane> paneIds)
      * ... da sind die nachrichten was werden bei 'bearbeiten' ausgewählt(click auf drei Punkte, oben Rechts)
      * zugesendet werden nur id von jeder nachricht, als ListArray...
      * so sieht List<Long> aus [205, 207, 202, 200]
-     *
+     * <p>
      * @param id
+     *
      */
-     void deleteAllById(Iterable<? extends Long> id);
+    void deleteAllById(Iterable<? extends Long> id);
 
 }

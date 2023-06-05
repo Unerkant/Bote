@@ -1,11 +1,11 @@
 package Bote.controller;
 
-import Bote.configuration.GlobalConfig;
 import Bote.model.Freunde;
 import Bote.model.Message;
 import Bote.model.Usern;
 import Bote.service.FreundeService;
 import Bote.service.MessageService;
+import Bote.service.MethodenService;
 import Bote.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,11 +33,15 @@ public class FreundeController {
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
+    private MethodenService methodenService;
+    @Autowired
     private FreundeService freundeService;
     @Autowired
     private UserService userService;
     @Autowired
     private MessageService messageService;
+
+
 
    /**
     *   NUR DIE SUCHFUNCTION EINBLENDEN MIT HEAD(Meine Daten)
@@ -52,7 +56,7 @@ public class FreundeController {
                             @RequestParam(value = "namefragment", required = false) String nameFragment,
                             Model model){
         /* myDaten: anzeige von head Fragments */
-        meineDaten = userService.findeUserToken(neuerChatCookie);
+        meineDaten = userService.meineDatenHolen(neuerChatCookie);
         model.addAttribute("myDaten", meineDaten);
 
         /* nameFragment: Name von anzege-Fragments, messenger.html Zeile:154 */
@@ -68,13 +72,13 @@ public class FreundeController {
     }
 
 
-   /**
-    *   Prüfen nach Meine Telefon/E-Mail und Freunde Telefon/E-Mail
-    *
-    *   Neuer Chat anlegen ( nach bekanten e-mail oder telefon suchen)
-    *   Alle Daten an messagecomponets.html/neuerchatfragment schicken Zeile: 150
-    */
 
+   /**
+    *   Prüfen nach meinem Telefon/E-Mail und Freunde Telefon/E-Mail
+    *
+    *   Neuer Chat anlegen (nach bekannten E-Mail oder telefon suchen)
+    *   alle Daten an messagecomponets.html/neuerchatfragment schicken Zeile: 150
+    */
     private Usern           myDaten;
     private List<String>    alleFreundeEmail;
     private List<String>    alleFreundeTelefon;
@@ -91,7 +95,7 @@ public class FreundeController {
                                  Model model){
 
 /*  1.  myDaten: Meine Daten, für die Anzeige von head Fragments */
-        myDaten = userService.findeUserToken(bekantenCookie);
+        myDaten = userService.meineDatenHolen(bekantenCookie);
         model.addAttribute("myDaten", myDaten);
 
 /*  2.  Alle Telefonnummer oder E-Mail von User, mich und Freuden holen  */
@@ -173,8 +177,10 @@ public class FreundeController {
     }
 
 
+
+
    /**
-    *   Ausgewelte Freund(neuer Chat) speichern
+    *   Ausgewählte Freund(neuer Chat) speichern
     *
     */
     private String      unsereRegistrierDatum;
@@ -208,10 +214,10 @@ public class FreundeController {
                                @RequestParam(value = "bekantentoken", required = false) String bekantenToken,
                                HttpServletRequest request, Model model){
 
-        unsereRegistrierDatum   = GlobalConfig.deDatum();
-        unsereMessageToken      = GlobalConfig.IdentifikationToken();
+        unsereRegistrierDatum   = methodenService.deDatum();
+        unsereMessageToken      = methodenService.IdentifikationToken();
 
-        meinereDaten        = userService.findeUserToken(mySaveCookie);
+        meinereDaten        = userService.meineDatenHolen(mySaveCookie);
         meinereTokenSave    = meinereDaten.getToken();
         meinereBildSave     = meinereDaten.getBild();
         meinerePseuSave     = meinereDaten.getPseudonym();
@@ -220,7 +226,7 @@ public class FreundeController {
         meinereMailSave     = meinereDaten.getEmail();
         meinereTelSave      = meinereDaten.getTelefon();
 
-        bekanteDaten        = userService.findeUserToken(bekantenToken);
+        bekanteDaten        = userService.meineDatenHolen(bekantenToken);
         bekanteTokenSave    = bekanteDaten.getToken();
         bekanteBildSave     = bekanteDaten.getBild();
         bekantePseuSave     = bekanteDaten.getPseudonym();
@@ -281,6 +287,7 @@ public class FreundeController {
    }
 
 
+
    /**
     *   Einladung genehmigung
     *   Datenbank: Tabelle Freunde Spalte: role, werden 2x
@@ -298,6 +305,7 @@ public class FreundeController {
        /* #BE Symbol ID, zu finden in bekanteneinladung.html Zeile:18 */
        return ("/messenger :: #BE");
    }
+
 
 
   /**

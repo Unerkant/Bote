@@ -2,6 +2,7 @@ package Bote.controller;
 
 import Bote.configuration.GlobalConfig;
 import Bote.model.Usern;
+import Bote.service.MethodenService;
 import Bote.service.UserService;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
@@ -19,6 +20,13 @@ import java.util.Locale;
 @Controller
 public class TelefonLoginController {
 
+    Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    private MethodenService methodenService;
+    @Autowired
+    private UserService userService;
+
     private Usern   meineDaten;
     private String  aktuelleDatum;
     private String  identToken;
@@ -30,17 +38,16 @@ public class TelefonLoginController {
     private String  telPseudonym;
     private String  smsSenden;
 
-    Logger logger = LoggerFactory.getLogger(this.getClass());
-    @Autowired
-    private UserService userService;
 
     @SneakyThrows
     @GetMapping(value = "/login/telefonregister")
     public String login(@CookieValue(value = "userid", required = false) String userId){
 
-        meineDaten = userService.findeUserToken(userId);
+        meineDaten = userService.meineDatenHolen(userId);
         return (meineDaten == null ? "/login/telefonregister" : "/messenger");
     }
+
+
 
     @PostMapping("/login/telefonregister")
     public String telefonRegister(HttpServletRequest request, Model model, RedirectAttributes redidAttr){
@@ -57,9 +64,9 @@ public class TelefonLoginController {
         /*  Pseudonym Name erstellen (Letzte 2 Zahlen)          */
         /*                                                      */
         /* **************************************************** */
-        aktuelleDatum = GlobalConfig.deDatum();
-        identToken = GlobalConfig.IdentifikationToken();
-        aktivierCode = GlobalConfig.aktivierungCode();
+        aktuelleDatum = methodenService.deDatum();
+        identToken = methodenService.IdentifikationToken();
+        aktivierCode = methodenService.aktivierungCode();
 
         telefon = request.getParameter("telefon");
         requestNummer = request.getParameter("vorwahl") + request.getParameter("telefon");
@@ -73,7 +80,7 @@ public class TelefonLoginController {
         /* ********************************************************* */
         String smsText = "Deine Zugangscode zur Anmeldung bei Bote \\n \\n" + aktivierCode+
                 " \\n \\n mit Freundlichen Grüßen \\n Ihr Team Bote ";
-        smsSenden = GlobalConfig.smsSenden(telefon, smsText);
+        smsSenden = methodenService.smsSenden(telefon, smsText);
         if (smsSenden == "nosms"){
             redidAttr.addFlashAttribute("telefonfehler", "Error: ");
             return "redirect:/login/telefonlogin";

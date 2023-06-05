@@ -1,9 +1,10 @@
-package Bote.controller;
+package Bote.controller.Api;
 
 import Bote.configuration.GlobalConfig;
 import Bote.model.Freunde;
 import Bote.model.Usern;
 import Bote.service.FreundeService;
+import Bote.service.MethodenService;
 import Bote.service.UserService;
 
 import org.json.JSONObject;
@@ -25,6 +26,8 @@ import java.util.stream.Collectors;
 @Controller
 public class ApiEinladenController {
 
+    @Autowired
+    private MethodenService methodenService;
     @Autowired
     private UserService userService;
     @Autowired
@@ -61,6 +64,7 @@ public class ApiEinladenController {
     }
 
 
+
     /**
      * zugesendet von BoteFX/einladenController/einladenRequest Zeile: ab 150
      * zugesendete parameter (3):
@@ -81,7 +85,7 @@ public class ApiEinladenController {
         String output = null;
         Usern bekanntenDaten = null;
         String bekanntenToken = null;
-        Usern meinerDaten = userService.findeUserToken(myToken);
+        Usern meinerDaten = userService.meineDatenHolen(myToken);
 
         // Prüfen mail, ob schon Freund ist
         List allMailFreunde = freundeService.freundeSuchen(myToken)
@@ -158,6 +162,7 @@ public class ApiEinladenController {
     }
 
 
+
     /**
      * Neuer Chat-Freund ins Datenbank speichern
      *
@@ -170,7 +175,7 @@ public class ApiEinladenController {
 
         String      werdeEingeladen     = "werdeeingeladen";
         String      wartenAufOk         = "wartenaufok";
-        String unsereMessageToken = GlobalConfig.IdentifikationToken();
+        String unsereMessageToken = methodenService.IdentifikationToken();
 
         // Daten von mir ins Freunde Tabelle speichern
         Freunde meinChatSave = new Freunde();
@@ -207,6 +212,7 @@ public class ApiEinladenController {
     }
 
 
+
     /**
      * Einladung prüfen
      *
@@ -238,6 +244,7 @@ public class ApiEinladenController {
     }
 
 
+
     /**
      * Einladung zu Bote per E-Mail
      *
@@ -255,11 +262,12 @@ public class ApiEinladenController {
         String mailBetreff = "Einladung zu Bote";
         String mailMessage = "Bote App Downloaden auf die Seite: \\n https://bote.com/ \\n" +
                 "oder \\n https://apps.apple.com/";
-        String gesendet = GlobalConfig.mailSenden(mails, mailBetreff, mailMessage);
+        String gesendet = methodenService.mailSenden(mails, mailBetreff, mailMessage);
 
         // gesendet = 200 oder 302
         return ResponseEntity.status(HttpStatus.OK).body(gesendet);
     }
+
 
 
     /**
@@ -278,7 +286,7 @@ public class ApiEinladenController {
         String telefon = jsObjct.getString("sendTelefon");
         String smstext = "Bote App Downloaden auf die Seite: \\n https://bote.com/ \\n" +
                 "oder \\n https://apps.apple.com/";
-        String verschickt = GlobalConfig.smsSenden(telefon, smstext );
+        String verschickt = methodenService.smsSenden(telefon, smstext );
         int status;
         if (verschickt != "nosms"){
             status = 200;

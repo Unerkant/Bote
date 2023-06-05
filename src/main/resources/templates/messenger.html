@@ -34,9 +34,9 @@
         <div class="gridBox">
 
             <div class="freundeHead">
-                <table border="0" width="100%" cellspacing="0" cellpadding="0">
+                <table border="0" width="100%" height="50" cellspacing="0" cellpadding="0">
                     <tr>
-                        <td width="50" align="center">
+                        <td width="50" align="center" valign="center">
                             <img data-th-src="@{/img/outperson.png}" class="finger" width="30" data-th-onclick="freundeBearbeiten()">
                         </td>
                         <td>
@@ -45,7 +45,7 @@
                                 <small class="Gray" data-th-text="${meinedaten.email}"></small>
                             </div>
                         </td>
-                        <td width="50" height="46" align="center">
+                        <td width="50" align="center" valign="center">
                             <!-- javascript: freunde.js / neuerChat()-->
                             <img data-th-src="@{/img/plusperson.png}" width="30" class="finger" data-th-onClick="neuerChat()" >
                         </td>
@@ -53,10 +53,10 @@
                 </table>
             </div><!-- Ende freundeHead -->
 
-            <!-- ***** Body ***** -->
+    <!-- ***** Body ***** -->
 
             <!--
-            *   DIE JSON-ARRAY(meinefreunde) Werden Von denn MessageController.java ZUGESENDET
+            *   DIE JSON-ARRAY(meinefreunde) Werden von den MessageController.java ZUGESENDET
             *   @GetMapping(value = {"/", "/messenger"}) Zeile: 58
             *   von diesem Array werden alle Freunde aufgelistet in messenger.html (linke Teil)
             -->
@@ -68,11 +68,11 @@
                 <!-- H2:database Tabelle freunde: id, datum, freundetoken, freundepseudonym, meinentoken, meinpseudonym, messagetoken, role -->
                 <div id="FREUNDEDATEN" class="freundeDaten" data-th-each=" freunde : ${meinefreunde} "
                      data-th-if="${freunde['role'].length == 0}">
-                    <!-- Freunde ausgebe in thymeleaf-schleife..  -->
+                    <!-- Freunde ausgeben in thymeleaf-schleife..  -->
                     <!-- class: freund wird benutzt nur für jQuery function in messenger.js Zeile: 53 -->
                     <!-- die 3 variablen(name, id, token) nicht löschen oder verändern:  -->
                     <div  class="freund" data-th-name="${meineId}"  data-th-id="${freunde['freundetoken']}" data-th-token="${freunde['messagetoken']}">
-                        <table border="0" width="100%" cellpadding="0" cellspacing="0" data-th-id="${freunde['messagetoken']}">
+                        <table border="0" width="100%" height="60" cellpadding="0" cellspacing="0" data-th-id="${freunde['messagetoken']}">
                             <tr>
                             <!-- Remove / freunde.js Zeile 138-->
                                 <td data-th-id="FREUNDLOSCHEN" rowspan="3" width="1" align="center" valign="center" class="finger"
@@ -80,52 +80,59 @@
                                     <img class="freundeRemove"  width="30" th:src="@{/img/remove.png}">
                                 </td>
                             <!-- Bild -->
-                                <td width="50" rowspan="3" align="center">
+                                <td class="bildTdWidth" rowspan="3">
                                     <span data-th-if="${freunde['freundebild'].length == 0}">
                                         <span data-th-id="${'color'+freunde.id}"  class="freundeBild" data-th-text="${freunde.freundepseudonym}"></span>
                                     </span>
                                     <span data-th-if="${freunde['freundebild'].length > 0}">
-                                    <img class="rund" data-th-src="@{${'/profilbild/'+freunde.freundebild+'.png'}}">
+                                        <img class="rund" data-th-src="@{${'/profilbild/'+freunde.freundebild+'.png'}}">
                                     </span>
                                 </td>
                             <!-- Name -->
-                                <td class="freundeName">
-                                    <span data-th-text="${freunde['freundename'].length == 0} ? ${freunde.freundepseudonym} :
+                                <td height="20">
+                                    <span class="freundeName overflowHidden1"
+                                    data-th-text="${freunde['freundename'].length == 0} ? ${freunde.freundepseudonym} :
                                     ${freunde.freundevorname}+' '+${freunde.freundename} "></span>
-                                    <small class="twilight" data-th-text="${freunde['freundename'].length == 0} ?
-                                    '&#91;'+${freunde.freundemail} +' '+ ${freunde.freundetelefon}+'&#93;' : '' " ></small>
                                 </td>
                             <!-- Zeit -->
-                                <td width="60">
+                                <td width="50" align="center">
                                     <pre class="OldSilver" data-th-text="${freunde['datum'].substring(0,10).replace('-','.')}"></pre>
                                 </td>
-                            <!-- Gelesen -->
-                                <td width="25" align="center" >
-                                    <img width="15" data-th-src="@{/img/done.png}"  th:alt-title="#{Done}">
+                            <!-- Gelesen, hacken Grün oder grau -->
+                                <td class="freudeGelesen" align="center" >
+                                    <!-- versuche das Bild mit den javascript eizufügen-->
+                                    <!--<img width="15" data-th-src="@{/img/done.png}"  th:alt-title="#{Done}">-->
                                 </td>
                             </tr>
                             <tr>
                             <!-- Text -->
-                                <td colspan="2" height="40">
+                                <td colspan="2" height="40" valign="top">
                                     <!-- 70 Zeichen -->
-                                    <small class="OldSilver">Es kann vorkommen, dass das gleiche Zeichen, das wir ersetzen wollen, in...</small>
+                                    <small class="OldSilver overflowHidden2"
+                                    data-th-text="${freunde['letzteNachricht'] != null} ? ${freunde.letzteNachricht} : '' ">
+                                    </small>
                                 </td>
                             <!-- Neue Nachricht -->
-                                <td width="25">
-                                    <span class="freundMessageUngelesen"></span>
-                                </td>
-                            </tr>
-                            <tr>
-                            <!-- HR-Linie -->
-                                <td colspan="3">
-                                    <hr id="FREUNDHR" class="linie" >
+                                <td class="freundeGelesen" align="center">
+                                    <!-- mit substring begrenzen auf die 2 Zahlen, class="freundeUngelesen" -->
+                                    <p class="freundeUngelesen">88</p>
                                 </td>
                             </tr>
                         </table>
-                    <!-- Gelöscht ( nur benachricht ) -->
+
+                        <!-- Gelöscht ( nur benachricht ) -->
                         <div class="freundGeloscht" data-th-id="${'OK'+freunde['messagetoken']}">
                             Freund <b data-th-text="${freunde['freundepseudonym']}"></b> Geloscht!
                         </div>
+
+                        <!-- Untere Linie von Freunde Box(Daten) -->
+                        <table border="0" width="100%" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td width="60"></td>
+                                <td style="border-bottom: 1px solid #E6E6FF;"></td>
+                            </tr>
+                        </table>
+
                     </div><!-- Ende freund-->
                     <script th:inline="javascript">
                         // Quelle: zufallColor.js
@@ -135,16 +142,15 @@
                             setRandomColor(id);
                          /*]]>*/
                     </script>
-
                 </div><!-- Ende Freunde Daten (schleife)-->
 
-                <!-- Keine Chat vorhanden -->
+                <!-- Kein Chat vorhanden -->
                 <div data-th-if="${#lists.isEmpty(meinefreunde)}">
                     <p class="freundeNo">Keine Freunde?</p>
                 </div>
             </div><!-- Ende freundeBody -->
 
-        <!-- ***** Footer ***** -->
+    <!-- ***** Footer ***** -->
 
         <div id="FREUNDEFOOTER" class="freundeFooter">
 

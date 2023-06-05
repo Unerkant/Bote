@@ -12,41 +12,63 @@ import java.util.List;
  */
 @Service
 public class UserService {
-
     @Autowired
     private UserRepository userRepository;
 
-    /* Finde Alle Users */
+
+    /**
+     * Alle User abruffen
+     * @return
+     */
     public List<Usern> findeAlle(){
 
         return userRepository.findAll();
     }
 
-    /* functioniert 100% */
-    public Usern findeUserToken(String token){
+
+    /**
+     * Meine Daten Holen
+     * output: Meine Daten: {"id":362,"token":"12042023204557","datum":"12-04-2023 20:45:57","bild":"",
+     * "pseudonym":"MA","name":"","vorname":"","email":"macbookpro@mail.com","telefon":"","role":"default","other":""}
+     * @param token
+     * @return
+     */
+    public Usern meineDatenHolen(String token){
 
         return userRepository.findByToken(token);
     }
 
-    /* neue user ins H2 Datenbank speichern: func. 100% */
+
+    /**
+     * Neuer User speichern
+     * @param user
+     */
     public void saveNewUser(Usern user) {
 
         userRepository.save(user);
     }
 
-    /* nach registrierte E-Mail suchen: func. 100% */
+
+    /**
+     * Nach regestrierten E-Mail suchen
+     *
+     * @param email
+     * @return
+     */
     public Usern sucheMail(String email) {
 
         return userRepository.findByEmail(email);
     }
 
+
    /**
-    *   vorhandenen Telefonnummer suchen
+    *   nach vorhandenen Telefonnummer suchen
     */
     public Usern sucheTelefon(String telefon){
 
         return userRepository.findByTelefon(telefon);
     }
+
 
    /**
     *   Benutzt von SettingController/@PostMapping(value = "/accountloschen")

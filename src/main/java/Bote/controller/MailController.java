@@ -22,7 +22,7 @@ public class MailController {
     @GetMapping(value = "/login/maillogin")
     public String login(@CookieValue(value = "userid", required = false) String userId){
 
-        meineDaten = userService.findeUserToken(userId);
+        meineDaten = userService.meineDatenHolen(userId);
         logger.info("MailController GetMapping: /login/maillogin ..." + meineDaten);
         return (meineDaten == null ? "/login/maillogin" : "/messenger");
     }

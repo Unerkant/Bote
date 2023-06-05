@@ -36,7 +36,9 @@ public class Phone {
         //Leer
     }
 
-    public Phone(long id, String bild, String datum, String token, String pseudonym, String name,  String vorname, String phoneart, String dauert, String role){
+    public Phone(long id, String bild, String datum, String token, String pseudonym, String name,
+                 String vorname, String phoneart, String dauert, String role)
+    {
        this.id          = id;
        this.bild        = bild;
        this.datum       = datum;
@@ -47,8 +49,6 @@ public class Phone {
        this.phoneart    = phoneart;
        this.dauert      = dauert;
        this.role        = role;
-
-
     }
 
     public long getId() { return id; }

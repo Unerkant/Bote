@@ -14,19 +14,17 @@ public class CountEntry {
     @Id
     @GeneratedValue
     private long id;
-
     @JsonFormat(pattern = "yyyy.MM.dd HH:mm:ss")
     private String datum;
-
     private String token;
-
     private String total;
 
 
     public CountEntry() {
     }
 
-    public CountEntry(long id, String datum, String token, String total) {
+    public CountEntry(long id, String datum, String token, String total)
+    {
         this.id = id;
         this.datum = datum;
         this.token = token;
@@ -51,5 +49,15 @@ public class CountEntry {
     }
     public void setTotal(String total) {
         this.total = total;
+    }
+
+    @Override
+    public String toString() {
+        return "CountEntry{" +
+                "id='" + id + '\'' +
+                ", datum='" + datum + '\'' +
+                ", token='" + token + '\'' +
+                ", total='" + total + '\'' +
+                '}';
     }
 }

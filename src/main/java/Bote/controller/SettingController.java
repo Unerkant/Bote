@@ -6,11 +6,9 @@ import Bote.model.Usern;
 import Bote.service.*;
 
 import lombok.SneakyThrows;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +34,9 @@ import java.util.stream.Collectors;
 public class SettingController {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    private MethodenService methodenService;
     @Autowired
     private FreundeService freundeService;
     @Autowired
@@ -52,14 +53,14 @@ public class SettingController {
     private CountEntryService entryService;
 
 
+
     /**
      *   Setting HTML Starten
      *   Linke Seite: Ausgabe von Bild & E-Mail-Adresse
      */
     private Usern    meineDaten;
     @GetMapping(value = "/setting")
-    public String setting(@CookieValue(value = "userid", required = false) String meineId,
-                          Model model)
+    public String setting(@CookieValue(value = "userid", required = false) String meineId, Model model)
     {
         /*
          *   Daten für setting.html/profil(Linke Seite)
@@ -69,31 +70,17 @@ public class SettingController {
          *
          */
         try {
-            meineDaten = userService.findeUserToken(meineId);
+            meineDaten = userService.meineDatenHolen(meineId);
             model.addAttribute("meinedaten", meineDaten);
             model.addAttribute("myToken", meineId);
         }catch (Exception e){
             logger.info("Exception Fehler: " + e);
         }
 
-        logger.info("SettingController/GetMapping: " + meineId +"/"+ meineDaten);
+        //logger.info("SettingController/GetMapping: " + meineId +"/"+ meineDaten);
         return (meineId == null ? "/login/maillogin" : "/setting");
     }
 
-
-    /**
-     *   Profil Bild aus dem Datei(profilbild) Laden
-     *   und anzeigen lassen
-     */
-    @GetMapping(value = "/profilbild/{imageName}", produces = MediaType.IMAGE_PNG_VALUE)
-    public @ResponseBody byte[] profilBild(@PathVariable(value = "imageName", required = true) String bildName)
-            throws IOException {
-
-        File bildFile = new File("profilbild/" + bildName);
-        logger.info("settingController/profilbild: " + bildName);
-        return IOUtils.toByteArray(bildFile.toURI());
-
-    }
 
 
     /**
@@ -105,7 +92,8 @@ public class SettingController {
     @PostMapping(value = "bildupload")
     @ResponseBody
     public Map<String, Object> bildUpload(@CookieValue(value = "userid", required = false) String uploadCookie,
-                                          @RequestParam(value = "imageurl", defaultValue = "") String imageBase) {
+                                          @RequestParam(value = "imageurl", defaultValue = "") String imageBase)
+    {
 
         Map<String, Object> res = new HashMap<String, Object>();
         File imageFile = new File("./profilbild/"+uploadCookie+".png");
@@ -131,6 +119,7 @@ public class SettingController {
     }
 
 
+
     /**
      *   Profil Bild Löschen
      *   ACHTUNG: nur in Datenbank der Name von Bild
@@ -141,8 +130,8 @@ public class SettingController {
     private Integer bildGeloscht;
     @PostMapping(value = "/profilbildloschen")
     @ResponseBody
-    public String profilbildLoschen(@RequestParam(value = "bildname", required = true) String nameBild
-    ) throws Exception{
+    public String profilbildLoschen(@RequestParam(value = "bildname", required = true) String nameBild) throws Exception
+    {
         usernBildGeloscht = settingService.usernBildUpdate("", nameBild);
         freundeBildGeloscht = settingService.freundeBildUpdate("", nameBild);
         bildGeloscht = usernBildGeloscht + freundeBildGeloscht;
@@ -150,6 +139,7 @@ public class SettingController {
         logger.info("Profil Bild Loöschen: " + bildGeloscht);
         return String.valueOf(bildGeloscht);
     }
+
 
 
     /**
@@ -176,7 +166,7 @@ public class SettingController {
 
         String links = "/fragments/setting/"+itemId;
 
-        meinerDaten     = userService.findeUserToken(profilcookie);
+        meinerDaten     = userService.meineDatenHolen(profilcookie);
 
         model.addAttribute("fragmentName", fragmentName);
         model.addAttribute("meinerDaten", meinerDaten);
@@ -205,12 +195,12 @@ public class SettingController {
     }
 
 
+
     /**
      *   Profil Save
      *
      *   in profil.html
      */
-
     private Integer     vornameUpdate;
     private Integer     nameUpdate;
     private Integer     mailUpdate;
@@ -261,6 +251,9 @@ public class SettingController {
         return (profilcookie == null ? "/login/maillogin" : output);
     }
 
+
+
+
     /**
      * Code generieren und zurücksenden.
      * bei änderungen das E-Mail, Telefon oder Accound Löschen
@@ -289,11 +282,11 @@ public class SettingController {
                             Model model)
     {
 
-        myData      = userService.findeUserToken(codetoken);
+        myData      = userService.meineDatenHolen(codetoken);
         alteMail    = myData.getEmail();
         alteTelefon = myData.getTelefon();
 
-        code = GlobalConfig.aktivierungCode();
+        code = methodenService.aktivierungCode();
         logger.info("SettingController Zeile:300 "+ codename+ "/" +codevalue+ "/" + alteMail +"/"+ alteTelefon + "/" + code);
 
         /* mail mit code an alte E-Mail-Adresse vesenden */
@@ -302,7 +295,7 @@ public class SettingController {
             String betreff      = "Deine Zugangscode zur Anmeldung";
             String sendeMessage = "hier erhalten Sie ihre Messenger Aktivierung Code\\n" +code+
                     "\\n Gültigkeit dauert nur für diese sitzung \\n \\n mit Freundlichen Grüßen \\n Ihr Team Bote ";
-            mail = GlobalConfig.mailSenden(alteMail, betreff, sendeMessage);
+            mail = methodenService.mailSenden(alteMail, betreff, sendeMessage);
             if (mail.equals("nomail")){
                 return "nomail";
             }
@@ -311,7 +304,7 @@ public class SettingController {
         if (alteTelefon != null && !alteTelefon.isBlank()){
             String smsText = "Deine Zugangscode zur Anmeldung bei Bote \\n \\n" + code+
                     " \\n \\n mit Freundlichen Grüßen \\n Ihr Team Bote ";
-            telefon = GlobalConfig.smsSenden(alteTelefon, smsText);
+            telefon = methodenService.smsSenden(alteTelefon, smsText);
             if (telefon.equals("nosms")){
                 return "nosms";
             }
@@ -324,6 +317,7 @@ public class SettingController {
     }
 
 
+
     /**
      *   Account Abmelden
      *   werden nur cookie gelöscht(in profil.js) und hier
@@ -333,12 +327,14 @@ public class SettingController {
     private String  datum;
     @PostMapping(value = "/accountabmelden")
     @ResponseBody
-    public String accountAbmelden(@RequestParam(value = "abmeldentoken") String token){
-        datum   = GlobalConfig.deDatum();
+    public String accountAbmelden(@RequestParam(value = "abmeldentoken") String token)
+    {
+        datum   = methodenService.deDatum();
         outlog  = sessionService.letztenoutlogUpdate(datum, token);
         logger.info("Account Abmelden: " +datum +"/"+ outlog);
         return "abgemeldet";
     }
+
 
 
     /**
@@ -361,13 +357,14 @@ public class SettingController {
     private String          sessionGeloscht;
     private int             cookieGeloscht;
     private int             sessionPluCookie;
+
     @PostMapping(value = "/accountloschen")
     public String accountLoschen(@CookieValue(value = "userid", required = false) String cookie,
                                  @RequestParam(value = "token", required = false) String token,
                                  HttpServletResponse response, Model model)
     {
         // Meine Daten ermiteln
-        userDaten       = userService.findeUserToken(token);
+        userDaten       = userService.meineDatenHolen(token);
         userPseudonym   = userDaten.getPseudonym();
         userName        = userDaten.getName();
         userVorname     = userDaten.getVorname();
@@ -407,7 +404,7 @@ public class SettingController {
         sessionGeloscht = sessionService.allUserSessionLoschen(token);
 
         /* 7 */     /* 100% cookie löschen */
-        cookieGeloscht = GlobalConfig.deleteCookie(response);
+        cookieGeloscht = methodenService.deleteCookie(response);
         sessionPluCookie = Integer.parseInt(sessionGeloscht) + cookieGeloscht;
 
         model.addAttribute("frName", "accountloschen");

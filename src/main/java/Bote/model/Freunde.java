@@ -14,72 +14,49 @@ public class Freunde {
     @Id
     @GeneratedValue
     private long id;
-
     @JsonFormat(pattern = "yyyy.MM.dd HH:mm:ss")
     private String datum;
-
     private String meinentoken;
-
     private String messagetoken;
-
     private String freundetoken;
-
     private String freundebild;
-
     private String freundepseudonym;
-
     private String freundename;
-
     private String freundevorname;
-
     private String freundemail;
-
     private String freundetelefon;
-
     private String role;
-
     @Transient // Bedeutet wird nicht für die Datenbank verwendet
     private String letzteNachricht;
-
     @Transient // Bedeutet wird nicht für die Datenbank verwendet
     private String datumLetzteNachricht;
 
-    public String getLetzteNachricht() {
-        return letzteNachricht;
-    }
-
-    public void setLetzteNachricht(String letzteNachricht) {
-        this.letzteNachricht = letzteNachricht;
-    }
-
-    public String getDatumLetzteNachricht() {
-        return datumLetzteNachricht;
-    }
-
-    public void setDatumLetzteNachricht(String datumLetzteNachricht) {
-        this.datumLetzteNachricht = datumLetzteNachricht;
-    }
 
     public Freunde(){
         //Leer
     }
 
 
-       public Freunde(long id, String datum, String meinentoken, String messagetoken, String freundetoken, String freundebild,
-                      String freundepseudonym, String freundename, String freundevorname, String freundemail, String freundetelefon, String role ){
-        this.id                 = id;
-        this.datum              = datum;
-        this.meinentoken        = meinentoken;
-        this.messagetoken       = messagetoken;
-        this.freundetoken       = freundetoken;
-        this.freundebild        = freundebild;
-        this.freundepseudonym   = freundepseudonym;
-        this.freundename        = freundename;
-        this.freundevorname     = freundevorname;
-        this.freundemail        = freundemail;
-        this.freundetelefon     = freundetelefon;
-        this.role               = role;
+    public Freunde(long id, String datum, String meinentoken, String messagetoken, String freundetoken, String freundebild,
+                      String freundepseudonym, String freundename, String freundevorname, String freundemail,
+                      String freundetelefon, String role, String letzteNachricht, String datumLetzteNachricht )
+    {
+        this.id                     = id;
+        this.datum                  = datum;
+        this.meinentoken            = meinentoken;
+        this.messagetoken           = messagetoken;
+        this.freundetoken           = freundetoken;
+        this.freundebild            = freundebild;
+        this.freundepseudonym       = freundepseudonym;
+        this.freundename            = freundename;
+        this.freundevorname         = freundevorname;
+        this.freundemail            = freundemail;
+        this.freundetelefon         = freundetelefon;
+        this.role                   = role;
+        this.letzteNachricht        = letzteNachricht;
+        this.datumLetzteNachricht   = datumLetzteNachricht;
     }
+
 
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }
@@ -117,6 +94,20 @@ public class Freunde {
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
 
+    public String getLetzteNachricht() {
+        return letzteNachricht;
+    }
+    public void setLetzteNachricht(String letzteNachricht) {
+        this.letzteNachricht = letzteNachricht;
+    }
+
+    public String getDatumLetzteNachricht() {
+        return datumLetzteNachricht;
+    }
+    public void setDatumLetzteNachricht(String datumLetzteNachricht) {
+        this.datumLetzteNachricht = datumLetzteNachricht;
+    }
+
 
 
 
@@ -135,6 +126,9 @@ public class Freunde {
                 ", freundemail='" + freundemail + '\'' +
                 ", freundetelefon='" + freundetelefon + '\'' +
                 ", role='" + role + '\'' +
+                ", letzteNachricht='" + letzteNachricht + '\'' +
+                ", datumLetzteNachricht='" + datumLetzteNachricht + '\'' +
                 '}';
     }
+
 }

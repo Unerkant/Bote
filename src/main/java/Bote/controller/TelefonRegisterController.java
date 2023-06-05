@@ -3,6 +3,7 @@ package Bote.controller;
 import Bote.configuration.GlobalConfig;
 import Bote.model.Session;
 import Bote.model.Usern;
+import Bote.service.MethodenService;
 import Bote.service.SessionService;
 import Bote.service.UserService;
 import lombok.SneakyThrows;
@@ -22,6 +23,15 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class TelefonRegisterController {
 
+    Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    private MethodenService methodenService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private SessionService sessionService;
+
     private Usern   meineDaten;
     private String  saveTelefon;
     private String  saveDatum;
@@ -38,19 +48,16 @@ public class TelefonRegisterController {
     private Usern   newUser;
     private String  uniCode = "&#x22EF;";
 
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private SessionService sessionService;
-    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @SneakyThrows
     @GetMapping(value = "/login/telefonsuccess")
     public String login(@CookieValue(value = "userid", required = false) String userId){
 
-        meineDaten = userService.findeUserToken(userId);
+        meineDaten = userService.meineDatenHolen(userId);
         return (meineDaten == null ? "/login/telefonsuccess" : "/messenger");
     }
+
+
 
     @PostMapping("/login/telefonsuccess")
     public String telefonRegister(HttpServletRequest request, HttpServletResponse response,
@@ -151,7 +158,7 @@ public class TelefonRegisterController {
         model.addAttribute("registerCookie", (altUser != null) ? altUser.getToken() : uniCode);
 
         /* cookie "userid" setzen */
-        GlobalConfig.setCookie(response, "userid", String.valueOf((altUser != null) ? altUser.getToken() : saveToken));
+        methodenService.setCookie(response, "userid", String.valueOf((altUser != null) ? altUser.getToken() : saveToken));
         logger.info("Telefon Register Controller/ altUser: " + altUser);
         return "/login/telefonsuccess";
     }
