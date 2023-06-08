@@ -2,8 +2,8 @@ package Bote.controller;
 
 import Bote.service.FreundeService;
 import Bote.service.PhoneService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,23 +11,25 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import javax.servlet.http.HttpServletRequest;
+
 import java.util.List;
+
+
+/**
+ * bearbeitet am 5.06.2023
+ */
 
 @Controller
 public class PhoneController {
 
-    private List    telefonate;
-    private List    phoneFreunde;
-
-    private String  myToken;
-
-
-    Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private FreundeService freundeService;
     @Autowired
     private PhoneService phoneService;
+
+    private List    telefonate;
+    private List    phoneFreunde;
+    private String  myToken;
 
     @GetMapping(value = "/phone")
     public String phone(@CookieValue(value = "userid", required = false) String phonecookie,
@@ -36,10 +38,12 @@ public class PhoneController {
 
         telefonate = phoneService.telefonatAusgeben(phonecookie);
         model.addAttribute("telefonaten", telefonate);
+        model.addAttribute("phoneRequestUri", request.getRequestURI());
 
-        logger.info("PhoneController/GetMapping/Phone: " + phonecookie);
+        //System.out.println("PhoneController/GetMapping/Phone: " + phonecookie);
         return (phonecookie == null ? "/login/maillogin" : "/phone");
     }
+
 
     /**
      *  Anruf Delete
@@ -50,10 +54,10 @@ public class PhoneController {
                               @RequestParam(value = "myToken", required = false) String myToken,
                               HttpServletRequest request, Model model){
 
-
         phoneService.telefonatLoschen(deleteId);
 
-        logger.info("PhoneController/PostMapping/anrufdelete: " + myToken +'/'+ deleteId);
+        //System.out.println("PhoneController/PostMapping/anrufdelete: " + myToken +'/'+ deleteId);
+
         return (deletecookie == null ? "/login/maillogin" : "/phone :: #OK"+deleteId);
     }
 }

@@ -27,7 +27,7 @@
     <div id="ACCOUNTLOSCHEN" class="accountLoschen">
     <div class="accountLoschenKasten">
         <!-- Fragment: account löschen-->
-        <div id="ACCOUNTLOSCHENFRAGMENT" data-th-insert="/fragments/components :: accountloschen"></div>
+        <div id="ACCOUNTLOSCHENFRAGMENT" data-th-insert="~{/fragments/components :: accountloschen}"></div>
         <!-- Ende Fragment -->
         <div class="accountLoschenText">
             Eine Accountlöschung ist dauerhaft.<br> Mit der Löschung Ihres Bote-Accounts werden auch cookie, Ihr
@@ -290,8 +290,8 @@
         <!-- setting Links Footer -->
     <div class="linksBoxFooter">
 
-        <div th:if="${#httpServletRequest.requestURI == '/setting'}"
-                th:insert="/fragments/footercomponents :: footerfragment"></div>
+        <div th:if="${settingRequestUri == '/setting'}"
+                th:insert="~{/fragments/footercomponents :: footerfragment}"></div>
 
     </div><!-- Ende linksBoxFooter -->
 
@@ -312,15 +312,15 @@
         <!--                                                    -->
         <div id="FRAGMENTANZEIGEN" data-th-switch="${fragmentHtml}">
 
-            <div data-th-case="'PROFIL'" data-th-insert="/fragments/setting/profil :: profilfragment"></div>
-            <div data-th-case="'ALLGEMEIN'" data-th-insert="/fragments/setting/allgemein :: allgemeinfragment"></div>
-            <div data-th-case="'DARSTELLUNG'" data-th-insert="/fragments/setting/darstellung :: darstellungfragment"></div>
-            <div data-th-case="'SICHERHEIT'" data-th-insert="/fragments/setting/sicherheit :: sicherheitfragment"></div>
-            <div data-th-case="'MITTEILUNG'" data-th-insert="/fragments/setting/mitteilung :: mitteilungfragment"></div>
-            <div data-th-case="'SPRACHE'" data-th-insert="/fragments/setting/sprache :: sprachefragment"></div>
-            <div data-th-case="'STICKER'" data-th-insert="/fragments/setting/sticker :: stickerfragment"></div>
-            <div data-th-case="'FAQ'" data-th-insert="/fragments/setting/faq :: faqfragment"></div>
-            <div data-th-case="'SUPPORT'" data-th-insert="/fragments/setting/support :: supportfragment"></div>
+            <div data-th-case="'PROFIL'" data-th-insert="~{/fragments/setting/profil :: profilfragment}"></div>
+            <div data-th-case="'ALLGEMEIN'" data-th-insert="~{/fragments/setting/allgemein :: allgemeinfragment}"></div>
+            <div data-th-case="'DARSTELLUNG'" data-th-insert="~{/fragments/setting/darstellung :: darstellungfragment}"></div>
+            <div data-th-case="'SICHERHEIT'" data-th-insert="~{/fragments/setting/sicherheit :: sicherheitfragment}"></div>
+            <div data-th-case="'MITTEILUNG'" data-th-insert="~{/fragments/setting/mitteilung :: mitteilungfragment}"></div>
+            <div data-th-case="'SPRACHE'" data-th-insert="~{/fragments/setting/sprache :: sprachefragment}"></div>
+            <div data-th-case="'STICKER'" data-th-insert="~{/fragments/setting/sticker :: stickerfragment}"></div>
+            <div data-th-case="'FAQ'" data-th-insert="~{/fragments/setting/faq :: faqfragment}"></div>
+            <div data-th-case="'SUPPORT'" data-th-insert="~{/fragments/setting/support :: supportfragment}"></div>
             <div data-th-case="*" >
                 <div class="flexCenter" >
                     <img width="128" class="itemMiddle" data-th-src="@{/img/geist.png}" alt="Geist">

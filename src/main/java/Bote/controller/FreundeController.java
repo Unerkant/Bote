@@ -7,17 +7,15 @@ import Bote.service.FreundeService;
 import Bote.service.MessageService;
 import Bote.service.MethodenService;
 import Bote.service.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.text.ParseException;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,10 +26,6 @@ import java.util.stream.Collectors;
 @Controller
 public class FreundeController {
 
-    private Usern    meineDaten;
-    public FreundeController()  throws IOException, ParseException { }
-    Logger logger = LoggerFactory.getLogger(this.getClass());
-
     @Autowired
     private MethodenService methodenService;
     @Autowired
@@ -40,6 +34,8 @@ public class FreundeController {
     private UserService userService;
     @Autowired
     private MessageService messageService;
+
+    private Usern    meineDaten;
 
 
 
@@ -67,7 +63,7 @@ public class FreundeController {
         model.addAttribute("alleuser", alleUser);
 
 
-        logger.info("Freunde-Controller: ");
+        //System.out.println("Freunde-Controller: " + alleUser);
         return (meineDaten == null ? "/login/maillogin" : "/messenger :: #MESSAGEFRAGMENT");
     }
 
@@ -172,7 +168,7 @@ public class FreundeController {
         List alleUser = userService.findeAlle();
         model.addAttribute("alleuser", alleUser);
 
-        logger.info("Bekanten Suchen: " + fehlerAusgabe+"/"+mailOderTel+"/"+myMail+"/"+datenGefunden);
+        //System.out.println("Bekanten Suchen: " + fehlerAusgabe+"/"+mailOderTel+"/"+myMail+"/"+datenGefunden);
         return ("/messenger :: #MESSAGEFRAGMENT");
     }
 
@@ -281,7 +277,7 @@ public class FreundeController {
         model.addAttribute("meinefreunde", meinefreunde);
         model.addAttribute("unsereMessageToken", unsereMessageToken);
 
-        logger.info("Neuer Chat Save:" + unsereMessageToken +"/"+ meinefreunde);
+        //System.out.println("Neuer Chat Save:" + unsereMessageToken +"/"+ meinefreunde);
         /* Return an javascript (freunde.js) function bekantenSave(bekantenToken) Zeile:85 */
         return ("/messenger :: #NEUERCHAT");
    }
@@ -301,7 +297,7 @@ public class FreundeController {
        count = freundeService.roleUpdate("", messageToken);
 
 
-       logger.info("PostMapping Freund Controller Update: "+ count);
+       //System.out.println("PostMapping Freund Controller Update: "+ count);
        /* #BE Symbol ID, zu finden in bekanteneinladung.html Zeile:18 */
        return ("/messenger :: #BE");
    }
@@ -329,7 +325,7 @@ public class FreundeController {
        List<Freunde> geloschteFriend = freundeService.freundLoschen(messToken);
        List<Message> geloschteMessage = messageService.freundMessageLoschen(messToken);
 
-       logger.info("PostMapping Freund Loschen: "  + geloschteFriend +" / " + geloschteMessage );
+       //System.out.println("PostMapping Freund Loschen: "  + geloschteFriend +" / " + geloschteMessage );
        return ("/messenger :: #OK"+messToken);
    }
 

@@ -1,8 +1,11 @@
 package Bote.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import javax.persistence.*;
-import java.util.Date;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
+
 
 /**
     *    Den 1.11.2021

@@ -144,8 +144,8 @@
 
         <div class="phoneFooter">
 
-            <div th:if="${#httpServletRequest.requestURI == '/phone'}"
-                    th:insert="/fragments/footercomponents :: footerfragment"></div>
+            <div th:if="${phoneRequestUri == '/phone'}"
+                    th:insert="~{/fragments/footercomponents :: footerfragment}"></div>
 
         </div><!-- Ende phoneFooter -->
 

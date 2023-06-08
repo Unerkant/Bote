@@ -44,8 +44,8 @@
 
         <div class="kontakteFooter">
 
-            <div th:if="${#httpServletRequest.requestURI == '/kontakte'}"
-                    th:insert="/fragments/footercomponents :: footerfragment"></div>
+            <div th:if="${kontakteRequestUri == '/kontakte'}"
+                    th:insert="~{/fragments/footercomponents :: footerfragment}"></div>
 
         </div><!-- Ende footer -->
 

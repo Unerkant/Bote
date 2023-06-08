@@ -1,26 +1,20 @@
 package Bote.controller;
 
-import Bote.configuration.GlobalConfig;
 import Bote.model.Usern;
 import Bote.service.MethodenService;
 import Bote.service.UserService;
 
-import lombok.SneakyThrows;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
 
 
 @Controller
 public class MailLoginController {
-
-    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private MethodenService methodenService;
@@ -38,18 +32,17 @@ public class MailLoginController {
     private String  mailSenden;
 
 
-    @SneakyThrows
     @GetMapping(value = "/login/mailregister")
     public String login(@CookieValue(value = "userid", required = false) String userId){
 
         meineDaten = userService.meineDatenHolen(userId);
-        logger.info("MailLoginController @GetMapping" + meineDaten);
+        System.out.println("MailLoginController @GetMapping: " + meineDaten);
+
         return (meineDaten == null ? "/login/mailregister" : "/messenger");
     }
 
 
 
-    @SneakyThrows
     @PostMapping("/login/mailregister")
     public String mailregister(HttpServletRequest request, Model model ){
 
@@ -125,7 +118,7 @@ public class MailLoginController {
                 "\n"+
                 "Ihr Bote Team");
 
-        logger.info("MailLoginController @PostMapping: " + emailParam + "/" + tokenNummer +"/"+ aktivierungCode );
+        System.out.println("MailLoginController @PostMapping: " + emailParam + "/" + tokenNummer +"/"+ aktivierungCode );
         return "/login/mailregister";
 
     }

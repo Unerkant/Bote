@@ -1,14 +1,13 @@
 package Bote.controller;
 
-import Bote.configuration.GlobalConfig;
 import Bote.model.Session;
 import Bote.model.Usern;
 import Bote.service.MethodenService;
 import Bote.service.SessionService;
 import Bote.service.UserService;
-import lombok.SneakyThrows;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,14 +15,11 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
 
 
 @Controller
 public class TelefonRegisterController {
-
-    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private MethodenService methodenService;
@@ -49,7 +45,6 @@ public class TelefonRegisterController {
     private String  uniCode = "&#x22EF;";
 
 
-    @SneakyThrows
     @GetMapping(value = "/login/telefonsuccess")
     public String login(@CookieValue(value = "userid", required = false) String userId){
 
@@ -63,7 +58,7 @@ public class TelefonRegisterController {
     public String telefonRegister(HttpServletRequest request, HttpServletResponse response,
                                   RedirectAttributes redicAttr, Model model){
 
-       /*
+       /**
         *   Daten aus den telefonregister.html
         *   eingegebene Code-Zahlen prüfen, bei Falsche eingabe
         *   Seite zurücksetzen und Daten wieder in das Formular speichern
@@ -82,7 +77,7 @@ public class TelefonRegisterController {
         vierteCode = request.getParameter("telCodeVier");
 
         tippCode = Integer.parseInt(ersteCode + zweiteCode + dritteCode + vierteCode);
-        //logger.info("Telefon Controller" + emailsCode + "/" + tippsCode);
+        //System.out.println("Telefon Controller" + mailCode + "/" + tippCode);
 
         if (mailCode != tippCode){
             redicAttr.addFlashAttribute("telefonFehler", "Registrierungscode scheint falsch zu sein ...(richtige)->" + mailCode +
@@ -98,8 +93,7 @@ public class TelefonRegisterController {
         }
 
 
-        /*
-         * -----------------------------------------------------------
+        /**
          *   Daten in Datenbank speichern
          * -----------------------------------------------------------
          *
@@ -159,7 +153,7 @@ public class TelefonRegisterController {
 
         /* cookie "userid" setzen */
         methodenService.setCookie(response, "userid", String.valueOf((altUser != null) ? altUser.getToken() : saveToken));
-        logger.info("Telefon Register Controller/ altUser: " + altUser);
+        System.out.println("Telefon Register Controller/ altUser: " + altUser);
         return "/login/telefonsuccess";
     }
 }

@@ -2,13 +2,10 @@ package Bote.controller;
 
 import Bote.model.Usern;
 import Bote.service.UserService;
-import lombok.SneakyThrows;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,13 +18,11 @@ import java.util.Iterator;
 public class TelefonController {
 
     public Usern meineDaten;
-    public TelefonController() throws IOException, ParseException { }
-    Logger logger = LoggerFactory.getLogger(getClass());
+    //public TelefonController() throws IOException, ParseException { }
     @Autowired
     private UserService userService;
 
 
-    @SneakyThrows
     @GetMapping(value = "/login/telefonlogin")
     public String login(@CookieValue(value = "userid", required = false) String userId,
                         Model model){
@@ -45,7 +40,14 @@ public class TelefonController {
          */
 
         JSONParser jsonParser = new JSONParser();
-        Object object = jsonParser.parse(new InputStreamReader(this.getClass().getResourceAsStream("/static/json/laender.json")));
+        Object object = null;
+        try {
+            object = jsonParser.parse(new InputStreamReader(this.getClass().getResourceAsStream("/static/json/laender.json")));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
         //Object object = jsonParser.parse(new FileReader(System.getProperty("user.dir") + "/src/main/resources/static/json/laender.json"));
         JSONObject obj = (JSONObject) object;
         /* a. json-object(Komplet array) an fragments: telefonlogin.html Seite senden */
@@ -91,7 +93,7 @@ public class TelefonController {
             }
         }
 
-        //logger.info("TelefonController reader:");
+        //System.out.println("TelefonController reader:");
         return (meineDaten == null ? "/login/telefonlogin" : "/messenger");
     }
 }

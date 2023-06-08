@@ -63,7 +63,7 @@
             <div class="freundeBody" >
 
     <!-- Daten werden mit javascript ins fragment eingebetet: freund.js function bekantenSave(bekantenToken) -->
-    <div id="NEUERCHAT"  data-th-insert="/fragments/bekanteneinladung :: werdeeingeladen"></div>
+    <div id="NEUERCHAT"  data-th-insert="~{/fragments/bekanteneinladung :: werdeeingeladen}"></div>
 
                 <!-- H2:database Tabelle freunde: id, datum, freundetoken, freundepseudonym, meinentoken, meinpseudonym, messagetoken, role -->
                 <div id="FREUNDEDATEN" class="freundeDaten" data-th-each=" freunde : ${meinefreunde} "
@@ -155,8 +155,8 @@
         <div id="FREUNDEFOOTER" class="freundeFooter">
 
             <!-- Footer Fragment ausgabe: messagecomponents.html Frgment: footerfragment -->
-            <div data-th-if="${#httpServletRequest.requestURI == '/messenger' || #httpServletRequest.requestURI == '/'}"
-                     data-th-insert="/fragments/footercomponents :: footerfragment"></div>
+            <div th:if="${messageRequestUri == '/messenger' || messageRequestUri == '/'}"
+                     data-th-insert="~{/fragments/footercomponents :: footerfragment}"></div>
 
         </div><!-- Ende freundefooter -->
 
@@ -184,8 +184,8 @@
     <!-- ****************************************************************** -->
 
         <div id="MESSAGEFRAGMENT" data-th-switch="${nameFragment}">
-            <div data-th-case="'messagefragment'"  data-th-insert="/fragments/messagecomponents :: messagefragment"></div>
-            <div data-th-case="'neuerchatfragment'"  data-th-insert="/fragments/neuerchatcomponents :: neuerchatfragment"></div>
+            <div data-th-case="'messagefragment'"  data-th-insert="~{/fragments/messagecomponents :: messagefragment}"></div>
+            <div data-th-case="'neuerchatfragment'"  data-th-insert="~{/fragments/neuerchatcomponents :: neuerchatfragment}"></div>
             <div data-th-case="*">
                 <div class="flexCenter" >
                     <img width="128" class="itemMiddle" data-th-src="@{/img/what.png}" alt="Geist">

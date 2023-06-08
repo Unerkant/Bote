@@ -8,18 +8,16 @@ import Bote.service.MessageService;
 import Bote.service.CountEntryService;
 import Bote.service.UserService;
 
-import lombok.SneakyThrows;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import javax.servlet.http.HttpServletRequest;
+
 import java.util.List;
 import java.util.stream.Collectors;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
    /**
@@ -28,8 +26,6 @@ import org.slf4j.LoggerFactory;
 
 @Controller
 public class MessageController {
-
-    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
@@ -71,7 +67,9 @@ public class MessageController {
     private Usern           meineDaten;
     private List<Freunde>   meineFreunde;
     @GetMapping(value = {"/", "/messenger"})
-    public String index(@CookieValue(value = "userid", required = false) String meineId, Model model)
+    public String index(@CookieValue(value = "userid", required = false) String meineId,
+                        HttpServletRequest request,
+                        Model model)
     {
         meineDaten      = userService.meineDatenHolen(meineId);
         meineFreunde    = freundeService.freundeSuchenMitLetzterNachricht(String.valueOf(meineId));
@@ -80,8 +78,9 @@ public class MessageController {
         model.addAttribute("meinefreunde", meineFreunde);
         model.addAttribute("meineId", meineId);
         model.addAttribute("meinedaten", meineDaten);
+        model.addAttribute("messageRequestUri", request.getRequestURI());
 
-        //System.out.println("MessageController, meine Freunde: " + meineFreunde);
+        System.out.println("MessageController, meine Freunde: " + request.getRequestURI());
 
         // wenn in Datenbank keine Daten vorhanden sind: return zum Registrieren
         return (meineDaten == null ? "/login/maillogin" : "/messenger");
@@ -105,10 +104,9 @@ public class MessageController {
     private String          freundPseu;
     private List<Message>   gemeinsameMessage;
     private String          nameFragment;
-    @SneakyThrows
     @PostMapping(path = "/fragmentmessages")
     public String fragmentMessages(@CookieValue(value = "userid", required = false) String meinecookie,
-            HttpServletRequest request, Model model){
+                                   HttpServletRequest request, Model model){
 
 
         // Fragment Name zugesendet per post(jQuery) von messenger.js Zeile:52
@@ -118,7 +116,7 @@ public class MessageController {
         freundToken = request.getParameter("freundeId");
         freundMessageToken = request.getParameter("freundMessageId");
 
-        // finden in H2 das gleiche messageToken wie von meiner Chat-Freund
+        // finden in H2 das gleiche messageToken wie von meinem Chat-Freund
         alleFreundeMessageToken = freundeService.freundeSuchen(String.valueOf(meinecookie))
                 .stream()
                 .map(Freunde::getMessagetoken).collect(Collectors.toList());
@@ -147,8 +145,7 @@ public class MessageController {
         model.addAttribute("freundMessageToken", freundMessageToken);
         model.addAttribute("gemeinsamemessage", gemeinsameMessage);
 
-        /*logger.info("MessageController/PostMapping: "  + nameFragment );*/
-        System.out.println("Message Controller, message Anzeige: " + gemeinsameMessage);
+        //System.out.println("Message Controller, message Anzeige: " + gemeinsameMessage);
 
        return "/messenger :: #MESSAGEFRAGMENT";
     }

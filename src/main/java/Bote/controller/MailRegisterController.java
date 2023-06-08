@@ -1,27 +1,23 @@
 package Bote.controller;
 
-import Bote.configuration.GlobalConfig;
 import Bote.model.Session;
 import Bote.model.Usern;
 import Bote.service.MethodenService;
 import Bote.service.SessionService;
 import Bote.service.UserService;
-import lombok.SneakyThrows;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
 
 
 @Controller
 public class MailRegisterController {
-
-    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private MethodenService methodenService;
@@ -45,7 +41,7 @@ public class MailRegisterController {
     private String  uniCode = "&#x22EF;";
 
 
-    @SneakyThrows
+
     @GetMapping(value = "/login/mailsuccess")
     public String login(@CookieValue(value = "userid", required = false) String userId){
 
@@ -65,7 +61,7 @@ public class MailRegisterController {
         * -----------------------------------------------------------
         *
         *   1. Daten aus dem mailregister.html holen
-        *   2. die Tipp Code in eine variable speichern (tippCode)
+        *   2. die Tippcode in eine variable speichern (tippCode)
         *   3. ...
         */
         saveDatum = request.getParameter("regDatum");
@@ -92,7 +88,7 @@ public class MailRegisterController {
         *
         */
 
-        //logger.info(mailCode+" /mail register/ " + tippCode);
+        //System.out.println(mailCode+" /mail register/ " + tippCode);
         if (mailCode != tippCode) {
             redAttr.addFlashAttribute("mailFehler", "Registrierungscode scheint falsch zu sein ...(richtige)->" + mailCode+
                     "bitte überprüfen Sie Ihr Email-Postfach!");
@@ -166,7 +162,7 @@ public class MailRegisterController {
         /* cookie "userid" setzen */
         methodenService.setCookie(response, "userid", String.valueOf((altUser != null) ? altUser.getToken() : saveToken));
 
-        logger.info("MailRegisterController: " + altUser);
+        System.out.println("MailRegisterController: " + altUser);
         return "/login/mailsuccess";
     }
 

@@ -1,9 +1,10 @@
 package Bote.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+
 
 /**
  * Created by Paul Richter on Sat 24/07/2021

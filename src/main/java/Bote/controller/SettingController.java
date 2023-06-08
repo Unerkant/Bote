@@ -1,22 +1,21 @@
 package Bote.controller;
 
-import Bote.configuration.GlobalConfig;
 import Bote.model.Freunde;
 import Bote.model.Usern;
 import Bote.service.*;
 
-import lombok.SneakyThrows;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.xml.bind.DatatypeConverter;
+
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -32,8 +31,6 @@ import java.util.stream.Collectors;
 
 @Controller
 public class SettingController {
-
-    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private MethodenService methodenService;
@@ -53,29 +50,27 @@ public class SettingController {
     private CountEntryService entryService;
 
 
-
     /**
      *   Setting HTML Starten
      *   Linke Seite: Ausgabe von Bild & E-Mail-Adresse
      */
     private Usern    meineDaten;
     @GetMapping(value = "/setting")
-    public String setting(@CookieValue(value = "userid", required = false) String meineId, Model model)
+    public String setting(@CookieValue(value = "userid", required = false) String meineId,
+                          HttpServletRequest request,
+                          Model model)
     {
-        /*
-         *   Daten für setting.html/profil(Linke Seite)
-         *   try: verhindert den Totalen ERROR: Whitelabel Error Page
-         *   Fehler: vermutlich meineDaten- sind leer
-         *   NumberFormatException: Cannot parse null string
-         *
-         */
-        try {
-            meineDaten = userService.meineDatenHolen(meineId);
-            model.addAttribute("meinedaten", meineDaten);
-            model.addAttribute("myToken", meineId);
-        }catch (Exception e){
-            logger.info("Exception Fehler: " + e);
-        }
+       /**
+        *   Daten für setting.html/profil(Linke Seite)
+        *   try: verhindert den Totalen ERROR: Whitelabel Error Page
+        *   Fehler: vermutlich meineDaten- sind leer
+        *   NumberFormatException: Cannot parse null string
+        *
+        */
+        meineDaten = userService.meineDatenHolen(meineId);
+        model.addAttribute("meinedaten", meineDaten);
+        model.addAttribute("myToken", meineId);
+        model.addAttribute("settingRequestUri", request.getRequestURI());
 
         //logger.info("SettingController/GetMapping: " + meineId +"/"+ meineDaten);
         return (meineId == null ? "/login/maillogin" : "/setting");
@@ -114,7 +109,7 @@ public class SettingController {
             return res;
         }
 
-        logger.info("Bild Upload Image: " + bildBeiUsern +"/"+ bildBeiFreunde);
+        //System.out.println("Bild Upload Image: " + bildBeiUsern +"/"+ bildBeiFreunde);
         return res;
     }
 
@@ -136,7 +131,8 @@ public class SettingController {
         freundeBildGeloscht = settingService.freundeBildUpdate("", nameBild);
         bildGeloscht = usernBildGeloscht + freundeBildGeloscht;
 
-        logger.info("Profil Bild Loöschen: " + bildGeloscht);
+        //System.out.println("Profil Bild Loöschen: " + bildGeloscht);
+
         return String.valueOf(bildGeloscht);
     }
 
@@ -189,7 +185,8 @@ public class SettingController {
         /* den vollen Titel text in Fragment Head ausgeben profil.html Zeile: 26  */
         model.addAttribute("fragmentTitel", volleFragmentTitel);
 
-        logger.info("POSTMAPPING/EINSTELLUNG: / " + fragmentName +"/"+ itemId  );
+        //System.out.println("POSTMAPPING/EINSTELLUNG: / " + fragmentName +"/"+ itemId  );
+
         return (profilcookie == null ? "/login/maillogin" : "/setting :: #FRAGMENTANZEIGEN");
         //return "setting ::" + showprofil;
     }
@@ -246,11 +243,11 @@ public class SettingController {
                 break;
         }
 
-        logger.info("POSTMAPPING/ Profil Save: " +tokenSave +"/"+nameSave +"/"+valueSave);
+        //System.out.println("POSTMAPPING/ Profil Save: " +tokenSave +"/"+nameSave +"/"+valueSave);
+
         //return an javascript profil.js function profilSave() Zeile:120
         return (profilcookie == null ? "/login/maillogin" : output);
     }
-
 
 
 
@@ -273,7 +270,6 @@ public class SettingController {
     private int     code;
     private String  mail;
     private String  telefon;
-    @SneakyThrows
     @PostMapping(value = "/codeHolen")
     @ResponseBody
     public String codeHolen(@RequestParam(value = "codetoken", required = false) String codetoken,
@@ -287,7 +283,7 @@ public class SettingController {
         alteTelefon = myData.getTelefon();
 
         code = methodenService.aktivierungCode();
-        logger.info("SettingController Zeile:300 "+ codename+ "/" +codevalue+ "/" + alteMail +"/"+ alteTelefon + "/" + code);
+        //System.out.println("SettingController Zeile:300 "+ codename+ "/" +codevalue+ "/" + alteMail +"/"+ alteTelefon + "/" + code);
 
         /* mail mit code an alte E-Mail-Adresse vesenden */
         if (alteMail != null && !alteMail.isBlank()){
@@ -331,7 +327,9 @@ public class SettingController {
     {
         datum   = methodenService.deDatum();
         outlog  = sessionService.letztenoutlogUpdate(datum, token);
-        logger.info("Account Abmelden: " +datum +"/"+ outlog);
+
+        //System.out.println("Account Abmelden: " +datum +"/"+ outlog);
+
         return "abgemeldet";
     }
 
@@ -357,7 +355,6 @@ public class SettingController {
     private String          sessionGeloscht;
     private int             cookieGeloscht;
     private int             sessionPluCookie;
-
     @PostMapping(value = "/accountloschen")
     public String accountLoschen(@CookieValue(value = "userid", required = false) String cookie,
                                  @RequestParam(value = "token", required = false) String token,
@@ -368,7 +365,7 @@ public class SettingController {
         userPseudonym   = userDaten.getPseudonym();
         userName        = userDaten.getName();
         userVorname     = userDaten.getVorname();
-        // finden in H2 das gleiche messageToken wie von meiner Chat-Freund
+        // finden in H2 das gleiche messageToken wie von meinem Chat-Freund
         alleMeineMessageToken = freundeService.freundeSuchen(String.valueOf(cookie))
                 .stream()
                 .map(Freunde::getMessagetoken).collect(Collectors.toList());
@@ -419,8 +416,9 @@ public class SettingController {
         model.addAttribute("phonecount", phoneGeloscht);
         model.addAttribute("cookiecount", sessionPluCookie);
 
-        logger.info("SettingController Zeile: 417, Account Loschen: " + alleMeineMessageToken +"/"+ phoneGeloscht +"/"+ sessionGeloscht + "/"
-                + freundeGeloscht +"/"+ messagesGeloscht +"/"+ userGeloscht +"/"+ cookieGeloscht+"/"+ countAlleMessage);
+        /*System.out.println("SettingController Zeile: 417, Account Loschen: " + alleMeineMessageToken +"/"+ phoneGeloscht +"/"+ sessionGeloscht + "/"
+                + freundeGeloscht +"/"+ messagesGeloscht +"/"+ userGeloscht +"/"+ cookieGeloscht+"/"+ countAlleMessage);*/
+
         return "/setting :: #ACCOUNTLOSCHENFRAGMENT";
     }
 
