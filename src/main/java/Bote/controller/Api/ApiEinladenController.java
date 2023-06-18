@@ -1,6 +1,5 @@
 package Bote.controller.Api;
 
-import Bote.configuration.GlobalConfig;
 import Bote.model.Freunde;
 import Bote.model.Usern;
 import Bote.service.FreundeService;

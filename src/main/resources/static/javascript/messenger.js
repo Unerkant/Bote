@@ -16,8 +16,8 @@
                 // Sollte nichts tun, wenn die Standardaktion abgebrochen wurde
         }
 
-        let handled = false;
-        let valmsg = $("#MESSAGETEXT").val();
+        var handled = false;
+        var valmsg = $("#MESSAGETEXT").val();
         if (event.key === 'Enter' && valmsg.trim() == "") {
 
             // Leeres Enter press, nichts tun
@@ -252,7 +252,7 @@
 
     function sendeMessage(meinePseudonym, freundeToken, meineToken, messageToken) {
 
-        let text = $("#MESSAGETEXT").val();
+        var text = $("#MESSAGETEXT").val();
         if(text.length === 0){
             $("#MESSAGETEXT").focus();
             return;
@@ -265,8 +265,8 @@
         }
 
         // Datum anlegen für die Message Jahr zwei stellig und ohne Sekunden
-        let d = new Date();
-        let datum = ("0" + d.getDate()).slice(-2) + "." + ("0"+(d.getMonth()+1)).slice(-2) + "." +
+        var d = new Date();
+        var datum = ("0" + d.getDate()).slice(-2) + "." + ("0"+(d.getMonth()+1)).slice(-2) + "." +
         d.getFullYear().toString().substr(2,2) + " " + ("0" + d.getHours()).slice(-2) + ":" +
         ("0" + d.getMinutes()).slice(-2);
 

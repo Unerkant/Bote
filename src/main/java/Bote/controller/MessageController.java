@@ -80,7 +80,7 @@ public class MessageController {
         model.addAttribute("meinedaten", meineDaten);
         model.addAttribute("messageRequestUri", request.getRequestURI());
 
-        System.out.println("MessageController, meine Freunde: " + request.getRequestURI());
+        System.out.println("MessageController, meine Freunde Links: " + request.getRequestURI());
 
         // wenn in Datenbank keine Daten vorhanden sind: return zum Registrieren
         return (meineDaten == null ? "/login/maillogin" : "/messenger");
